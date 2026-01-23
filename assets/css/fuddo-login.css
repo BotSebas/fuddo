@@ -1,0 +1,172 @@
+.card-primary.card-outline {
+    border-top: 3px solid #704a98;
+}
+
+.fuddo-login-bg {
+    background-image: url('../img/bg-login.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    min-height: 100vh !important;
+}
+
+.card-outline {
+    border-top: 3px solid #27ae60;
+}
+
+.hold-transition.login-page {
+    background-image: url('../img/bg-login.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    min-height: 100vh !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    width: 360px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.login-box .card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.login-box .card-header {
+    background: transparent;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 30px 20px;
+}
+
+.login-box .card-header img {
+    max-width: 180px;
+    height: auto;
+}
+
+.login-box .card-body {
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.login-box-msg {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.login-box .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.login-box .form-control:focus {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+}
+
+.login-box .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #666;
+}
+
+.login-box .btn {
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.login-box .btn-primary {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    color: white;
+}
+
+.login-box .btn-primary:hover:not(:disabled),
+.login-box .btn-primary:focus:not(:disabled) {
+    background-color: #219a52;
+    border-color: #219a52;
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+}
+
+.login-box .btn-dark {
+    background-color: #333;
+    border-color: #333;
+}
+
+.login-box .btn-dark:hover {
+    background-color: #222;
+    border-color: #222;
+}
+
+.icheck-primary input:checked ~ label {
+    color: #333;
+}
+
+.icheck-primary input:checked ~ label::before {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+.login-box a {
+    color: #27ae60;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-box a:hover {
+    color: #219a52;
+    text-decoration: underline;
+}
+
+.login-boton {
+    color: #ffffff;
+    background-color: #8F75B3;
+    border-color: #8F75B3;
+    box-shadow: none;
+}
+
+.login-boton:hover,
+.login-boton:focus,
+.login-boton:active,
+.login-boton:focus-visible {
+    background-color: #5C3E7C;
+    border-color: #5C3E7C;
+    outline: none;
+    box-shadow: none;
+}
+
+.login-boton:not(:disabled):not(.disabled):active,
+.show > .login-boton.dropdown-toggle {
+    color: #ffffff;
+    background-color: #5C3E7C;
+    border-color: #5C3E7C;
+    box-shadow: none;
+}
+
+.link-login {
+    color: #4B2D6B;
+}
+
+.link-login:hover,
+.link-login:focus,
+.link-login:active {
+    color: #4B2D6B;
+    text-decoration: underline;
+}

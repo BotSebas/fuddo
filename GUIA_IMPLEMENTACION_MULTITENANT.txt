@@ -1,0 +1,326 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                    GUÍA DE IMPLEMENTACIÓN MULTI-TENANT                   ║
+║                            Sistema FUDDO                                  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+📋 REQUISITOS PREVIOS:
+- XAMPP instalado y funcionando
+- Tu BD actual 'fuddo' funcionando correctamente
+- Acceso a phpMyAdmin o línea de comandos MySQL
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 1: CREAR BASE DE DATOS MAESTRA
+════════════════════════════════════════════════════════════════════════════
+
+1.1 Abre phpMyAdmin: http://localhost/phpmyadmin
+
+1.2 Ejecuta el archivo SQL:
+    - Ve a la pestaña "SQL"
+    - Abre: c:\xampp\htdocs\fuddo\sql\01_crear_bd_maestra.sql
+    - Copia TODO el contenido
+    - Pégalo en phpMyAdmin
+    - Click en "Continuar"
+
+1.3 Verifica que se creó:
+    - Deberías ver la BD "fuddo_master" en el panel izquierdo
+    - Con 2 tablas: restaurantes, usuarios_master
+    - Con 1 registro en cada tabla
+
+✓ RESULTADO: BD maestra creada con:
+   - Restaurante "Restaurante Principal" (usa tu BD actual 'fuddo')
+   - Usuario super-admin: admin / password
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 2: GENERAR CONTRASEÑA PERSONALIZADA (OPCIONAL)
+════════════════════════════════════════════════════════════════════════════
+
+2.1 Si quieres cambiar la contraseña del super-admin:
+    
+    Visita: http://localhost/fuddo/generar_password.php
+    
+2.2 Ingresa tu contraseña deseada → Click "Generar Hash"
+
+2.3 Copia el hash generado
+
+2.4 En phpMyAdmin, ejecuta:
+    
+    USE fuddo_master;
+    UPDATE usuarios_master 
+    SET password = 'PEGA_AQUI_EL_HASH' 
+    WHERE usuario = 'admin';
+
+✓ RESULTADO: Contraseña personalizada configurada
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 3: EXPORTAR ESQUEMA DE TU BD ACTUAL
+════════════════════════════════════════════════════════════════════════════
+
+3.1 Visita: http://localhost/fuddo/exportar_esquema.php
+
+3.2 Verifica que diga: "✓ Esquema exportado exitosamente"
+
+3.3 Verifica que existe: c:\xampp\htdocs\fuddo\sql\schema_restaurante.sql
+
+✓ RESULTADO: Archivo schema_restaurante.sql generado (plantilla para nuevos restaurantes)
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 4: HACER BACKUP DE ARCHIVOS ORIGINALES
+════════════════════════════════════════════════════════════════════════════
+
+4.1 Abre PowerShell en: c:\xampp\htdocs\fuddo
+
+4.2 Ejecuta:
+    .\backup_archivos.ps1
+
+    O manualmente:
+    Copy-Item validar.php validar_original_backup.php
+    Copy-Item includes\conexion.php includes\conexion_original_backup.php
+
+✓ RESULTADO: Backups creados por seguridad
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 5: ACTUALIZAR SISTEMA DE VALIDACIÓN
+════════════════════════════════════════════════════════════════════════════
+
+5.1 Renombrar validar.php actual:
+    validar.php → validar_old.php
+
+5.2 Renombrar el nuevo validador:
+    validar_multitenant.php → validar.php
+
+5.3 O simplemente ejecuta en PowerShell:
+    
+    Move-Item validar.php validar_old.php -Force
+    Move-Item validar_multitenant.php validar.php -Force
+
+✓ RESULTADO: Sistema de login multi-tenant activo
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 6: ACTUALIZAR CONEXIÓN A BASE DE DATOS
+════════════════════════════════════════════════════════════════════════════
+
+6.1 Edita: includes\conexion.php
+
+6.2 REEMPLAZA TODO EL CONTENIDO con:
+
+<?php
+/**
+ * Conexión dinámica a la base de datos del restaurante
+ * Se conecta a la BD específica según el restaurante del usuario
+ */
+
+if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
+if (!defined('DB_USER')) define('DB_USER', 'root');
+if (!defined('DB_PASS')) define('DB_PASS', '');
+
+// Iniciar sesión si no está iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Obtener nombre de BD desde la sesión
+if (!isset($_SESSION['nombre_bd'])) {
+    // Si no hay BD en sesión, usar la BD por defecto
+    // Esto permite que login.php funcione antes de autenticación
+    $DB_NAME = 'fuddo'; // Tu BD principal
+} else {
+    $DB_NAME = $_SESSION['nombre_bd'];
+}
+
+if (!defined('DB_NAME')) define('DB_NAME', $DB_NAME);
+
+// Crear conexión solo si no existe
+if (!isset($conexion)) {
+    $conexion = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+    // Verificar conexión
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    // Configurar charset y zona horaria
+    $conexion->set_charset("utf8mb4");
+    $conexion->query("SET time_zone = '-05:00'"); // Colombia
+}
+?>
+
+6.3 Guarda el archivo
+
+✓ RESULTADO: Conexión dinámica configurada
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 7: SINCRONIZAR USUARIO EN BD LOCAL
+════════════════════════════════════════════════════════════════════════════
+
+7.1 Abre phpMyAdmin → BD "fuddo" → Tabla "usuarios"
+
+7.2 Verifica que exista un usuario "admin" con rol "fuddo-admin"
+
+7.3 Si NO existe, ejecuta:
+
+    USE fuddo;
+    
+    INSERT INTO usuarios (usuario, password, nombre, email, rol, estado) 
+    VALUES (
+        'admin',
+        '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+        'Administrador FUDDO',
+        'admin@fuddo.co',
+        'fuddo-admin',
+        'activo'
+    );
+
+7.4 IMPORTANTE: El usuario y password deben coincidir con usuarios_master
+
+✓ RESULTADO: Usuario sincronizado en ambas BDs
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 8: PROBAR EL SISTEMA
+════════════════════════════════════════════════════════════════════════════
+
+8.1 Cierra todas las sesiones:
+    - Visita: http://localhost/fuddo/logout.php
+
+8.2 Abre el login:
+    - Visita: http://localhost/fuddo/login.php
+
+8.3 Inicia sesión con:
+    Usuario: admin
+    Password: password (o la que configuraste)
+
+8.4 Deberías ver:
+    ✓ Dashboard de FUDDO funcionando normalmente
+    ✓ En la sesión está guardado 'nombre_bd' => 'fuddo'
+    ✓ Todos los módulos funcionan (mesas, productos, usuarios)
+
+✓ RESULTADO: Sistema multi-tenant funcionando con tu BD actual
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 9: CREAR UN SEGUNDO RESTAURANTE (PRUEBA)
+════════════════════════════════════════════════════════════════════════════
+
+9.1 Inicia sesión como super-admin (admin)
+
+9.2 Visita: http://localhost/fuddo/crear_restaurante.php
+
+9.3 Completa el formulario:
+    
+    DATOS DEL RESTAURANTE:
+    - Nombre: Pizzería Italia
+    - Identificador: pizzeria01 (sin espacios, solo letras/números)
+    - Contacto: Juan Pérez
+    - Email: pizzeria@ejemplo.com
+    - Teléfono: 123456789
+    
+    USUARIO ADMINISTRADOR:
+    - Usuario: admin_pizzeria
+    - Contraseña: 123456
+    - Nombre Completo: Administrador Pizzería
+    - Email: admin@pizzeria.com
+
+9.4 Click en "Crear Restaurante"
+
+9.5 Debería aparecer:
+    "Restaurante creado exitosamente"
+    "BD: fuddo_pizzeria01"
+
+9.6 Verifica en phpMyAdmin:
+    ✓ Nueva BD "fuddo_pizzeria01" creada
+    ✓ Con todas las tablas (mesas, productos, servicios, usuarios)
+    ✓ Con datos de ejemplo
+
+✓ RESULTADO: Segundo restaurante creado
+
+════════════════════════════════════════════════════════════════════════════
+
+PASO 10: PROBAR ACCESO AL SEGUNDO RESTAURANTE
+════════════════════════════════════════════════════════════════════════════
+
+10.1 Cierra sesión: http://localhost/fuddo/logout.php
+
+10.2 Inicia sesión con el nuevo usuario:
+     Usuario: admin_pizzeria
+     Password: 123456
+
+10.3 Deberías ver:
+     ✓ Dashboard de FUDDO
+     ✓ SOLO los datos de "Pizzería Italia"
+     ✓ NO ves datos del "Restaurante Principal"
+
+10.4 Verifica la sesión:
+     $_SESSION['nombre_bd'] = 'fuddo_pizzeria01'
+     $_SESSION['nombre_restaurante'] = 'Pizzería Italia'
+
+✓ RESULTADO: Aislamiento total entre restaurantes confirmado
+
+════════════════════════════════════════════════════════════════════════════
+
+🎉 IMPLEMENTACIÓN COMPLETADA
+════════════════════════════════════════════════════════════════════════════
+
+VERIFICACIÓN FINAL:
+☑ BD maestra creada (fuddo_master)
+☑ Sistema de login multi-tenant activo
+☑ Conexión dinámica funcionando
+☑ Primer restaurante usando BD actual (fuddo)
+☑ Segundo restaurante con BD separada (fuddo_pizzeria01)
+☑ Cada usuario ve solo SUS datos
+
+════════════════════════════════════════════════════════════════════════════
+
+📚 ARCHIVOS IMPORTANTES:
+
+CONEXIONES:
+- includes/conexion_master.php     → Conexión a BD maestra
+- includes/conexion_dinamica.php   → Conexión dinámica (NO SE USA DIRECTAMENTE)
+- includes/conexion.php            → MODIFICADO para usar sesión
+
+AUTENTICACIÓN:
+- validar.php                      → Login multi-tenant (RENOMBRADO de validar_multitenant.php)
+- validar_old.php                  → Login original (BACKUP)
+
+GESTIÓN:
+- crear_restaurante.php            → Crear nuevos restaurantes (solo super-admin)
+- exportar_esquema.php             → Exportar estructura de BD
+- generar_password.php             → Generar hashes de contraseñas
+
+SQL:
+- sql/01_crear_bd_maestra.sql     → Script de instalación
+- sql/schema_restaurante.sql       → Plantilla para nuevos restaurantes
+
+════════════════════════════════════════════════════════════════════════════
+
+⚠️ SOLUCIÓN DE PROBLEMAS:
+
+PROBLEMA: "Error de conexión a BD maestra"
+SOLUCIÓN: Verifica que fuddo_master existe en phpMyAdmin
+
+PROBLEMA: "Usuario no encontrado"
+SOLUCIÓN: Verifica que el usuario existe en usuarios_master Y en la tabla usuarios de su BD
+
+PROBLEMA: "BD no existe"
+SOLUCIÓN: Verifica que nombre_bd en tabla restaurantes coincide con BD real
+
+PROBLEMA: Login no funciona
+SOLUCIÓN: 
+1. Verifica que validar_multitenant.php se renombró a validar.php
+2. Verifica que usuario/password son correctos
+3. Revisa errores en login.php?error=XXXX
+
+════════════════════════════════════════════════════════════════════════════
+
+📞 SIGUIENTE PASO RECOMENDADO:
+
+Actualizar url.php para que detecte todas las subcarpetas automáticamente
+o usar rutas absolutas con BASE_URL en todo el sistema.
+
+════════════════════════════════════════════════════════════════════════════
