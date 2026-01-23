@@ -22,7 +22,7 @@ if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'super-admin' && isset($_SES
         if ($restaurante['estado'] !== 'activo') {
             // Cerrar sesión y redirigir con mensaje
             session_destroy();
-            header("Location: " . dirname($_SERVER['PHP_SELF']) . "/login.php?error=restaurante_inactivo");
+                header("Location: /login.php?error=restaurante_inactivo");
             exit();
         }
     }
