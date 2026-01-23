@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: " . dirname($_SERVER['PHP_SELF']) . "/login.php?sesion=1");
+    header("Location: https://fuddo.co/login.php?sesion=1");
     exit();
 }
 
@@ -22,7 +22,7 @@ if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'super-admin' && isset($_SES
         if ($restaurante['estado'] !== 'activo') {
             // Cerrar sesión y redirigir con mensaje
             session_destroy();
-                header("Location: /login.php?error=restaurante_inactivo");
+                header("Location: https://fuddo.co/login.php?error=restaurante_inactivo");
             exit();
         }
     }
