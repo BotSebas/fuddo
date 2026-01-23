@@ -26,7 +26,7 @@ if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'super-admin' && isset($_SES
             exit();
         }
     }
-    
+
     $stmt->close();
 }
 ?>
