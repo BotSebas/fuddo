@@ -62,12 +62,12 @@ include '../includes/conexion.php';
     <div class="row">
       <?php
       // Obtener mesas de la base de datos con el total de servicios activos
-      $sql = "SELECT m.id, m.id_mesa, m.nombre, m.estado, 
+      $sql = "SELECT m.id, m.ubicacion, m.nombre, m.estado, 
               COALESCE(SUM(s.valor_total), 0) as total_cuenta,
               COUNT(s.id) as cantidad_items
               FROM " . TBL_MESAS . " m
               LEFT JOIN " . TBL_SERVICIOS . " s ON m.id_mesa = s.id_mesa AND s.estado = 'activo'
-              GROUP BY m.id, m.id_mesa, m.nombre, m.estado";
+              GROUP BY m.id, m.ubicacion, m.nombre, m.estado";
       $resultado = $conexion->query($sql);
       
       $vacantes = [];
@@ -79,7 +79,7 @@ include '../includes/conexion.php';
           $vacantes[] = [
             'id' => $row['id'],
             'titulo' => $row['nombre'],
-            'ubicacion' => $row['id_mesa'],
+            'ubicacion' => $row['ubicacion'],
             'estado' => $estado_real,
             'total_cuenta' => $row['total_cuenta']
           ];

@@ -7,6 +7,7 @@ $BASE_URL .= "://" . $_SERVER['HTTP_HOST'];
 $scriptPath = dirname($_SERVER['SCRIPT_NAME']);
 // Si estamos en una subcarpeta del proyecto (mesas/, productos/, usuarios/, restaurantes/, permisos/, cocina/, reportes/), subir un nivel
 if (strpos($scriptPath, '/mesas') !== false || 
+    strpos($scriptPath, '/comandas') !== false ||
     strpos($scriptPath, '/productos') !== false || 
     strpos($scriptPath, '/usuarios') !== false ||
     strpos($scriptPath, '/restaurantes') !== false ||

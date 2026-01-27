@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `servicios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Tabla de servicios_total
 CREATE TABLE IF NOT EXISTS `servicios_total` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_servicio` varchar(50) NOT NULL,
@@ -49,6 +48,16 @@ CREATE TABLE IF NOT EXISTS `servicios_total` (
   `metodo_pago` enum('efectivo','llave','nequi','daviplata','tarjeta') NOT NULL DEFAULT 'efectivo',
   `fecha_servicio` date NOT NULL,
   `hora_cierre_servicio` time NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Tabla de comandas
+CREATE TABLE IF NOT EXISTS `comandas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(255) NOT NULL,
+  `total` decimal(10,2) NOT NULL DEFAULT 0,
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

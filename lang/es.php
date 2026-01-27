@@ -1,4 +1,5 @@
 <?php
+$menu_comandas = "Comandas";
 /**
  * Archivo de idioma: ESPAÑOL (predeterminado)
  * Sistema FUDDO - POS para Restaurantes

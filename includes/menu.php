@@ -89,12 +89,14 @@ function tieneReporte($clave) {
     return in_array($clave, $permisos_reportes);
 }
 
-// Definir BASE_URL si no está definido
-if (!isset($BASE_URL)) {
-    $BASE_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-    $BASE_URL .= "://" . $_SERVER['HTTP_HOST'];
-    $BASE_URL .= "/fuddo/";
+// Definir BASE_URL si no está definido o corregir si está mal formada
+if (!isset($BASE_URL) || strpos($BASE_URL, '/fuddo/') === false) {
+  $BASE_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+  $BASE_URL .= "://" . $_SERVER['HTTP_HOST'];
+  $BASE_URL .= "/fuddo/";
 }
+// Normalizar para evitar duplicados o rutas erróneas
+$BASE_URL = rtrim($BASE_URL, "/") . "/";
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $idioma; ?>">
@@ -285,6 +287,7 @@ if (!isset($BASE_URL)) {
       <ul class="nav nav-pills nav-sidebar flex-column"
     data-widget="treeview" role="menu" data-accordion="false">
 
+
   <!-- Mesas -->
   <?php if (tienePermiso('mesas')): ?>
   <li class="nav-item">
@@ -293,6 +296,18 @@ if (!isset($BASE_URL)) {
         <?php include __DIR__ . '/../assets/icons/silla.svg'; ?>
       </span>
       <p><?php echo $menu_mesas; ?></p>
+    </a>
+  </li>
+  <?php endif; ?>
+
+  <!-- Comandas -->
+  <?php if (tienePermiso('comandas')): ?>
+  <li class="nav-item">
+    <a href="<?php echo $BASE_URL; ?>comandas/comandas.php" class="nav-link">
+      <span class="nav-icon-svg">
+        <i class="fas fa-receipt"></i>
+      </span>
+      <p><?php echo $menu_comandas; ?></p>
     </a>
   </li>
   <?php endif; ?>

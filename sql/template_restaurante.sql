@@ -55,3 +55,13 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}servicios_total` (
     KEY `idx_servicio` (`id_servicio`),
     KEY `idx_fecha` (`fecha_servicio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Tabla de comandas
+CREATE TABLE IF NOT EXISTS `{PREFIX}comandas` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `descripcion` varchar(255) NOT NULL,
+    `total` decimal(10,2) NOT NULL DEFAULT 0,
+    `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
