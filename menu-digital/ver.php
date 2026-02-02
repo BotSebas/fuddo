@@ -1,28 +1,31 @@
 <?php
 // Vista pública del menú digital - NO REQUIERE LOGIN
+
+// Habilitar errores para debugging (quitar en producción)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $restaurante = $_GET['r'] ?? '';
 
 if (empty($restaurante)) {
     die('Restaurante no especificado');
 }
 
-// Conectar a base de datos principal para obtener info del restaurante
-$host = 'localhost';
-$usuario = 'root';
-$password = '';
-$dbPrincipal = 'mgacgdnjkg';
+// Incluir archivo de conexión master (maneja automáticamente las credenciales según el ambiente)
+$conexion_file = __DIR__ . '/../includes/conexion_master.php';
+if (!file_exists($conexion_file)) {
+    die('Error: No se encuentra el archivo de conexión');
+}
+include $conexion_file;
 
-$conexionMaster = new mysqli($host, $usuario, $password, $dbPrincipal);
-$conexionMaster->set_charset("utf8mb4");
-
-if ($conexionMaster->connect_error) {
-    die("Error de conexión: " . $conexionMaster->connect_error);
+if (!isset($conexion_master) || $conexion_master->connect_error) {
+    die('Error: No se pudo establecer conexión a la base de datos');
 }
 
 // Buscar restaurante por slug
-$restaurante_escapado = $conexionMaster->real_escape_string($restaurante);
+$restaurante_escapado = $conexion_master->real_escape_string($restaurante);
 $sqlRestaurante = "SELECT id, nombre, identificador FROM restaurantes WHERE LOWER(REPLACE(nombre, ' ', '-')) = '$restaurante_escapado' OR identificador = '$restaurante_escapado' LIMIT 1";
-$resultRestaurante = $conexionMaster->query($sqlRestaurante);
+$resultRestaurante = $conexion_master->query($sqlRestaurante);
 
 if (!$resultRestaurante || $resultRestaurante->num_rows == 0) {
     die('Restaurante no encontrado');
@@ -32,9 +35,8 @@ $restauranteData = $resultRestaurante->fetch_assoc();
 $nombreRestaurante = $restauranteData['nombre'];
 $identificador = $restauranteData['identificador'];
 
-// Usar la misma base de datos (todo está en mgacgdnjkg)
-$dbRestaurante = $dbPrincipal;
-$conexion = new mysqli($host, $usuario, $password, $dbRestaurante);
+// Usar la misma conexión para las consultas del restaurante (todo está en mgacgdnjkg)
+$conexion = $conexion_master;
 $conexion->set_charset("utf8mb4");
 
 if ($conexion->connect_error) {
@@ -129,9 +131,8 @@ if ($modoOscuro === 1) {
     $bgHover = '#f8f9fa';
 }
 
-
-$conexionMaster->close();
-$conexion->close();
+// Cerrar conexión (solo una vez, ya que $conexion es alias de $conexion_master)
+$conexion_master->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">

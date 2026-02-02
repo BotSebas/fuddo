@@ -43,10 +43,18 @@ try {
         
         // Detectar modo: Cloudways (una BD con prefijos) vs Local (múltiples BDs)
         $is_cloudways = false;
-        $test_cloud = @new mysqli('localhost', 'root', '', 'mgacgdnjkg');
-        if (!$test_cloud->connect_error) {
+        
+        // Detectar si estamos en producción por el dominio
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+        if (strpos($host, 'fuddo.co') !== false || strpos($host, 'phpstack-1316371-6163825.cloudwaysapps.com') !== false) {
             $is_cloudways = true;
-            $test_cloud->close();
+        } else {
+            // En local, verificar si existe la BD mgacgdnjkg
+            $test_cloud = @new mysqli('localhost', 'root', '', 'mgacgdnjkg');
+            if (!$test_cloud->connect_error) {
+                $is_cloudways = true;
+                $test_cloud->close();
+            }
         }
         
         if ($is_cloudways) {

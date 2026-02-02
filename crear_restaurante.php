@@ -48,7 +48,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 2. Detectar si estamos en Cloudways
-        $is_cloudways = (strpos($_SERVER['HTTP_HOST'], 'cloudwaysapps.com') !== false);
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+        $is_cloudways = (
+            strpos($host, 'fuddo.co') !== false || 
+            strpos($host, 'phpstack-1316371-6163825.cloudwaysapps.com') !== false
+        );
+        
+        // En local, también verificar si existe la BD mgacgdnjkg
+        if (!$is_cloudways) {
+            $test_cloud = @new mysqli('localhost', 'root', '', 'mgacgdnjkg');
+            if (!$test_cloud->connect_error) {
+                $is_cloudways = true;
+                $test_cloud->close();
+            }
+        }
 
         if (!$is_cloudways) {
             // MODO LOCAL: Verificar que la BD no exista
