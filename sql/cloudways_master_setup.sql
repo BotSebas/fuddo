@@ -98,10 +98,11 @@ ON DUPLICATE KEY UPDATE usuario=usuario;
 -- Aplicaciones base
 INSERT INTO aplicaciones (clave, nombre, descripcion, icono, orden) VALUES
 ('mesas', 'Mesas', 'Gestión de mesas y servicios del restaurante', 'fas fa-utensils', 1),
-('productos', 'Productos', 'Administración de productos e inventario', 'fas fa-box', 2),
-('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 3),
-('reportes', 'Reportes', 'Reportes y estadísticas de ventas', 'fas fa-chart-bar', 4),
-('pedidos', 'Pedidos', 'Gestión de pedidos', 'fas fa-shopping-cart', 5)
+('comandas', 'Comandas', 'Gestión de comandas y ventas rápidas', 'fas fa-receipt', 2),
+('productos', 'Productos', 'Administración de productos e inventario', 'fas fa-box', 3),
+('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 4),
+('reportes', 'Reportes', 'Reportes y estadísticas de ventas', 'fas fa-chart-bar', 5),
+('pedidos', 'Pedidos', 'Gestión de pedidos', 'fas fa-shopping-cart', 6)
 ON DUPLICATE KEY UPDATE clave=clave;
 
 -- Reportes base

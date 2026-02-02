@@ -1,4 +1,5 @@
 <?php
+$menu_comandas = "Comandas";
 /**
  * Archivo de idioma: ESPAÑOL (predeterminado)
  * Sistema FUDDO - POS para Restaurantes
@@ -319,6 +320,7 @@ $chat_bienvenida = "¡Hola! 👋 Soy tu asistente virtual de FUDDO.\n\nEstoy aqu
 $chat_gestion_mesas = "🪑 Gestión de Mesas";
 $chat_manejo_pedidos = "🍽️ Manejo de Pedidos";
 $chat_productos_inventario = "📦 Productos e Inventario";
+$chat_gestion_comandas = "📋 Gestión de Comandas";
 $chat_cerrar_cuentas = "💰 Cerrar Cuentas";
 
 // === CHATBOT MESAS ===
@@ -348,6 +350,17 @@ $chat_crear_producto_inst = "Para crear un producto:\n\n1️⃣ Ve a 'Productos'
 $chat_editar_producto_inst = "Para editar un producto:\n\n1️⃣ En la tabla de productos\n2️⃣ Clic en el ícono de editar ✏️\n3️⃣ Modifica los datos necesarios\n4️⃣ Guarda los cambios";
 $chat_toggle_producto_inst = "Para activar/desactivar un producto:\n\n1️⃣ Busca el toggle switch en la columna 'Estado'\n2️⃣ Cambia el estado con un clic\n\n🟢 Activo - Visible en pedidos\n⚪ Inactivo - Oculto pero guardado";
 
+// === CHATBOT COMANDAS ===
+$chat_comandas_pregunta = "¿Qué necesitas saber sobre comandas?";
+$chat_nueva_comanda = "Crear nueva comanda";
+$chat_agregar_productos_comanda = "Agregar productos";
+$chat_cerrar_comanda = "Cerrar comanda";
+$chat_historial_comandas = "Historial de comandas";
+$chat_nueva_comanda_inst = "Para crear una comanda nueva:\n\n1️⃣ Ve a 'Comandas' en el menú\n2️⃣ Clic en 'Nueva Comanda'\n3️⃣ Se abre el modal con ID automático (CMD-X)\n4️⃣ Agrega productos al pedido\n\n¡La comanda queda activa hasta cerrarla!";
+$chat_agregar_productos_comanda_inst = "Para agregar productos a la comanda:\n\n1️⃣ En el modal de comanda activa\n2️⃣ Clic en '+ Agregar Producto'\n3️⃣ Selecciona producto y cantidad\n4️⃣ Confirma\n\nPuedes agregar todos los productos que necesites. El total se actualiza automáticamente.";
+$chat_cerrar_comanda_inst = "Para cerrar una comanda:\n\n1️⃣ Clic en 'Cerrar Cuenta'\n2️⃣ Revisa los productos\n3️⃣ Selecciona método de pago\n4️⃣ Ingresa monto pagado\n5️⃣ Sistema calcula cambio\n6️⃣ Confirma\n\nLa comanda se guarda en el historial.";
+$chat_historial_comandas_inst = "El historial muestra:\n\n💵 Total de cada comanda\n📅 Fecha de venta\n🔍 Botón 'Ver Detalle'\n\nAl ver el detalle puedes consultar:\n• Productos vendidos\n• Cantidades\n• Precios\n• Método de pago usado\n\nTodo se guarda automáticamente.";
+
 // === CHATBOT CUENTAS ===
 $chat_cuentas_pregunta = "¿Qué necesitas saber sobre cerrar cuentas?";
 $chat_proceso_cierre = "Proceso de cierre";
@@ -361,6 +374,7 @@ $chat_historial_inst = "Todo se guarda automáticamente:\n\n📊 Servicios final
 $chat_volver_mesas = "⬅️ Volver a Mesas";
 $chat_volver_pedidos = "⬅️ Volver a Pedidos";
 $chat_volver_productos = "⬅️ Volver a Productos";
+$chat_volver_comandas = "⬅️ Volver a Comandas";
 $chat_volver_cuentas = "⬅️ Volver a Cuentas";
 $chat_menu_principal = "🏠 Menú principal";
 

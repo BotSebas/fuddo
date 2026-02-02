@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $valor_sin_iva = floatval($_POST['valor_sin_iva']);
     $valor_con_iva = floatval($_POST['valor_con_iva']);
     $inventario = isset($_POST['inventario']) ? intval($_POST['inventario']) : 0;
+    $minimo_inventario = isset($_POST['minimo_inventario']) ? intval($_POST['minimo_inventario']) : 2;
     
     // Validar que el inventario no sea negativo
     if ($inventario < 0) {
@@ -20,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 nombre_producto = '$nombre_producto', 
                 valor_sin_iva = $valor_sin_iva, 
                 valor_con_iva = $valor_con_iva,
-                inventario = $inventario
+                inventario = $inventario,
+                minimo_inventario = $minimo_inventario
                 WHERE id = $id";
         
         if ($conexion->query($sql) === TRUE) {
@@ -39,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $siguiente_numero = $count + 1;
         $id_producto = "PR-" . $siguiente_numero;
         
-        $sql = "INSERT INTO " . TBL_PRODUCTOS . " (id_producto, nombre_producto, valor_sin_iva, valor_con_iva, inventario, estado) 
-                VALUES ('$id_producto', '$nombre_producto', $valor_sin_iva, $valor_con_iva, $inventario, 'activo')";
+        $sql = "INSERT INTO " . TBL_PRODUCTOS . " (id_producto, nombre_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado) 
+                VALUES ('$id_producto', '$nombre_producto', $valor_sin_iva, $valor_con_iva, $inventario, $minimo_inventario, 'activo')";
         
         if ($conexion->query($sql) === TRUE) {
             header("Location: productos.php?exito=creado");

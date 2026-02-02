@@ -62,12 +62,12 @@ include '../includes/conexion.php';
     <div class="row">
       <?php
       // Obtener mesas de la base de datos con el total de servicios activos
-      $sql = "SELECT m.id, m.id_mesa, m.nombre, m.estado, 
+      $sql = "SELECT m.id, m.ubicacion, m.nombre, m.estado, 
               COALESCE(SUM(s.valor_total), 0) as total_cuenta,
               COUNT(s.id) as cantidad_items
               FROM " . TBL_MESAS . " m
               LEFT JOIN " . TBL_SERVICIOS . " s ON m.id_mesa = s.id_mesa AND s.estado = 'activo'
-              GROUP BY m.id, m.id_mesa, m.nombre, m.estado";
+              GROUP BY m.id, m.ubicacion, m.nombre, m.estado";
       $resultado = $conexion->query($sql);
       
       $vacantes = [];
@@ -79,7 +79,7 @@ include '../includes/conexion.php';
           $vacantes[] = [
             'id' => $row['id'],
             'titulo' => $row['nombre'],
-            'ubicacion' => $row['id_mesa'],
+            'ubicacion' => $row['ubicacion'],
             'estado' => $estado_real,
             'total_cuenta' => $row['total_cuenta']
           ];
@@ -217,6 +217,32 @@ include '../includes/conexion.php';
     });
   }
 </script>
+
+<!-- Select2 CSS y JS -->
+<link rel="stylesheet" href="../plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<style>
+  /* Colores verde FUDDO para Select2 */
+  .select2-container--bootstrap4 .select2-results__option--highlighted {
+    background-color: #28a745 !important;
+    color: white !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single:focus,
+  .select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #28a745 !important;
+  }
+  .select2-container--bootstrap4 .select2-results__option--selected {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single {
+    height: calc(2.25rem + 2px) !important;
+  }
+  .select2-container--bootstrap4 .select2-selection__rendered {
+    line-height: calc(2.25rem) !important;
+  }
+</style>
+<script src="../plugins/select2/js/select2.full.min.js"></script>
 
 <?php include 'nueva.php'; ?>
 <?php include 'servicios.php'; ?>

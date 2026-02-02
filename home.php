@@ -155,6 +155,7 @@ const chatData = {
       { text: <?php echo json_encode($chat_gestion_mesas); ?>, next: "mesas" },
       { text: <?php echo json_encode($chat_manejo_pedidos); ?>, next: "pedidos" },
       { text: <?php echo json_encode($chat_productos_inventario); ?>, next: "productos" },
+      { text: <?php echo json_encode($chat_gestion_comandas); ?>, next: "comandas" },
       { text: <?php echo json_encode($chat_cerrar_cuentas); ?>, next: "cuentas" }
     ]
   },
@@ -245,6 +246,44 @@ const chatData = {
     message: <?php echo json_encode($chat_toggle_producto_inst); ?>,
     options: [
       { text: <?php echo json_encode($chat_volver_productos); ?>, next: "productos" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  comandas: {
+    message: <?php echo json_encode($chat_comandas_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_nueva_comanda); ?>, next: "nueva_comanda" },
+      { text: <?php echo json_encode($chat_agregar_productos_comanda); ?>, next: "agregar_productos_comanda" },
+      { text: <?php echo json_encode($chat_cerrar_comanda); ?>, next: "cerrar_comanda" },
+      { text: <?php echo json_encode($chat_historial_comandas); ?>, next: "historial_comandas" },
+      { text: "<?php echo $home_volver_inicio; ?>", next: "welcome" }
+    ]
+  },
+  nueva_comanda: {
+    message: <?php echo json_encode($chat_nueva_comanda_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_comandas); ?>, next: "comandas" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  agregar_productos_comanda: {
+    message: <?php echo json_encode($chat_agregar_productos_comanda_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_comandas); ?>, next: "comandas" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  cerrar_comanda: {
+    message: <?php echo json_encode($chat_cerrar_comanda_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_comandas); ?>, next: "comandas" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  historial_comandas: {
+    message: <?php echo json_encode($chat_historial_comandas_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_comandas); ?>, next: "comandas" },
       { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
     ]
   },

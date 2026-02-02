@@ -1,3 +1,4 @@
+$menu_comandas = "Orders";
 <?php
 /**
  * Language file: ENGLISH
