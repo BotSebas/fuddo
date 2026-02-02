@@ -13,6 +13,7 @@ if (strpos($scriptPath, '/mesas') !== false ||
     strpos($scriptPath, '/restaurantes') !== false ||
     strpos($scriptPath, '/permisos') !== false ||
     strpos($scriptPath, '/cocina') !== false ||
+    strpos($scriptPath, '/menu-digital') !== false ||
     strpos($scriptPath, '/reportes') !== false) {
     $BASE_URL .= dirname($scriptPath) ;
 } else {

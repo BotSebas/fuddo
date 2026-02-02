@@ -77,4 +77,7 @@ if (!defined('TBL_MESAS')) define('TBL_MESAS', $TABLE_PREFIX . 'mesas');
 if (!defined('TBL_PRODUCTOS')) define('TBL_PRODUCTOS', $TABLE_PREFIX . 'productos');
 if (!defined('TBL_SERVICIOS')) define('TBL_SERVICIOS', $TABLE_PREFIX . 'servicios');
 if (!defined('TBL_SERVICIOS_TOTAL')) define('TBL_SERVICIOS_TOTAL', $TABLE_PREFIX . 'servicios_total');
+if (!defined('TBL_COMANDAS')) define('TBL_COMANDAS', $TABLE_PREFIX . 'comandas');
+if (!defined('TBL_COMANDAS_TOTAL')) define('TBL_COMANDAS_TOTAL', $TABLE_PREFIX . 'comandas_total');
+if (!defined('TBL_MENU_DIGITAL')) define('TBL_MENU_DIGITAL', $TABLE_PREFIX . 'menu_digital');
 ?>

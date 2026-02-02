@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql_template = file_get_contents('sql/template_restaurante.sql');
             $sql_schema = str_replace('{PREFIX}', $table_prefix, $sql_template);
             
-            // Ejecutar en la BD actual (fwedexhvyx)
+            // Ejecutar en la BD actual (mgacgdnjkg)
             $conexion_master->multi_query($sql_schema);
             
             // Esperar a que terminen todas las consultas

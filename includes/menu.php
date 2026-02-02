@@ -6,13 +6,13 @@ include_once __DIR__ . '/../lang/idiomas.php';
 include_once __DIR__ . '/conexion.php';
 include_once __DIR__ . '/conexion_master.php';
 
-// Consultar productos con inventario <= 2 (solo si hay restaurante asociado)
+// Consultar productos con inventario <= minimo_inventario (solo si hay restaurante asociado)
 $productosBajoStock = [];
 $totalNotificaciones = 0;
 
 if (isset($_SESSION['nombre_bd']) && $_SESSION['nombre_bd'] !== null && defined('TBL_PRODUCTOS')) {
     $tabla_productos = TBL_PRODUCTOS;
-    $sqlBajoStock = "SELECT id_producto, nombre_producto, inventario FROM $tabla_productos WHERE inventario <= 2 AND estado = 'activo' ORDER BY inventario ASC";
+    $sqlBajoStock = "SELECT id_producto, nombre_producto, inventario FROM $tabla_productos WHERE inventario <= minimo_inventario AND estado = 'activo' ORDER BY inventario ASC";
     $resultBajoStock = $conexion->query($sqlBajoStock);
     if ($resultBajoStock && $resultBajoStock->num_rows > 0) {
         while ($row = $resultBajoStock->fetch_assoc()) {
@@ -232,7 +232,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       <!-- Soporte Restaurantes (Solo Super-Admin) -->
       <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'super-admin'): ?>
       <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalSoporteRestaurante" title="Soporte a Restaurantes">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalSoporteRestaurante" title="Soporte a Clientes">
           <i class="fas fa-tools"></i>
         </a>
       </li>
@@ -348,6 +348,16 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   </li>
   <?php endif; ?>
 
+  <!-- Menú Digital -->
+  <?php if (tienePermiso('menu_digital')): ?>
+  <li class="nav-item">
+    <a href="<?php echo $BASE_URL; ?>menu-digital/index.php" class="nav-link">
+      <i class="nav-icon fas fa-qrcode"></i>
+      <p>Menú Digital</p>
+    </a>
+  </li>
+  <?php endif; ?>
+
   <!-- Pedidos -->
   <?php if (tienePermiso('pedidos')): ?>
   <li class="nav-item">
@@ -402,6 +412,12 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
           <p>Reportes</p>
         </a>
       </li>
+      </li><li class="nav-item">
+            <br>
+      </li>
+      <li class="nav-item">
+          <br>
+      </li>
     </ul>
   </li>
   <?php endif; ?>
@@ -453,7 +469,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
         <div class="modal-content">
             <div class="modal-header" style="background-color: #27ae60; color: white;">
                 <h5 class="modal-title">
-                    <i class="fas fa-tools"></i> Soporte a Restaurantes
+                    <i class="fas fa-tools"></i> Soporte a Clientes
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" style="color: white;">
                     <span>&times;</span>

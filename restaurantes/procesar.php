@@ -43,14 +43,14 @@ try {
         
         // Detectar modo: Cloudways (una BD con prefijos) vs Local (múltiples BDs)
         $is_cloudways = false;
-        $test_cloud = @new mysqli('localhost', 'root', '', 'fwedexhvyx');
+        $test_cloud = @new mysqli('localhost', 'root', '', 'mgacgdnjkg');
         if (!$test_cloud->connect_error) {
             $is_cloudways = true;
             $test_cloud->close();
         }
         
         if ($is_cloudways) {
-            // MODO CLOUDWAYS: Crear tablas con prefijo en fwedexhvyx
+            // MODO CLOUDWAYS: Crear tablas con prefijo en mgacgdnjkg
             $table_prefix = 'fuddo_' . $identificador . '_';
             
             // Insertar restaurante (nombre_bd guarda el prefijo)
@@ -69,7 +69,7 @@ try {
             
             $sql_schema = str_replace('{PREFIX}', $table_prefix, $sql_template);
             
-            // Ejecutar en la BD actual (fwedexhvyx) - usar conexion_master que ya está conectada
+            // Ejecutar en la BD actual (mgacgdnjkg) - usar conexion_master que ya está conectada
             if (!$conexion_master->multi_query($sql_schema)) {
                 throw new Exception('Error al crear tablas: ' . $conexion_master->error);
             }

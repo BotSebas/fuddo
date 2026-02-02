@@ -39,7 +39,7 @@ include '../includes/conexion.php';
 $busqueda = $_GET['buscar'] ?? '';
 
 // Consulta a la base de datos
-$sql = "SELECT id, nombre_producto, valor_sin_iva, valor_con_iva, inventario, estado FROM " . TBL_PRODUCTOS;
+$sql = "SELECT id, nombre_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado FROM " . TBL_PRODUCTOS;
 
 if (!empty($busqueda)) {
     $busqueda_escapada = $conexion->real_escape_string($busqueda);
@@ -112,10 +112,70 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
         </div>
       <?php endif; ?>
       
+      <?php if(isset($_GET['exito']) && $_GET['exito'] == 'carga_masiva'): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong><i class="fas fa-check-circle"></i> ¡Carga Masiva Exitosa!</strong><br>
+          Se han creado <strong><?php echo isset($_GET['total']) ? intval($_GET['total']) : 0; ?></strong> productos correctamente.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
+      <?php if(isset($_GET['error']) && $_GET['error'] == 'acceso_denegado'): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error:</strong> Solo super-admins pueden realizar carga masiva.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
+      <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_archivo'): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error:</strong> No se recibió ningún archivo.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
+      <?php if(isset($_GET['error']) && $_GET['error'] == 'formato_invalido'): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error:</strong> El archivo debe ser formato Excel (.xlsx o .xls).
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
+      <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_productos'): ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Advertencia:</strong> No se pudo crear ningún producto. Verifica el formato del archivo.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
+      <?php if(isset($_GET['error']) && $_GET['error'] == 'excepcion'): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error:</strong> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : 'Error al procesar el archivo'; ?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php endif; ?>
+      
       <!-- Botón + búsqueda -->
       <div class="row mb-3">
         <div class="col-md-6">
           <button class="btn btn-success" data-toggle="modal" data-target="#modalProducto" onclick="abrirModal()"><?php echo $producto_nuevo; ?></button>
+          <?php if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' && isset($_SESSION['id_restaurante'])): ?>
+            <button class="btn btn-info ml-2" data-toggle="modal" data-target="#modalCargaMasiva">
+              <i class="fas fa-file-csv"></i> Carga Masiva (CSV)
+            </button>
+          <?php endif; ?>
         </div>
         <div class="col-md-6">
           <form method="get" class="float-right">
@@ -135,7 +195,6 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
-                <th><?php echo $producto_id; ?></th>
                 <th><?php echo $producto_nombre; ?></th>
                 <th><?php echo $producto_valor_sin_iva; ?></th>
                 <th><?php echo $producto_valor_con_iva; ?></th>
@@ -147,7 +206,6 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
             <tbody>
               <?php foreach ($productosPagina as $producto): ?>
               <tr>
-                <td><?= $producto['id'] ?></td>
                 <td><?= htmlspecialchars($producto['nombre_producto']) ?></td>
                 <td>$<?= number_format($producto['valor_sin_iva'], 2) ?></td>
                 <td>$<?= number_format($producto['valor_con_iva'], 2) ?></td>
@@ -213,6 +271,10 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
             <label for="inventario"><?php echo $producto_inventario; ?></label>
             <input type="number" id="inventario" name="inventario" class="form-control" value="0" min="0" required>
           </div>
+          <div class="form-group">
+            <label for="minimoInventario">Mínimo Inventario</label>
+            <input type="number" id="minimoInventario" name="minimo_inventario" class="form-control" value="2" min="1" required>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary"><?php echo $btn_guardar; ?></button>
@@ -223,7 +285,74 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
   </div>
 </div>
 
+<!-- Modal Carga Masiva -->
+<?php if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' && isset($_SESSION['id_restaurante'])): ?>
+<div class="modal fade" id="modalCargaMasiva" tabindex="-1" role="dialog" aria-labelledby="modalCargaMasivaLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="modalCargaMasivaLabel">
+          <i class="fas fa-file-excel"></i> Carga Masiva de Productos
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info">
+          <strong><i class="fas fa-info-circle"></i> Instrucciones:</strong>
+          <ul class="mb-0 mt-2">
+            <li>El archivo debe ser formato <strong>CSV (.csv)</strong></li>
+            <li>Puedes crear el CSV desde Excel: <em>Archivo → Guardar como → CSV (delimitado por comas)</em></li>
+            <li>La primera fila debe contener los encabezados</li>
+            <li>Columnas requeridas (separadas por comas):
+              <ol>
+                <li>Nombre del Producto</li>
+                <li>Valor sin IVA</li>
+                <li>Valor con IVA</li>
+                <li>Inventario</li>
+                <li>Mínimo Inventario (opcional, por defecto 2)</li>
+              </ol>
+            </li>
+            <li>Ejemplo: <code>Pizza Margarita,8000,9500,50,5</code></li>
+            <li>Los productos se crearán con estado 'activo'</li>
+            <li>Se generará un ID automático (PR-X) para cada producto</li>
+          </ul>
+        </div>
+        <form id="formCargaMasiva" method="POST" action="carga_masiva.php" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="archivoExcel">
+              <i class="fas fa-upload"></i> Seleccionar archivo CSV
+            </label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="archivoExcel" name="archivo" accept=".csv" required>
+              <label class="custom-file-label" for="archivoExcel">Seleccionar archivo CSV...</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+        <button type="submit" form="formCargaMasiva" class="btn btn-info">
+          <i class="fas fa-upload"></i> Cargar Productos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
+
 <script>
+// Actualizar nombre del archivo seleccionado
+$(document).ready(function() {
+  $('.custom-file-input').on('change', function() {
+    var fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').html(fileName);
+  });
+});
+
 function abrirModal(producto = null) {
   if (producto) {
     document.getElementById('productoId').value = producto.id;
@@ -231,6 +360,7 @@ function abrirModal(producto = null) {
     document.getElementById('valorSinIva').value = producto.valor_sin_iva;
     document.getElementById('valorConIva').value = producto.valor_con_iva;
     document.getElementById('inventario').value = producto.inventario || 0;
+    document.getElementById('minimoInventario').value = producto.minimo_inventario || 2;
   } else {
     document.getElementById('productoId').value = '';
     document.getElementById('formProducto').reset();

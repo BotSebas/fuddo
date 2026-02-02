@@ -449,3 +449,34 @@ a:hover {
 .pagination .page-link:focus {
   box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
 }
+
+.tema-option {
+  cursor: pointer;
+}
+
+.tema-option input[type="radio"] {
+  transform: scale(1.2);
+}
+
+.tema-preview {
+  width: 100%;
+}
+
+.tema-nombre {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.tema-colores {
+  display: flex;
+  height: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tema-colores span {
+  flex: 1;
+}

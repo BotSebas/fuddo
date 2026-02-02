@@ -12,21 +12,21 @@ if ($is_cloudways) {
     if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
     if (!defined('DB_USER')) define('DB_USER', 'fwedexhvyx');
     if (!defined('DB_PASS')) define('DB_PASS', 'r6yS5sVU4e');
-    if (!defined('DB_NAME')) define('DB_NAME', 'fwedexhvyx');
+    if (!defined('DB_NAME')) define('DB_NAME', 'mgacgdnjkg');
 } else {
     // Entorno Local (XAMPP)
-    // Probar si existe BD fwedexhvyx (simulación Cloudways local)
-    $test_local_cloud = @new mysqli('localhost', 'root', '', 'fwedexhvyx');
+    // Probar si existe BD mgacgdnjkg (simulación Cloudways local)
+    $test_local_cloud = @new mysqli('localhost', 'root', '', 'mgacgdnjkg');
     if (!$test_local_cloud->connect_error) {
-        // BD fwedexhvyx existe - usar modo Cloudways con credenciales root
+        // BD mgacgdnjkg existe - usar modo Cloudways con credenciales root
         if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
         if (!defined('DB_USER')) define('DB_USER', 'root');
         if (!defined('DB_PASS')) define('DB_PASS', '');
-        if (!defined('DB_NAME')) define('DB_NAME', 'fwedexhvyx');
+        if (!defined('DB_NAME')) define('DB_NAME', 'mgacgdnjkg');
         $is_cloudways = true; // Activar modo prefijos
         $test_local_cloud->close();
     } else {
-        // BD fwedexhvyx no existe - usar modo legacy multi-database
+        // BD mgacgdnjkg no existe - usar modo legacy multi-database
         if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
         if (!defined('DB_USER')) define('DB_USER', 'root');
         if (!defined('DB_PASS')) define('DB_PASS', '');

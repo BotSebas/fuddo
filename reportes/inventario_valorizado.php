@@ -8,12 +8,13 @@ $sql_inventario = "SELECT
                    nombre_producto,
                    valor_con_iva as precio_venta,
                    inventario as stock_actual,
+                   minimo_inventario,
                    (valor_con_iva * inventario) as valor_total,
                    estado,
                    CASE 
                      WHEN inventario = 0 THEN '" . $inventario_sin_stock_label . "'
-                     WHEN inventario <= 5 THEN '" . $inventario_stock_critico_label . "'
-                     WHEN inventario <= 10 THEN '" . $inventario_stock_bajo . "'
+                     WHEN inventario <= (minimo_inventario / 2) THEN '" . $inventario_stock_critico_label . "'
+                     WHEN inventario <= minimo_inventario THEN '" . $inventario_stock_bajo . "'
                      ELSE '" . $inventario_stock_normal . "'
                    END as estado_stock
                    FROM " . TBL_PRODUCTOS . "

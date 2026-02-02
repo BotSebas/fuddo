@@ -60,38 +60,52 @@ include '../includes/conexion.php';
       </button>
     </div>
 
-    <div class="row">
-      <?php
-      // Obtener comandas del día
-      $sql = "SELECT id, descripcion, total, fecha_creacion FROM ".$TABLE_PREFIX."comandas WHERE DATE(fecha_creacion) = CURDATE() ORDER BY fecha_creacion DESC";
-      $resultado = $conexion->query($sql);
-      $comandas = [];
-      if ($resultado && $resultado->num_rows > 0) {
-        while($row = $resultado->fetch_assoc()) {
-          $comandas[] = $row;
-        }
+    <?php
+    // Obtener comandas del día desde comandas_total
+    $sql = "SELECT id, id_comanda, total, fecha_comanda, hora_cierre_comanda FROM " . TBL_COMANDAS_TOTAL . " WHERE DATE(fecha_comanda) = CURDATE() ORDER BY id DESC";
+    $resultado = $conexion->query($sql);
+    $comandas = [];
+    if ($resultado && $resultado->num_rows > 0) {
+      while($row = $resultado->fetch_assoc()) {
+        $comandas[] = $row;
       }
-      ?>
-      <?php foreach ($comandas as $comanda) : ?>
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-header d-flex align-items-center">
-              <div style="cursor: pointer; flex-grow: 1;" onclick="verResumenComanda(<?= $comanda['id'] ?>)" data-toggle="modal" data-target="#modalResumenComanda">
-                <strong>🧾 <?= htmlspecialchars($comanda['descripcion']) ?></strong>
-              </div>
-            </div>
-            <div class="card-body" style="cursor: pointer;" onclick="verResumenComanda(<?= $comanda['id'] ?>)" data-toggle="modal" data-target="#modalResumenComanda">
-              <div class="text-center font-weight-bold">
-                Total Venta<br>
-                <span style="font-size: 1.5em; color: #27ae60;">$<?= number_format($comanda['total'], 2) ?></span>
-              </div>
-              <div class="text-center mt-2">
-                <small><?= date('H:i', strtotime($comanda['fecha_creacion'])) ?></small>
-              </div>
-            </div>
+    }
+    ?>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Historial de Comandas del Día</h3>
+      </div>
+      <div class="card-body p-0">
+        <?php if (count($comandas) > 0): ?>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Total Venta</th>
+                <th>Fecha de Venta</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($comandas as $comanda) : ?>
+                <tr>
+                  <td><strong style="color: #27ae60; font-size: 1.1em;">$<?= number_format($comanda['total'], 2) ?></strong></td>
+                  <td><?= date('d/m/Y H:i', strtotime($comanda['fecha_comanda'] . ' ' . $comanda['hora_cierre_comanda'])) ?></td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-info" onclick="verResumenComanda('<?= htmlspecialchars($comanda['id_comanda']) ?>')" data-toggle="modal" data-target="#modalResumenComanda">
+                      <i class="fas fa-eye"></i> Ver Detalle
+                    </button>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        <?php else: ?>
+          <div class="p-3 text-center text-muted">
+            <p>No hay comandas registradas hoy</p>
           </div>
-        </div>
-      <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
     </div>
   </section>
 </div>
@@ -100,14 +114,31 @@ include '../includes/conexion.php';
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-<script>
-function verResumenComanda(id) {
-  // Aquí puedes hacer un fetch/ajax para cargar el resumen de la comanda
-  // y mostrarlo en el modal
-  // Por ahora solo abre el modal
-  // Implementar lógica en resumen.php
-}
-</script>
+<!-- Select2 CSS y JS -->
+<link rel="stylesheet" href="../plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<style>
+  /* Colores verde FUDDO para Select2 */
+  .select2-container--bootstrap4 .select2-results__option--highlighted {
+    background-color: #28a745 !important;
+    color: white !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single:focus,
+  .select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #28a745 !important;
+  }
+  .select2-container--bootstrap4 .select2-results__option--selected {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single {
+    height: calc(2.25rem + 2px) !important;
+  }
+  .select2-container--bootstrap4 .select2-selection__rendered {
+    line-height: calc(2.25rem) !important;
+  }
+</style>
+<script src="../plugins/select2/js/select2.full.min.js"></script>
 
 <?php include 'modal_nueva_comanda.php'; ?>
 <?php include 'resumen.php'; ?> 

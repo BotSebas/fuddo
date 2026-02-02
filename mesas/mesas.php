@@ -218,6 +218,32 @@ include '../includes/conexion.php';
   }
 </script>
 
+<!-- Select2 CSS y JS -->
+<link rel="stylesheet" href="../plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<style>
+  /* Colores verde FUDDO para Select2 */
+  .select2-container--bootstrap4 .select2-results__option--highlighted {
+    background-color: #28a745 !important;
+    color: white !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single:focus,
+  .select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #28a745 !important;
+  }
+  .select2-container--bootstrap4 .select2-results__option--selected {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single {
+    height: calc(2.25rem + 2px) !important;
+  }
+  .select2-container--bootstrap4 .select2-selection__rendered {
+    line-height: calc(2.25rem) !important;
+  }
+</style>
+<script src="../plugins/select2/js/select2.full.min.js"></script>
+
 <?php include 'nueva.php'; ?>
 <?php include 'servicios.php'; ?>
 <?php include '../includes/footer.php'; ?>

@@ -9,7 +9,7 @@ echo "</pre>";
 echo "<hr>";
 echo "<h3>Datos del Usuario en BD:</h3>";
 
-$conn = new mysqli('localhost', 'root', '', 'fuddo_master');
+$conn = new mysqli('localhost', 'root', '', 'mgacgdnjkg');
 if ($conn->connect_error) {
     die('Error de conexión: ' . $conn->connect_error);
 }

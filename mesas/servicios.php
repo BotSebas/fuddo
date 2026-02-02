@@ -61,7 +61,7 @@
           
           <div class="form-group">
             <label for="producto"><?php echo $mesas_producto; ?></label>
-            <select class="form-control" id="producto" name="producto_id" required>
+            <select class="form-control select2" id="producto" name="producto_id" required style="width: 100%;">
               <option value=""><?php echo $mesas_seleccionar_producto; ?></option>
               <?php
               include '../includes/conexion.php';
@@ -71,7 +71,7 @@
               
               if ($resultProductos && $resultProductos->num_rows > 0) {
                 while($prodRow = $resultProductos->fetch_assoc()) {
-                  echo "<option value='" . $prodRow['id'] . "' data-precio='" . $prodRow['valor_con_iva'] . "'>" . htmlspecialchars($prodRow['nombre_producto']) . " - $" . number_format($prodRow['valor_con_iva'], 2) . "</option>";
+                  echo "<option value='" . $prodRow['id'] . "' data-precio='" . $prodRow['valor_con_iva'] . "'>" . htmlspecialchars($prodRow['nombre_producto']) . "</option>";
                 }
               }
               ?>
@@ -176,11 +176,27 @@
 <input type="hidden" id="mesaIdHidden">
 
 <script>
-// Cuando se selecciona un producto, actualizar precio
+// Función para formatear números con separador de miles
+function formatCurrency(amount) {
+  return amount.toLocaleString('es-CO', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+// Cuando se selecciona un producto con Select2, actualizar precio
+$('#producto').on('select2:select', function(e) {
+  const option = e.params.data.element;
+  const precio = option.getAttribute('data-precio');
+  document.getElementById('precioUnitario').value = precio ? '$' + formatCurrency(parseFloat(precio)) : '';
+  calcularTotal();
+});
+
+// También mantener compatibilidad con evento change normal
 document.getElementById('producto').addEventListener('change', function() {
   const option = this.options[this.selectedIndex];
   const precio = option.getAttribute('data-precio');
-  document.getElementById('precioUnitario').value = precio ? '$' + parseFloat(precio).toFixed(2) : '';
+  document.getElementById('precioUnitario').value = precio ? '$' + formatCurrency(parseFloat(precio)) : '';
   calcularTotal();
 });
 
@@ -193,7 +209,7 @@ function calcularTotal() {
   const option = document.getElementById('producto').options[document.getElementById('producto').selectedIndex];
   const precio = parseFloat(option.getAttribute('data-precio')) || 0;
   const total = cantidad * precio;
-  document.getElementById('precioTotal').value = '$' + total.toFixed(2);
+  document.getElementById('precioTotal').value = '$' + formatCurrency(total);
 }
 
 function setMesaId(mesaId) {
@@ -298,7 +314,7 @@ function cargarProductosMesa(mesaId, nombreMesa) {
           const fila = document.createElement('tr');
           fila.innerHTML = `
             <td>${producto.nombre}</td>
-            <td>$${parseFloat(producto.valor).toFixed(2)}</td>
+            <td>$${formatCurrency(parseFloat(producto.valor))}</td>
             <td>
               <button type="button" class="btn btn-sm btn-danger" onclick="eliminarProductoMesa(${producto.id}, ${mesaId})">
                 <i class="fas fa-trash"></i>
@@ -314,7 +330,7 @@ function cargarProductosMesa(mesaId, nombreMesa) {
         tablaProductos.appendChild(fila);
       }
 
-      document.getElementById('totalProductos').textContent = '$' + total.toFixed(2);
+      document.getElementById('totalProductos').textContent = '$' + formatCurrency(total);
     })
     .catch(error => console.error('Error:', error));
 }
@@ -396,14 +412,14 @@ function abrirModalCerrarCuenta() {
           fila.innerHTML = `
             <td>${producto.nombre}</td>
             <td>${producto.cantidad}</td>
-            <td>$${parseFloat(producto.valor_unitario).toFixed(2)}</td>
-            <td>$${parseFloat(producto.valor_total).toFixed(2)}</td>
+            <td>$${formatCurrency(parseFloat(producto.valor_unitario))}</td>
+            <td>$${formatCurrency(parseFloat(producto.valor_total))}</td>
           `;
           tablaProductosCierre.appendChild(fila);
           total += parseFloat(producto.valor_total);
         });
         
-        document.getElementById('totalCuentaCierre').textContent = '$' + total.toFixed(2);
+        document.getElementById('totalCuentaCierre').textContent = '$' + formatCurrency(total);
         document.getElementById('totalCuentaCierre').setAttribute('data-total', total);
         
         // Limpiar campos de pago
@@ -437,10 +453,10 @@ function calcularCambio() {
   if (montoPago > 0) {
     const cambio = montoPago - total;
     if (cambio >= 0) {
-      document.getElementById('montoCambio').value = '$' + cambio.toFixed(2);
+      document.getElementById('montoCambio').value = '$' + formatCurrency(cambio);
       document.getElementById('montoCambio').style.color = '#27ae60';
     } else {
-      document.getElementById('montoCambio').value = 'Falta: $' + Math.abs(cambio).toFixed(2);
+      document.getElementById('montoCambio').value = 'Falta: $' + formatCurrency(Math.abs(cambio));
       document.getElementById('montoCambio').style.color = '#dc3545';
     }
   } else {
@@ -592,4 +608,29 @@ function cancelarServicio() {
     }
   });
 }
+
+// Inicializar Select2 cuando se abre el modal de productos
+$('#modalAgregarProducto').on('shown.bs.modal', function () {
+  $('#producto').select2({
+    theme: 'bootstrap4',
+    dropdownParent: $('#modalAgregarProducto'),
+    placeholder: 'Buscar producto...',
+    allowClear: true,
+    language: {
+      noResults: function() {
+        return "No se encontraron productos";
+      },
+      searching: function() {
+        return "Buscando...";
+      }
+    }
+  });
+});
+
+// Destruir Select2 al cerrar el modal para evitar duplicados
+$('#modalAgregarProducto').on('hidden.bs.modal', function () {
+  if ($('#producto').hasClass('select2-hidden-accessible')) {
+    $('#producto').select2('destroy');
+  }
+});
 </script>
