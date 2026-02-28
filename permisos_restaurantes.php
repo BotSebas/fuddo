@@ -73,7 +73,28 @@ if ($resultPermisos && $resultPermisos->num_rows > 0) {
                                             <th style="width: 250px;">Restaurante</th>
                                             <?php foreach ($aplicaciones as $app): ?>
                                                 <th class="text-center" style="min-width: 100px;">
-                                                    <i class="<?php echo $app['icono']; ?>"></i><br>
+                                                    <?php 
+                                                    $svg_map = [
+                                                        'mesas' => 'mesas.svg',
+                                                        'cocina' => 'cocina.svg',
+                                                        'productos' => 'productos.svg',
+                                                        'reportes' => 'reportes.svg',
+                                                        'recetas' => 'recetas.svg'
+                                                    ];
+                                                    
+                                                    if (isset($svg_map[$app['clave']])): 
+                                                        $svg_file = __DIR__ . '/assets/icons/' . $svg_map[$app['clave']];
+                                                        if (file_exists($svg_file)):
+                                                            $svg_content = file_get_contents($svg_file);
+                                                            echo '<span style="display: inline-block; width: 24px; height: 24px; margin-bottom: 5px;">' . $svg_content . '</span>';
+                                                        else:
+                                                            echo '<i class="' . $app['icono'] . '"></i>';
+                                                        endif;
+                                                    else:
+                                                        echo '<i class="' . $app['icono'] . '"></i>';
+                                                    endif;
+                                                    ?>
+                                                    <br>
                                                     <small><?php echo $app['nombre']; ?></small>
                                                 </th>
                                             <?php endforeach; ?>
@@ -171,14 +192,20 @@ $(document).ready(function() {
                 accion: accion
             },
             dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
             success: function(response) {
                 if (response.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Permiso actualizado',
                         text: response.message,
-                        timer: 1500,
+                        timer: 2000,
                         showConfirmButton: false
+                    }).then(() => {
+                        // Recargar la página para que se actualicen los permisos en el menú
+                        location.reload();
                     });
                 } else {
                     Swal.fire({

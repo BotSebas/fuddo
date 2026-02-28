@@ -2,6 +2,13 @@
 include 'includes/auth.php';
 include 'includes/url.php';
 include_once 'lang/idiomas.php';
+
+// Verificar permiso del módulo antes de incluir menú
+if (!tienePermisoModulo('reportes')) {
+    header("Location: home.php");
+    exit();
+}
+
 include 'includes/menu.php';
 
 // Verificar si es super-admin sin restaurante asignado

@@ -13,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $bloques = $_POST['bloques'] ?? [];
         $colorTema = $_POST['color_tema'] ?? 'verde';
         $modoOscuro = isset($_POST['modo_oscuro']) ? intval($_POST['modo_oscuro']) : 0;
+        $facebook = trim($_POST['facebook'] ?? '');
+        $instagram = trim($_POST['instagram'] ?? '');
+        $tiktok = trim($_POST['tiktok'] ?? '');
+        $youtube = trim($_POST['youtube'] ?? '');
+        $whatsapp = trim($_POST['whatsapp'] ?? '');
         
         // Validar tema
         $temasPermitidos = ['verde', 'azul', 'rojo', 'amarillo', 'naranja', 'violeta', 'purpura', 'gris', 'negro', 'turquesa', 'cafe', 'vino', 'menta', 'petroleo', 'lavanda', 'arena'];
@@ -83,12 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Escapar valores
         $colorTema = $conexion->real_escape_string($colorTema);
         $logoMenuEscapado = $logoMenu ? "'" . $conexion->real_escape_string($logoMenu) . "'" : "NULL";
+        $facebookEscapado = !empty($facebook) ? "'" . $conexion->real_escape_string($facebook) . "'" : "NULL";
+        $instagramEscapado = !empty($instagram) ? "'" . $conexion->real_escape_string($instagram) . "'" : "NULL";
+        $tiktokEscapado = !empty($tiktok) ? "'" . $conexion->real_escape_string($tiktok) . "'" : "NULL";
+        $youtubeEscapado = !empty($youtube) ? "'" . $conexion->real_escape_string($youtube) . "'" : "NULL";
+        $whatsappEscapado = !empty($whatsapp) ? "'" . $conexion->real_escape_string($whatsapp) . "'" : "NULL";
         
         // Eliminar bloques existentes
         $sqlDelete = "DELETE FROM " . TBL_MENU_DIGITAL;
         $conexion->query($sqlDelete);
         
         // Insertar nuevos bloques
+        $primerBloque = true;
         foreach ($bloques as $bloque) {
             $titulo = $conexion->real_escape_string($bloque['titulo']);
             $productosIds = isset($bloque['productos']) ? implode(',', $bloque['productos']) : '';
@@ -96,9 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             if (empty($titulo)) continue;
             
-            $sqlInsert = "INSERT INTO " . TBL_MENU_DIGITAL . " 
-                         (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado) 
-                         VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo')";
+            // Solo agregar redes sociales en el primer bloque
+            if ($primerBloque) {
+                $sqlInsert = "INSERT INTO " . TBL_MENU_DIGITAL . " 
+                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado, facebook, instagram, tiktok, youtube, whatsapp) 
+                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo', $facebookEscapado, $instagramEscapado, $tiktokEscapado, $youtubeEscapado, $whatsappEscapado)";
+                $primerBloque = false;
+            } else {
+                $sqlInsert = "INSERT INTO " . TBL_MENU_DIGITAL . " 
+                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado) 
+                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo')";
+            }
             
             $conexion->query($sqlInsert);
         }

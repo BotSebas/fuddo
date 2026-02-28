@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_producto` varchar(50) NOT NULL,
   `nombre_producto` varchar(150) NOT NULL,
+  `costo_producto` decimal(10,2) NOT NULL DEFAULT 0.00,
   `valor_sin_iva` decimal(10,2) NOT NULL,
   `valor_con_iva` decimal(10,2) NOT NULL,
   `inventario` int(11) NOT NULL DEFAULT 0,
@@ -77,7 +78,18 @@ CREATE TABLE IF NOT EXISTS `comandas_total` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Datos iniciales de ejemplo
-INSERT INTO `mesas` (`id`, `id_mesa`, `nombre`, `ubicacion`, `estado`) VALUES
-(1, 'ME-1', 'mesa 1', 'interior', 'libre'),
-(2, 'ME-2', 'mesa 2', 'interior', 'libre');
+-- Tabla de usuarios del restaurante
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `rol` enum('admin','mesero','cocinero','vendedor','mesero_vendedor') NOT NULL DEFAULT 'mesero',
+  `estado` enum('activo','inactivo') DEFAULT 'activo',
+  `fecha_creacion` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `fecha_actualizacion` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_usuario` (`usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+

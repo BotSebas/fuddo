@@ -11,9 +11,14 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'super-admin') {
 }
 
 try {
-    $id_restaurante = intval($_POST['restaurante']);
-    $id_aplicacion = intval($_POST['aplicacion']);
-    $accion = $_POST['accion']; // 'asignar' o 'revocar'
+    $id_restaurante = intval($_POST['restaurante'] ?? 0);
+    $id_aplicacion = intval($_POST['aplicacion'] ?? 0);
+    $accion = $_POST['accion'] ?? ''; // 'asignar' o 'revocar'
+    
+    // Validación básica
+    if ($id_restaurante <= 0 || $id_aplicacion <= 0 || empty($accion)) {
+        throw new Exception('Parámetros inválidos: restaurante=' . $id_restaurante . ', aplicacion=' . $id_aplicacion . ', accion=' . $accion);
+    }
     
     if ($accion === 'asignar') {
         // Verificar si ya existe
