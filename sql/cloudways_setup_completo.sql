@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS productos (
     id_restaurante INT NOT NULL,
     id_producto VARCHAR(50) NOT NULL,
     nombre_producto VARCHAR(150) NOT NULL,
+    costo_producto DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     valor_sin_iva DECIMAL(10,2) NOT NULL,
     valor_con_iva DECIMAL(10,2) NOT NULL,
     inventario INT NOT NULL DEFAULT 0,

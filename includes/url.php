@@ -25,7 +25,9 @@ if ($is_production) {
         strpos($scriptPath, '/permisos') !== false ||
         strpos($scriptPath, '/cocina') !== false ||
         strpos($scriptPath, '/menu-digital') !== false ||
-        strpos($scriptPath, '/reportes') !== false) {
+        strpos($scriptPath, '/reportes') !== false ||
+        strpos($scriptPath, '/materias_primas') !== false ||
+        strpos($scriptPath, '/recetas') !== false) {
         $BASE_URL .= dirname($scriptPath);
     } else {
         $BASE_URL .= $scriptPath;

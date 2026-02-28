@@ -355,6 +355,61 @@ $urlMenuPublico = $urlBase . dirname($_SERVER['PHP_SELF']) . "/ver.php?r=" . $sl
           </div>
         </div>
 
+        <!-- Sección 4: Redes Sociales -->
+        <div class="card">
+          <div class="card-header" id="headingRedesSociales">
+            <h2 class="mb-0">
+              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRedesSociales" aria-expanded="false" aria-controls="collapseRedesSociales">
+                <i class="fas fa-share-alt"></i> Redes Sociales
+              </button>
+            </h2>
+          </div>
+          <div id="collapseRedesSociales" class="collapse" aria-labelledby="headingRedesSociales" data-parent="#accordionMenuDigital">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="facebook">
+                  <i class="fab fa-facebook text-primary"></i> Facebook
+                </label>
+                <input type="url" class="form-control" id="facebook" name="facebook" placeholder="https://facebook.com/..." 
+                       value="<?php echo htmlspecialchars($bloques[0]['facebook'] ?? ''); ?>">
+              </div>
+              
+              <div class="form-group">
+                <label for="instagram">
+                  <i class="fab fa-instagram" style="color: #E4405F;"></i> Instagram
+                </label>
+                <input type="url" class="form-control" id="instagram" name="instagram" placeholder="https://instagram.com/..." 
+                       value="<?php echo htmlspecialchars($bloques[0]['instagram'] ?? ''); ?>">
+              </div>
+              
+              <div class="form-group">
+                <label for="tiktok">
+                  <i class="fab fa-tiktok"></i> TikTok
+                </label>
+                <input type="url" class="form-control" id="tiktok" name="tiktok" placeholder="https://tiktok.com/@..." 
+                       value="<?php echo htmlspecialchars($bloques[0]['tiktok'] ?? ''); ?>">
+              </div>
+              
+              <div class="form-group">
+                <label for="youtube">
+                  <i class="fab fa-youtube text-danger"></i> YouTube
+                </label>
+                <input type="url" class="form-control" id="youtube" name="youtube" placeholder="https://youtube.com/..." 
+                       value="<?php echo htmlspecialchars($bloques[0]['youtube'] ?? ''); ?>">
+              </div>
+              
+              <div class="form-group">
+                <label for="whatsapp">
+                  <i class="fab fa-whatsapp text-success"></i> WhatsApp
+                </label>
+                <input type="tel" class="form-control" id="whatsapp" name="whatsapp" placeholder="+57 3001234567" 
+                       value="<?php echo htmlspecialchars($bloques[0]['whatsapp'] ?? ''); ?>">
+                <small class="form-text text-muted">Formato: +57 3001234567 (solo números y +)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
         </form>
         
       </div>

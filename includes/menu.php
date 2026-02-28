@@ -70,12 +70,35 @@ if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'super-admin' && isset($_SES
 // Función helper para verificar permisos de aplicaciones
 function tienePermiso($clave) {
     global $permisos_aplicaciones;
+    
     // Super-admin tiene acceso a todo
     if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'super-admin') {
         return true;
     }
-    // Verificar si el restaurante tiene el permiso
-    return in_array($clave, $permisos_aplicaciones);
+    
+    // Para usuarios no super-admin, verificar si el restaurante tiene el permiso
+    if (!in_array($clave, $permisos_aplicaciones)) {
+        return false;
+    }
+    
+    // Además de tener permiso en aplicaciones, verificar que el rol tenga acceso
+    // Mapeo de roles a módulos permitidos
+    $rol = $_SESSION['rol'] ?? null;
+    $modulos_por_rol = [
+        'admin-restaurante' => ['mesas', 'comandas', 'cocina', 'productos', 'reportes', 'menu_digital', 'usuarios', 'pedidos', 'materias_primas', 'recetas'],
+        'admin' => ['mesas', 'comandas', 'cocina', 'productos', 'reportes', 'menu_digital', 'usuarios', 'pedidos', 'materias_primas', 'recetas'],
+        'mesero' => ['mesas', 'comandas'],
+        'cocinero' => ['cocina'],
+        'vendedor' => ['mesas', 'comandas'],
+        'mesero_vendedor' => ['mesas', 'comandas'],
+    ];
+    
+    // Verificar si el rol tiene acceso a este módulo
+    if (isset($modulos_por_rol[$rol]) && in_array($clave, $modulos_por_rol[$rol])) {
+        return true;
+    }
+    
+    return false;
 }
 
 // Función helper para verificar permisos de reportes
@@ -170,6 +193,27 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
     /* Asegurar que el menú no se corte */
     .sidebar-mini.sidebar-collapse .main-sidebar .sidebar {
       overflow: visible;
+    }
+    
+    /* Estilos personalizados FUDDO para módulos costeo */
+    .badge-fuddo {
+      background-color: #27ae60 !important;
+      color: white;
+    }
+    
+    .btn-fuddo {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+    }
+    
+    .btn-fuddo:hover {
+      background-color: #229954;
+      color: white;
+    }
+    
+    .text-fuddo {
+      color: #27ae60 !important;
     }
   </style>
 </head>
@@ -293,7 +337,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>mesas/mesas.php" class="nav-link">
       <span class="nav-icon-svg">
-        <?php include __DIR__ . '/../assets/icons/silla.svg'; ?>
+        <?php include __DIR__ . '/../assets/icons/mesas.svg'; ?>
       </span>
       <p><?php echo $menu_mesas; ?></p>
     </a>
@@ -317,7 +361,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>cocina/cocina.php" class="nav-link">
       <span class="nav-icon-svg">
-        <?php include __DIR__ . '/../assets/icons/cocinando.svg'; ?>
+        <?php include __DIR__ . '/../assets/icons/cocina.svg'; ?>
       </span>
       <p><?php echo $menu_cocina; ?></p>
     </a>
@@ -329,10 +373,46 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>productos/productos.php" class="nav-link">
       <span class="nav-icon-svg">
-        <?php include __DIR__ . '/../assets/icons/inventario.svg'; ?>
+        <?php include __DIR__ . '/../assets/icons/productos.svg'; ?>
       </span>
       <p><?php echo $menu_productos; ?></p>
     </a>
+  </li>
+  <?php endif; ?>
+
+  <!-- Costeo Automático (Materias Primas y Recetas) -->
+  <?php if (tienePermiso('materias_primas') || tienePermiso('recetas')): ?>
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-calculator"></i>
+      <p>
+        Costeo
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <!-- Materias Primas -->
+      <?php if (tienePermiso('materias_primas')): ?>
+      <li class="nav-item">
+        <a href="<?php echo $BASE_URL; ?>materias_primas/materias_primas.php" class="nav-link">
+          <i class="fas fa-leaf nav-icon"></i>
+          <p>Materias Primas</p>
+        </a>
+      </li>
+      <?php endif; ?>
+
+      <!-- Recetas -->
+      <?php if (tienePermiso('recetas')): ?>
+      <li class="nav-item">
+        <a href="<?php echo $BASE_URL; ?>recetas/recetas.php" class="nav-link">
+          <span class="nav-icon-svg">
+            <?php include __DIR__ . '/../assets/icons/recetas.svg'; ?>
+          </span>
+          <p>Recetas</p>
+        </a>
+      </li>
+      <?php endif; ?>
+    </ul>
   </li>
   <?php endif; ?>
 
@@ -341,7 +421,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>reportes.php" class="nav-link">
       <span class="nav-icon-svg">
-        <?php include __DIR__ . '/../assets/icons/documento.svg'; ?>
+        <?php include __DIR__ . '/../assets/icons/reportes.svg'; ?>
       </span>
       <p><?php echo $menu_reportes; ?></p>
     </a>
@@ -354,6 +434,16 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
     <a href="<?php echo $BASE_URL; ?>menu-digital/index.php" class="nav-link">
       <i class="nav-icon fas fa-qrcode"></i>
       <p>Menú Digital</p>
+    </a>
+  </li>
+  <?php endif; ?>
+
+  <!-- Usuarios de la Organización -->
+  <?php if (tienePermiso('usuarios')): ?>
+  <li class="nav-item">
+    <a href="<?php echo $BASE_URL; ?>usuarios/usuarios_organizacion.php" class="nav-link">
+      <i class="nav-icon fas fa-user-tie"></i>
+      <p>Usuarios</p>
     </a>
   </li>
   <?php endif; ?>
@@ -382,11 +472,11 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
     </a>
   </li>
 
-  <!-- Restaurantes (solo para super-admin) -->
+  <!-- Organizaciones (solo para super-admin) -->
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>restaurantes/restaurantes.php" class="nav-link">
-      <i class="nav-icon fas fa-store"></i>
-      <p>Restaurantes</p>
+      <i class="nav-icon fas fa-building"></i>
+      <p>Organizaciones</p>
     </a>
   </li>
 
@@ -582,6 +672,3 @@ $(document).ready(function() {
 });
 </script>
 <?php endif; ?>
-
-</body>
-</html>

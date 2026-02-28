@@ -99,6 +99,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $result->free();
                 }
             } while ($conexion_master->more_results() && $conexion_master->next_result());
+            
+            // ===== CREAR TABLAS DE COSTEO AUTOMÁTICO =====
+            $sql_costeo = "
+            -- Tabla de Materias Primas
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}materias_primas` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_materia_prima` varchar(50) NOT NULL,
+                `nombre` varchar(200) NOT NULL,
+                `unidad_medida` enum('kg','g','lb','l','ml','und') NOT NULL,
+                `cantidad_base_comprada` decimal(10,3) NOT NULL,
+                `costo_total_base` decimal(10,2) NOT NULL,
+                `costo_por_unidad_minima` decimal(15,6) NOT NULL,
+                `unidad_minima` varchar(10) NOT NULL,
+                `cantidad_en_unidad_minima` decimal(15,3) NOT NULL,
+                `estado` enum('activo','inactivo') DEFAULT 'activo',
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `unique_id_materia_prima` (`id_materia_prima`),
+                KEY `idx_unidad_medida` (`unidad_medida`),
+                KEY `idx_estado` (`estado`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            -- Tabla de Recetas
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}recetas` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_receta` varchar(50) NOT NULL,
+                `nombre_platillo` varchar(200) NOT NULL,
+                `descripcion` text,
+                `costo_total_receta` decimal(10,2) DEFAULT 0.00,
+                `id_producto_asociado` int(11),
+                `estado` enum('activo','inactivo') DEFAULT 'activo',
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `unique_id_receta` (`id_receta`),
+                KEY `idx_estado` (`estado`),
+                KEY `idx_producto_asociado` (`id_producto_asociado`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            -- Tabla de Ingredientes de Recetas
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}receta_ingredientes` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_receta` varchar(50) NOT NULL,
+                `id_materia_prima` varchar(50) NOT NULL,
+                `cantidad_usada` decimal(10,3) NOT NULL,
+                `unidad_cantidad` varchar(10) NOT NULL,
+                `costo_ingrediente` decimal(10,2) NOT NULL,
+                `orden` int(11) DEFAULT 0,
+                `nota` text,
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                KEY `idx_receta` (`id_receta`),
+                KEY `idx_materia_prima` (`id_materia_prima`),
+                FOREIGN KEY (`id_receta`) REFERENCES `{$table_prefix}recetas` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (`id_materia_prima`) REFERENCES `{$table_prefix}materias_primas` (`id_materia_prima`) ON DELETE RESTRICT ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            CREATE INDEX idx_receta_materia ON `{$table_prefix}receta_ingredientes` (`id_receta`, `id_materia_prima`);
+            ";
+            
+            $conexion_master->multi_query($sql_costeo);
+            
+            // Esperar a que terminen todas las consultas de costeo
+            do {
+                if ($result = $conexion_master->store_result()) {
+                    $result->free();
+                }
+            } while ($conexion_master->more_results() && $conexion_master->next_result());
 
         } else {
             // MODO LOCAL: Crear BD separada (comportamiento original)
@@ -119,6 +188,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conexion_nueva->multi_query($sql_schema);
             
             // Esperar a que terminen todas las consultas
+            do {
+                if ($result = $conexion_nueva->store_result()) {
+                    $result->free();
+                }
+            } while ($conexion_nueva->more_results() && $conexion_nueva->next_result());
+            
+            // ===== CREAR TABLAS DE COSTEO AUTOMÁTICO =====
+            $sql_costeo = "
+            -- Tabla de Materias Primas
+            CREATE TABLE IF NOT EXISTS `materias_primas` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_materia_prima` varchar(50) NOT NULL,
+                `nombre` varchar(200) NOT NULL,
+                `unidad_medida` enum('kg','g','lb','l','ml','und') NOT NULL,
+                `cantidad_base_comprada` decimal(10,3) NOT NULL,
+                `costo_total_base` decimal(10,2) NOT NULL,
+                `costo_por_unidad_minima` decimal(15,6) NOT NULL,
+                `unidad_minima` varchar(10) NOT NULL,
+                `cantidad_en_unidad_minima` decimal(15,3) NOT NULL,
+                `estado` enum('activo','inactivo') DEFAULT 'activo',
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `unique_id_materia_prima` (`id_materia_prima`),
+                KEY `idx_unidad_medida` (`unidad_medida`),
+                KEY `idx_estado` (`estado`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            -- Tabla de Recetas
+            CREATE TABLE IF NOT EXISTS `recetas` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_receta` varchar(50) NOT NULL,
+                `nombre_platillo` varchar(200) NOT NULL,
+                `descripcion` text,
+                `costo_total_receta` decimal(10,2) DEFAULT 0.00,
+                `id_producto_asociado` int(11),
+                `estado` enum('activo','inactivo') DEFAULT 'activo',
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `unique_id_receta` (`id_receta`),
+                KEY `idx_estado` (`estado`),
+                KEY `idx_producto_asociado` (`id_producto_asociado`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            -- Tabla de Ingredientes de Recetas
+            CREATE TABLE IF NOT EXISTS `receta_ingredientes` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_receta` varchar(50) NOT NULL,
+                `id_materia_prima` varchar(50) NOT NULL,
+                `cantidad_usada` decimal(10,3) NOT NULL,
+                `unidad_cantidad` varchar(10) NOT NULL,
+                `costo_ingrediente` decimal(10,2) NOT NULL,
+                `orden` int(11) DEFAULT 0,
+                `nota` text,
+                `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                KEY `idx_receta` (`id_receta`),
+                KEY `idx_materia_prima` (`id_materia_prima`),
+                FOREIGN KEY (`id_receta`) REFERENCES `recetas` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (`id_materia_prima`) REFERENCES `materias_primas` (`id_materia_prima`) ON DELETE RESTRICT ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            
+            CREATE INDEX idx_receta_materia ON `receta_ingredientes` (`id_receta`, `id_materia_prima`);
+            ";
+            
+            $conexion_nueva->multi_query($sql_costeo);
+            
+            // Esperar a que terminen todas las consultas de costeo
             do {
                 if ($result = $conexion_nueva->store_result()) {
                     $result->free();

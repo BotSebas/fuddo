@@ -111,20 +111,22 @@ $contenido = preg_replace('/^\xEF\xBB\xBF/', '', $contenido);
             continue;
         }
         
-        // Leer valores de las columnas (índice 0-4)
+        // Leer valores de las columnas (índice 0-5)
         $nombreProducto = trim($fila[0]);
-        $valorSinIva = isset($fila[1]) ? $fila[1] : 0;
-        $valorConIva = isset($fila[2]) ? $fila[2] : 0;
-        $inventario = isset($fila[3]) ? $fila[3] : 0;
-        $minimoInventario = isset($fila[4]) ? $fila[4] : 2;
+        $costoProducto = isset($fila[1]) ? $fila[1] : 0;
+        $valorSinIva = isset($fila[2]) ? $fila[2] : 0;
+        $valorConIva = isset($fila[3]) ? $fila[3] : 0;
+        $inventario = isset($fila[4]) ? $fila[4] : 0;
+        $minimoInventario = isset($fila[5]) ? $fila[5] : 2;
         
         // Limpiar y convertir valores
+        $costoProducto = floatval(str_replace(',', '', $costoProducto));
         $valorSinIva = floatval(str_replace(',', '', $valorSinIva));
         $valorConIva = floatval(str_replace(',', '', $valorConIva));
         $inventario = intval($inventario);
         $minimoInventario = !empty($minimoInventario) ? intval($minimoInventario) : 2;
         
-        file_put_contents('uploads_temp/debug.txt', "Valores convertidos - Nombre: $nombreProducto, SinIVA: $valorSinIva, ConIVA: $valorConIva, Inv: $inventario, Min: $minimoInventario\n", FILE_APPEND);
+        file_put_contents('uploads_temp/debug.txt', "Valores convertidos - Nombre: $nombreProducto, Costo: $costoProducto, SinIVA: $valorSinIva, ConIVA: $valorConIva, Inv: $inventario, Min: $minimoInventario\n", FILE_APPEND);
         
         // Validaciones básicas
         if ($valorSinIva <= 0 || $valorConIva <= 0) {
@@ -149,10 +151,10 @@ $contenido = preg_replace('/^\xEF\xBB\xBF/', '', $contenido);
 
         // Insertar producto usando prepared statement
         $stmt = $conexion->prepare("INSERT INTO " . TBL_PRODUCTOS . " 
-                (id_producto, nombre_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado) 
-                VALUES (?, ?, ?, ?, ?, ?, 'activo')");
+                (id_producto, nombre_producto, costo_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'activo')");
         
-        $stmt->bind_param("ssddii", $id_producto, $nombreProducto, $valorSinIva, $valorConIva, $inventario, $minimoInventario);
+        $stmt->bind_param("ssdddii", $id_producto, $nombreProducto, $costoProducto, $valorSinIva, $valorConIva, $inventario, $minimoInventario);
         
         file_put_contents('uploads_temp/debug.txt', "SQL con nombre: $nombreProducto\n", FILE_APPEND);
         

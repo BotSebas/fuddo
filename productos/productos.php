@@ -2,6 +2,13 @@
 include '../includes/auth.php';
 include '../includes/url.php';
 include_once '../lang/idiomas.php';
+
+// Verificar permiso del módulo antes de incluir menú
+if (!tienePermisoModulo('productos')) {
+    header("Location: ../home.php");
+    exit();
+}
+
 include '../includes/menu.php';
 
 // Verificar si es super-admin sin restaurante asignado
@@ -39,7 +46,7 @@ include '../includes/conexion.php';
 $busqueda = $_GET['buscar'] ?? '';
 
 // Consulta a la base de datos
-$sql = "SELECT id, nombre_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado FROM " . TBL_PRODUCTOS;
+$sql = "SELECT id, nombre_producto, costo_producto, valor_sin_iva, valor_con_iva, inventario, minimo_inventario, estado FROM " . TBL_PRODUCTOS;
 
 if (!empty($busqueda)) {
     $busqueda_escapada = $conexion->real_escape_string($busqueda);
@@ -196,6 +203,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
             <thead>
               <tr>
                 <th><?php echo $producto_nombre; ?></th>
+                <th>Costo Producto</th>
                 <th><?php echo $producto_valor_sin_iva; ?></th>
                 <th><?php echo $producto_valor_con_iva; ?></th>
                 <th><?php echo $producto_inventario; ?></th>
@@ -207,6 +215,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
               <?php foreach ($productosPagina as $producto): ?>
               <tr>
                 <td><?= htmlspecialchars($producto['nombre_producto']) ?></td>
+                <td>$<?= number_format($producto['costo_producto'], 2) ?></td>
                 <td>$<?= number_format($producto['valor_sin_iva'], 2) ?></td>
                 <td>$<?= number_format($producto['valor_con_iva'], 2) ?></td>
                 <td><?= $producto['inventario'] ?></td>
@@ -223,7 +232,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
               </tr>
               <?php endforeach; ?>
               <?php if (empty($productosPagina)): ?>
-                <tr><td colspan="7" class="text-center"><?php echo $productos_no_encontrados; ?></td></tr>
+                <tr><td colspan="8" class="text-center"><?php echo $productos_no_encontrados; ?></td></tr>
               <?php endif; ?>
             </tbody>
           </table>
@@ -258,6 +267,10 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
           <div class="form-group">
             <label for="nombreProducto"><?php echo $producto_nombre; ?></label>
             <input type="text" id="nombreProducto" name="nombre_producto" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="costoProducto">Costo Producto</label>
+            <input type="number" step="0.01" id="costoProducto" name="costo_producto" class="form-control" value="0" min="0" required>
           </div>
           <div class="form-group">
             <label for="valorSinIva"><?php echo $producto_valor_sin_iva; ?></label>
@@ -308,13 +321,14 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
             <li>Columnas requeridas (separadas por comas):
               <ol>
                 <li>Nombre del Producto</li>
+                <li>Costo Producto</li>
                 <li>Valor sin IVA</li>
                 <li>Valor con IVA</li>
                 <li>Inventario</li>
                 <li>Mínimo Inventario (opcional, por defecto 2)</li>
               </ol>
             </li>
-            <li>Ejemplo: <code>Pizza Margarita,8000,9500,50,5</code></li>
+            <li>Ejemplo: <code>Pizza Margarita,5000,8000,9500,50,5</code></li>
             <li>Los productos se crearán con estado 'activo'</li>
             <li>Se generará un ID automático (PR-X) para cada producto</li>
           </ul>
@@ -357,6 +371,7 @@ function abrirModal(producto = null) {
   if (producto) {
     document.getElementById('productoId').value = producto.id;
     document.getElementById('nombreProducto').value = producto.nombre_producto;
+    document.getElementById('costoProducto').value = producto.costo_producto || 0;
     document.getElementById('valorSinIva').value = producto.valor_sin_iva;
     document.getElementById('valorConIva').value = producto.valor_con_iva;
     document.getElementById('inventario').value = producto.inventario || 0;

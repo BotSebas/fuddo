@@ -2,6 +2,13 @@
 include '../includes/auth.php';
 include '../includes/url.php';
 include_once '../lang/idiomas.php';
+
+// Verificar permiso del módulo antes de incluir menú
+if (!tienePermisoModulo('mesas')) {
+    header("Location: ../home.php");
+    exit();
+}
+
 include '../includes/menu.php';
 
 // Verificar si es super-admin sin restaurante asignado
@@ -24,6 +31,33 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
             Para acceder a esta sección debes estar dando soporte a un restaurante específico.
             <br><br>
             Ve al módulo <a href="../restaurantes/restaurantes.php" class="alert-link"><strong>Restaurantes</strong></a> y selecciona "Dar Soporte" al restaurante que deseas gestionar.
+          </div>
+        </div>
+      </section>
+    </div>
+    <?php
+    include '../includes/footer.php';
+    exit();
+}
+
+// Verificar permisos de restaurante (si el usuario es de restaurante)
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'restaurant' && !tienePermisoRestaurante('mesas')) {
+    ?>
+    <div class="content-wrapper">
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> Acceso Denegado</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="content">
+        <div class="container-fluid">
+          <div class="alert alert-danger">
+            <h5><i class="icon fas fa-lock"></i> Permiso Denegado</h5>
+            No tienes permisos para acceder a esta sección. Por favor, contacta al administrador del restaurante.
           </div>
         </div>
       </section>

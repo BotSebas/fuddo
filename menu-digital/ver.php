@@ -55,14 +55,22 @@ $bloques = [];
 $colorTema = 'verde'; // Color por defecto
 $modoOscuro = 0; // Modo claro por defecto
 $logoMenu = ''; // Logo del menú
+$redesSociales = []; // Redes sociales
 
 if ($resultMenu && $resultMenu->num_rows > 0) {
     while ($row = $resultMenu->fetch_assoc()) {
-        // Obtener el tema de color, modo y logo del primer bloque
+        // Obtener el tema de color, modo, logo y redes sociales del primer bloque
         if (empty($bloques)) {
             $colorTema = $row['color_tema'] ?? 'verde';
             $modoOscuro = isset($row['modo_oscuro']) ? intval($row['modo_oscuro']) : 0;
             $logoMenu = $row['logo_menu'] ?? '';
+            $redesSociales = [
+                'facebook' => $row['facebook'] ?? null,
+                'instagram' => $row['instagram'] ?? null,
+                'tiktok' => $row['tiktok'] ?? null,
+                'youtube' => $row['youtube'] ?? null,
+                'whatsapp' => $row['whatsapp'] ?? null
+            ];
         }
         
         // Obtener productos de este bloque
@@ -319,6 +327,46 @@ $conexion_master->close();
             background: transparent;
         }
         
+        .social-media-section {
+            background: <?php echo $modoOscuro ? '#2c2d2f' : '#f8f9fa'; ?>;
+            padding: 0 20px 20px;
+            text-align: center;
+        }
+        
+        .social-media-section h5 {
+            color: <?php echo $colorTexto; ?>;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: <?php echo $colores['primario']; ?>;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            color: white;
+            text-decoration: none;
+        }
+        
         .menu-footer {
             background: <?php echo $modoOscuro ? '#1a1a1a' : '#f8f9fa'; ?>;
             padding: 20px;
@@ -354,7 +402,7 @@ $conexion_master->close();
             }
             
             .menu-content {
-                padding: 20px;
+                padding: 30px 30px 0;;
             }
             
             .item-name {
@@ -434,6 +482,53 @@ $conexion_master->close();
                 </div>
             <?php endif; ?>
         </div>
+        
+        <!-- Redes Sociales Section -->
+        <?php
+        $tieneRedesSociales = false;
+        foreach ($redesSociales as $red => $url) {
+            if (!empty($url)) {
+                $tieneRedesSociales = true;
+                break;
+            }
+        }
+        
+        if ($tieneRedesSociales):
+        ?>
+        <div class="social-media-section">
+            <div class="social-icons">
+                <?php if (!empty($redesSociales['facebook'])): ?>
+                    <a href="<?php echo htmlspecialchars($redesSociales['facebook']); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                <?php endif; ?>
+                
+                <?php if (!empty($redesSociales['instagram'])): ?>
+                    <a href="<?php echo htmlspecialchars($redesSociales['instagram']); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                <?php endif; ?>
+                
+                <?php if (!empty($redesSociales['tiktok'])): ?>
+                    <a href="<?php echo htmlspecialchars($redesSociales['tiktok']); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                <?php endif; ?>
+                
+                <?php if (!empty($redesSociales['youtube'])): ?>
+                    <a href="<?php echo htmlspecialchars($redesSociales['youtube']); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                <?php endif; ?>
+                
+                <?php if (!empty($redesSociales['whatsapp'])): ?>
+                    <a href="https://wa.me/<?php echo htmlspecialchars(preg_replace('/[^0-9+]/', '', $redesSociales['whatsapp'])); ?>" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endif; ?>
         
         <!-- Footer -->
         <div class="menu-footer">

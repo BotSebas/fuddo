@@ -3,1018 +3,1115 @@ Array
     [0] => Array
         (
             [0] => Nombre del Producto
-            [1] => Valor sin IVA
-            [2] => Valor con IVA
-            [3] => Inventario
-            [4] => Mínimo Inventario
+            [1] => Costo Producto
+            [2] => Valor sin IVA
+            [3] => Valor con IVA
+            [4] => Inventario
+            [5] => Mínimo Inventario
         )
 
     [1] => Array
         (
             [0] => Cerveza Águila
-            [1] => 4200
-            [2] => 5000
-            [3] => 120
-            [4] => 20
+            [1] => 3800
+            [2] => 4200
+            [3] => 5000
+            [4] => 120
+            [5] => 20
         )
 
     [2] => Array
         (
             [0] => Cerveza Poker
-            [1] => 4200
-            [2] => 5000
-            [3] => 110
-            [4] => 20
+            [1] => 3800
+            [2] => 4200
+            [3] => 5000
+            [4] => 110
+            [5] => 20
         )
 
     [3] => Array
         (
             [0] => Cerveza Club Colombia
-            [1] => 5000
-            [2] => 5950
-            [3] => 90
-            [4] => 15
+            [1] => 4600
+            [2] => 5000
+            [3] => 5950
+            [4] => 90
+            [5] => 15
         )
 
     [4] => Array
         (
             [0] => Cerveza Corona
-            [1] => 6300
-            [2] => 7500
-            [3] => 80
-            [4] => 15
+            [1] => 5900
+            [2] => 6300
+            [3] => 7500
+            [4] => 80
+            [5] => 15
         )
 
     [5] => Array
         (
             [0] => Cerveza Heineken
-            [1] => 6300
-            [2] => 7500
-            [3] => 75
-            [4] => 15
+            [1] => 5900
+            [2] => 6300
+            [3] => 7500
+            [4] => 75
+            [5] => 15
         )
 
     [6] => Array
         (
             [0] => Cerveza Budweiser
-            [1] => 5900
-            [2] => 7000
-            [3] => 70
-            [4] => 15
+            [1] => 5500
+            [2] => 5900
+            [3] => 7000
+            [4] => 70
+            [5] => 15
         )
 
     [7] => Array
         (
             [0] => Ron Medellín 1/2
-            [1] => 58800
-            [2] => 70000
-            [3] => 25
-            [4] => 5
+            [1] => 58400
+            [2] => 58800
+            [3] => 70000
+            [4] => 25
+            [5] => 5
         )
 
     [8] => Array
         (
             [0] => Ron Medellín Añejo
-            [1] => 63000
-            [2] => 75000
-            [3] => 20
-            [4] => 5
+            [1] => 62600
+            [2] => 63000
+            [3] => 75000
+            [4] => 20
+            [5] => 5
         )
 
     [9] => Array
         (
             [0] => Aguardiente Antioqueño
-            [1] => 54600
-            [2] => 65000
-            [3] => 30
-            [4] => 6
+            [1] => 54200
+            [2] => 54600
+            [3] => 65000
+            [4] => 30
+            [5] => 6
         )
 
     [10] => Array
         (
             [0] => Aguardiente Antioqueño Sin Azúcar
-            [1] => 54600
-            [2] => 65000
-            [3] => 28
-            [4] => 6
+            [1] => 54200
+            [2] => 54600
+            [3] => 65000
+            [4] => 28
+            [5] => 6
         )
 
     [11] => Array
         (
             [0] => Whisky Old Parr
-            [1] => 176500
-            [2] => 210000
-            [3] => 10
-            [4] => 2
+            [1] => 176100
+            [2] => 176500
+            [3] => 210000
+            [4] => 10
+            [5] => 2
         )
 
     [12] => Array
         (
             [0] => Whisky Buchanan’s
-            [1] => 189000
-            [2] => 225000
-            [3] => 8
-            [4] => 2
+            [1] => 188600
+            [2] => 189000
+            [3] => 225000
+            [4] => 8
+            [5] => 2
         )
 
     [13] => Array
         (
             [0] => Whisky Jack Daniel’s
-            [1] => 168000
-            [2] => 200000
-            [3] => 9
-            [4] => 2
+            [1] => 167600
+            [2] => 168000
+            [3] => 200000
+            [4] => 9
+            [5] => 2
         )
 
     [14] => Array
         (
             [0] => Vodka Absolut
-            [1] => 105000
-            [2] => 125000
-            [3] => 15
-            [4] => 3
+            [1] => 104600
+            [2] => 105000
+            [3] => 125000
+            [4] => 15
+            [5] => 3
         )
 
     [15] => Array
         (
             [0] => Vodka Smirnoff
-            [1] => 92400
-            [2] => 110000
-            [3] => 18
-            [4] => 4
+            [1] => 92000
+            [2] => 92400
+            [3] => 110000
+            [4] => 18
+            [5] => 4
         )
 
     [16] => Array
         (
             [0] => Tequila José Cuervo
-            [1] => 117600
-            [2] => 140000
-            [3] => 12
-            [4] => 3
+            [1] => 117200
+            [2] => 117600
+            [3] => 140000
+            [4] => 12
+            [5] => 3
         )
 
     [17] => Array
         (
             [0] => Ginebra Bombay
-            [1] => 130300
-            [2] => 155000
-            [3] => 10
-            [4] => 2
+            [1] => 129900
+            [2] => 130300
+            [3] => 155000
+            [4] => 10
+            [5] => 2
         )
 
     [18] => Array
         (
             [0] => Ginebra Beefeater
-            [1] => 117600
-            [2] => 140000
-            [3] => 11
-            [4] => 2
+            [1] => 117200
+            [2] => 117600
+            [3] => 140000
+            [4] => 11
+            [5] => 2
         )
 
     [19] => Array
         (
             [0] => Vino Tinto Botella
-            [1] => 50400
-            [2] => 60000
-            [3] => 20
-            [4] => 4
+            [1] => 50000
+            [2] => 50400
+            [3] => 60000
+            [4] => 20
+            [5] => 4
         )
 
     [20] => Array
         (
             [0] => Vino Blanco Botella
-            [1] => 50400
-            [2] => 60000
-            [3] => 18
-            [4] => 4
+            [1] => 50000
+            [2] => 50400
+            [3] => 60000
+            [4] => 18
+            [5] => 4
         )
 
     [21] => Array
         (
             [0] => Margarita
-            [1] => 25200
-            [2] => 30000
-            [3] => 40
-            [4] => 8
+            [1] => 24800
+            [2] => 25200
+            [3] => 30000
+            [4] => 40
+            [5] => 8
         )
 
     [22] => Array
         (
             [0] => Mojito
-            [1] => 23500
-            [2] => 28000
-            [3] => 45
-            [4] => 8
+            [1] => 23100
+            [2] => 23500
+            [3] => 28000
+            [4] => 45
+            [5] => 8
         )
 
     [23] => Array
         (
             [0] => Cuba Libre
-            [1] => 21800
-            [2] => 26000
-            [3] => 50
-            [4] => 10
+            [1] => 21400
+            [2] => 21800
+            [3] => 26000
+            [4] => 50
+            [5] => 10
         )
 
     [24] => Array
         (
             [0] => Gin Tonic
-            [1] => 29400
-            [2] => 35000
-            [3] => 35
-            [4] => 7
+            [1] => 29000
+            [2] => 29400
+            [3] => 35000
+            [4] => 35
+            [5] => 7
         )
 
     [25] => Array
         (
             [0] => Piña Colada
-            [1] => 26900
-            [2] => 32000
-            [3] => 30
-            [4] => 6
+            [1] => 26500
+            [2] => 26900
+            [3] => 32000
+            [4] => 30
+            [5] => 6
         )
 
     [26] => Array
         (
             [0] => Shot Aguardiente
-            [1] => 8400
-            [2] => 10000
-            [3] => 200
-            [4] => 40
+            [1] => 8000
+            [2] => 8400
+            [3] => 10000
+            [4] => 200
+            [5] => 40
         )
 
     [27] => Array
         (
             [0] => Shot Tequila
-            [1] => 10100
-            [2] => 12000
-            [3] => 150
-            [4] => 30
+            [1] => 9700
+            [2] => 10100
+            [3] => 12000
+            [4] => 150
+            [5] => 30
         )
 
     [28] => Array
         (
             [0] => Shot Vodka
-            [1] => 9200
-            [2] => 11000
-            [3] => 160
-            [4] => 30
+            [1] => 8800
+            [2] => 9200
+            [3] => 11000
+            [4] => 160
+            [5] => 30
         )
 
     [29] => Array
         (
             [0] => Agua Natural
-            [1] => 3400
-            [2] => 4000
-            [3] => 100
-            [4] => 20
+            [1] => 3000
+            [2] => 3400
+            [3] => 4000
+            [4] => 100
+            [5] => 20
         )
 
     [30] => Array
         (
             [0] => Agua con Gas
-            [1] => 3400
-            [2] => 4000
-            [3] => 90
-            [4] => 20
+            [1] => 3000
+            [2] => 3400
+            [3] => 4000
+            [4] => 90
+            [5] => 20
         )
 
     [31] => Array
         (
             [0] => Gaseosa Personal
-            [1] => 4200
-            [2] => 5000
-            [3] => 95
-            [4] => 20
+            [1] => 3800
+            [2] => 4200
+            [3] => 5000
+            [4] => 95
+            [5] => 20
         )
 
     [32] => Array
         (
             [0] => Red Bull
-            [1] => 8400
-            [2] => 10000
-            [3] => 70
-            [4] => 15
+            [1] => 8000
+            [2] => 8400
+            [3] => 10000
+            [4] => 70
+            [5] => 15
         )
 
     [33] => Array
         (
             [0] => Jugo Natural
-            [1] => 6700
-            [2] => 8000
-            [3] => 60
-            [4] => 12
+            [1] => 6300
+            [2] => 6700
+            [3] => 8000
+            [4] => 60
+            [5] => 12
         )
 
     [34] => Array
         (
             [0] => Papas Fritas
-            [1] => 10100
-            [2] => 12000
-            [3] => 40
-            [4] => 8
+            [1] => 9700
+            [2] => 10100
+            [3] => 12000
+            [4] => 40
+            [5] => 8
         )
 
     [35] => Array
         (
             [0] => Nachos con Queso
-            [1] => 16800
-            [2] => 20000
-            [3] => 35
-            [4] => 7
+            [1] => 16400
+            [2] => 16800
+            [3] => 20000
+            [4] => 35
+            [5] => 7
         )
 
     [36] => Array
         (
             [0] => Alitas BBQ
-            [1] => 25200
-            [2] => 30000
-            [3] => 25
-            [4] => 5
+            [1] => 24800
+            [2] => 25200
+            [3] => 30000
+            [4] => 25
+            [5] => 5
         )
 
     [37] => Array
         (
             [0] => Hamburguesa Clásica
-            [1] => 23500
-            [2] => 28000
-            [3] => 30
-            [4] => 6
+            [1] => 23100
+            [2] => 23500
+            [3] => 28000
+            [4] => 30
+            [5] => 6
         )
 
     [38] => Array
         (
             [0] => Hamburguesa Especial
-            [1] => 29400
-            [2] => 35000
-            [3] => 25
-            [4] => 5
+            [1] => 29000
+            [2] => 29400
+            [3] => 35000
+            [4] => 25
+            [5] => 5
         )
 
     [39] => Array
         (
             [0] => Perro Caliente
-            [1] => 16800
-            [2] => 20000
-            [3] => 40
-            [4] => 8
+            [1] => 16400
+            [2] => 16800
+            [3] => 20000
+            [4] => 40
+            [5] => 8
         )
 
     [40] => Array
         (
             [0] => Chorizo con Arepa
-            [1] => 12600
-            [2] => 15000
-            [3] => 45
-            [4] => 9
+            [1] => 12200
+            [2] => 12600
+            [3] => 15000
+            [4] => 45
+            [5] => 9
         )
 
     [41] => Array
         (
             [0] => Picada Personal
-            [1] => 33600
-            [2] => 40000
-            [3] => 20
-            [4] => 4
+            [1] => 33200
+            [2] => 33600
+            [3] => 40000
+            [4] => 20
+            [5] => 4
         )
 
     [42] => Array
         (
             [0] => Picada para Dos
-            [1] => 50400
-            [2] => 60000
-            [3] => 15
-            [4] => 3
+            [1] => 50000
+            [2] => 50400
+            [3] => 60000
+            [4] => 15
+            [5] => 3
         )
 
     [43] => Array
         (
             [0] => Maní Salado
-            [1] => 6700
-            [2] => 8000
-            [3] => 70
-            [4] => 15
+            [1] => 6300
+            [2] => 6700
+            [3] => 8000
+            [4] => 70
+            [5] => 15
         )
 
     [44] => Array
         (
             [0] => Palomitas
-            [1] => 5900
-            [2] => 7000
-            [3] => 65
-            [4] => 15
+            [1] => 5500
+            [2] => 5900
+            [3] => 7000
+            [4] => 65
+            [5] => 15
         )
 
     [45] => Array
         (
             [0] => Brownie
-            [1] => 8400
-            [2] => 10000
-            [3] => 30
-            [4] => 6
+            [1] => 8000
+            [2] => 8400
+            [3] => 10000
+            [4] => 30
+            [5] => 6
         )
 
     [46] => Array
         (
             [0] => Cheesecake
-            [1] => 10900
-            [2] => 13000
-            [3] => 25
-            [4] => 5
+            [1] => 10500
+            [2] => 10900
+            [3] => 13000
+            [4] => 25
+            [5] => 5
         )
 
     [47] => Array
         (
             [0] => Café
-            [1] => 3400
-            [2] => 4000
-            [3] => 80
-            [4] => 15
+            [1] => 3000
+            [2] => 3400
+            [3] => 4000
+            [4] => 80
+            [5] => 15
         )
 
     [48] => Array
         (
             [0] => Aromática
-            [1] => 2900
-            [2] => 3500
-            [3] => 85
-            [4] => 15
+            [1] => 2500
+            [2] => 2900
+            [3] => 3500
+            [4] => 85
+            [5] => 15
         )
 
 )
 Procesando fila 2: Array
 (
     [0] => Cerveza Águila
-    [1] => 4200
-    [2] => 5000
-    [3] => 120
-    [4] => 20
+    [1] => 3800
+    [2] => 4200
+    [3] => 5000
+    [4] => 120
+    [5] => 20
 )
 
-Valores convertidos - Nombre: Cerveza Águila, SinIVA: 4200, ConIVA: 5000, Inv: 120, Min: 20
+Valores convertidos - Nombre: Cerveza Águila, Costo: 3800, SinIVA: 4200, ConIVA: 5000, Inv: 120, Min: 20
 SQL con nombre: Cerveza Águila
 Fila 2: ÉXITO - Producto creado
 Procesando fila 3: Array
 (
     [0] => Cerveza Poker
-    [1] => 4200
-    [2] => 5000
-    [3] => 110
-    [4] => 20
+    [1] => 3800
+    [2] => 4200
+    [3] => 5000
+    [4] => 110
+    [5] => 20
 )
 
-Valores convertidos - Nombre: Cerveza Poker, SinIVA: 4200, ConIVA: 5000, Inv: 110, Min: 20
+Valores convertidos - Nombre: Cerveza Poker, Costo: 3800, SinIVA: 4200, ConIVA: 5000, Inv: 110, Min: 20
 SQL con nombre: Cerveza Poker
 Fila 3: ÉXITO - Producto creado
 Procesando fila 4: Array
 (
     [0] => Cerveza Club Colombia
-    [1] => 5000
-    [2] => 5950
-    [3] => 90
-    [4] => 15
+    [1] => 4600
+    [2] => 5000
+    [3] => 5950
+    [4] => 90
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Cerveza Club Colombia, SinIVA: 5000, ConIVA: 5950, Inv: 90, Min: 15
+Valores convertidos - Nombre: Cerveza Club Colombia, Costo: 4600, SinIVA: 5000, ConIVA: 5950, Inv: 90, Min: 15
 SQL con nombre: Cerveza Club Colombia
 Fila 4: ÉXITO - Producto creado
 Procesando fila 5: Array
 (
     [0] => Cerveza Corona
-    [1] => 6300
-    [2] => 7500
-    [3] => 80
-    [4] => 15
+    [1] => 5900
+    [2] => 6300
+    [3] => 7500
+    [4] => 80
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Cerveza Corona, SinIVA: 6300, ConIVA: 7500, Inv: 80, Min: 15
+Valores convertidos - Nombre: Cerveza Corona, Costo: 5900, SinIVA: 6300, ConIVA: 7500, Inv: 80, Min: 15
 SQL con nombre: Cerveza Corona
 Fila 5: ÉXITO - Producto creado
 Procesando fila 6: Array
 (
     [0] => Cerveza Heineken
-    [1] => 6300
-    [2] => 7500
-    [3] => 75
-    [4] => 15
+    [1] => 5900
+    [2] => 6300
+    [3] => 7500
+    [4] => 75
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Cerveza Heineken, SinIVA: 6300, ConIVA: 7500, Inv: 75, Min: 15
+Valores convertidos - Nombre: Cerveza Heineken, Costo: 5900, SinIVA: 6300, ConIVA: 7500, Inv: 75, Min: 15
 SQL con nombre: Cerveza Heineken
 Fila 6: ÉXITO - Producto creado
 Procesando fila 7: Array
 (
     [0] => Cerveza Budweiser
-    [1] => 5900
-    [2] => 7000
-    [3] => 70
-    [4] => 15
+    [1] => 5500
+    [2] => 5900
+    [3] => 7000
+    [4] => 70
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Cerveza Budweiser, SinIVA: 5900, ConIVA: 7000, Inv: 70, Min: 15
+Valores convertidos - Nombre: Cerveza Budweiser, Costo: 5500, SinIVA: 5900, ConIVA: 7000, Inv: 70, Min: 15
 SQL con nombre: Cerveza Budweiser
 Fila 7: ÉXITO - Producto creado
 Procesando fila 8: Array
 (
     [0] => Ron Medellín 1/2
-    [1] => 58800
-    [2] => 70000
-    [3] => 25
-    [4] => 5
+    [1] => 58400
+    [2] => 58800
+    [3] => 70000
+    [4] => 25
+    [5] => 5
 )
 
-Valores convertidos - Nombre: Ron Medellín 1/2, SinIVA: 58800, ConIVA: 70000, Inv: 25, Min: 5
+Valores convertidos - Nombre: Ron Medellín 1/2, Costo: 58400, SinIVA: 58800, ConIVA: 70000, Inv: 25, Min: 5
 SQL con nombre: Ron Medellín 1/2
 Fila 8: ÉXITO - Producto creado
 Procesando fila 9: Array
 (
     [0] => Ron Medellín Añejo
-    [1] => 63000
-    [2] => 75000
-    [3] => 20
-    [4] => 5
+    [1] => 62600
+    [2] => 63000
+    [3] => 75000
+    [4] => 20
+    [5] => 5
 )
 
-Valores convertidos - Nombre: Ron Medellín Añejo, SinIVA: 63000, ConIVA: 75000, Inv: 20, Min: 5
+Valores convertidos - Nombre: Ron Medellín Añejo, Costo: 62600, SinIVA: 63000, ConIVA: 75000, Inv: 20, Min: 5
 SQL con nombre: Ron Medellín Añejo
 Fila 9: ÉXITO - Producto creado
 Procesando fila 10: Array
 (
     [0] => Aguardiente Antioqueño
-    [1] => 54600
-    [2] => 65000
-    [3] => 30
-    [4] => 6
+    [1] => 54200
+    [2] => 54600
+    [3] => 65000
+    [4] => 30
+    [5] => 6
 )
 
-Valores convertidos - Nombre: Aguardiente Antioqueño, SinIVA: 54600, ConIVA: 65000, Inv: 30, Min: 6
+Valores convertidos - Nombre: Aguardiente Antioqueño, Costo: 54200, SinIVA: 54600, ConIVA: 65000, Inv: 30, Min: 6
 SQL con nombre: Aguardiente Antioqueño
 Fila 10: ÉXITO - Producto creado
 Procesando fila 11: Array
 (
     [0] => Aguardiente Antioqueño Sin Azúcar
-    [1] => 54600
-    [2] => 65000
-    [3] => 28
-    [4] => 6
+    [1] => 54200
+    [2] => 54600
+    [3] => 65000
+    [4] => 28
+    [5] => 6
 )
 
-Valores convertidos - Nombre: Aguardiente Antioqueño Sin Azúcar, SinIVA: 54600, ConIVA: 65000, Inv: 28, Min: 6
+Valores convertidos - Nombre: Aguardiente Antioqueño Sin Azúcar, Costo: 54200, SinIVA: 54600, ConIVA: 65000, Inv: 28, Min: 6
 SQL con nombre: Aguardiente Antioqueño Sin Azúcar
 Fila 11: ÉXITO - Producto creado
 Procesando fila 12: Array
 (
     [0] => Whisky Old Parr
-    [1] => 176500
-    [2] => 210000
-    [3] => 10
-    [4] => 2
+    [1] => 176100
+    [2] => 176500
+    [3] => 210000
+    [4] => 10
+    [5] => 2
 )
 
-Valores convertidos - Nombre: Whisky Old Parr, SinIVA: 176500, ConIVA: 210000, Inv: 10, Min: 2
+Valores convertidos - Nombre: Whisky Old Parr, Costo: 176100, SinIVA: 176500, ConIVA: 210000, Inv: 10, Min: 2
 SQL con nombre: Whisky Old Parr
 Fila 12: ÉXITO - Producto creado
 Procesando fila 13: Array
 (
     [0] => Whisky Buchanan’s
-    [1] => 189000
-    [2] => 225000
-    [3] => 8
-    [4] => 2
+    [1] => 188600
+    [2] => 189000
+    [3] => 225000
+    [4] => 8
+    [5] => 2
 )
 
-Valores convertidos - Nombre: Whisky Buchanan’s, SinIVA: 189000, ConIVA: 225000, Inv: 8, Min: 2
+Valores convertidos - Nombre: Whisky Buchanan’s, Costo: 188600, SinIVA: 189000, ConIVA: 225000, Inv: 8, Min: 2
 SQL con nombre: Whisky Buchanan’s
 Fila 13: ÉXITO - Producto creado
 Procesando fila 14: Array
 (
     [0] => Whisky Jack Daniel’s
-    [1] => 168000
-    [2] => 200000
-    [3] => 9
-    [4] => 2
+    [1] => 167600
+    [2] => 168000
+    [3] => 200000
+    [4] => 9
+    [5] => 2
 )
 
-Valores convertidos - Nombre: Whisky Jack Daniel’s, SinIVA: 168000, ConIVA: 200000, Inv: 9, Min: 2
+Valores convertidos - Nombre: Whisky Jack Daniel’s, Costo: 167600, SinIVA: 168000, ConIVA: 200000, Inv: 9, Min: 2
 SQL con nombre: Whisky Jack Daniel’s
 Fila 14: ÉXITO - Producto creado
 Procesando fila 15: Array
 (
     [0] => Vodka Absolut
-    [1] => 105000
-    [2] => 125000
-    [3] => 15
-    [4] => 3
+    [1] => 104600
+    [2] => 105000
+    [3] => 125000
+    [4] => 15
+    [5] => 3
 )
 
-Valores convertidos - Nombre: Vodka Absolut, SinIVA: 105000, ConIVA: 125000, Inv: 15, Min: 3
+Valores convertidos - Nombre: Vodka Absolut, Costo: 104600, SinIVA: 105000, ConIVA: 125000, Inv: 15, Min: 3
 SQL con nombre: Vodka Absolut
 Fila 15: ÉXITO - Producto creado
 Procesando fila 16: Array
 (
     [0] => Vodka Smirnoff
-    [1] => 92400
-    [2] => 110000
-    [3] => 18
-    [4] => 4
+    [1] => 92000
+    [2] => 92400
+    [3] => 110000
+    [4] => 18
+    [5] => 4
 )
 
-Valores convertidos - Nombre: Vodka Smirnoff, SinIVA: 92400, ConIVA: 110000, Inv: 18, Min: 4
+Valores convertidos - Nombre: Vodka Smirnoff, Costo: 92000, SinIVA: 92400, ConIVA: 110000, Inv: 18, Min: 4
 SQL con nombre: Vodka Smirnoff
 Fila 16: ÉXITO - Producto creado
 Procesando fila 17: Array
 (
     [0] => Tequila José Cuervo
-    [1] => 117600
-    [2] => 140000
-    [3] => 12
-    [4] => 3
+    [1] => 117200
+    [2] => 117600
+    [3] => 140000
+    [4] => 12
+    [5] => 3
 )
 
-Valores convertidos - Nombre: Tequila José Cuervo, SinIVA: 117600, ConIVA: 140000, Inv: 12, Min: 3
+Valores convertidos - Nombre: Tequila José Cuervo, Costo: 117200, SinIVA: 117600, ConIVA: 140000, Inv: 12, Min: 3
 SQL con nombre: Tequila José Cuervo
 Fila 17: ÉXITO - Producto creado
 Procesando fila 18: Array
 (
     [0] => Ginebra Bombay
-    [1] => 130300
-    [2] => 155000
-    [3] => 10
-    [4] => 2
+    [1] => 129900
+    [2] => 130300
+    [3] => 155000
+    [4] => 10
+    [5] => 2
 )
 
-Valores convertidos - Nombre: Ginebra Bombay, SinIVA: 130300, ConIVA: 155000, Inv: 10, Min: 2
+Valores convertidos - Nombre: Ginebra Bombay, Costo: 129900, SinIVA: 130300, ConIVA: 155000, Inv: 10, Min: 2
 SQL con nombre: Ginebra Bombay
 Fila 18: ÉXITO - Producto creado
 Procesando fila 19: Array
 (
     [0] => Ginebra Beefeater
-    [1] => 117600
-    [2] => 140000
-    [3] => 11
-    [4] => 2
+    [1] => 117200
+    [2] => 117600
+    [3] => 140000
+    [4] => 11
+    [5] => 2
 )
 
-Valores convertidos - Nombre: Ginebra Beefeater, SinIVA: 117600, ConIVA: 140000, Inv: 11, Min: 2
+Valores convertidos - Nombre: Ginebra Beefeater, Costo: 117200, SinIVA: 117600, ConIVA: 140000, Inv: 11, Min: 2
 SQL con nombre: Ginebra Beefeater
 Fila 19: ÉXITO - Producto creado
 Procesando fila 20: Array
 (
     [0] => Vino Tinto Botella
-    [1] => 50400
-    [2] => 60000
-    [3] => 20
-    [4] => 4
+    [1] => 50000
+    [2] => 50400
+    [3] => 60000
+    [4] => 20
+    [5] => 4
 )
 
-Valores convertidos - Nombre: Vino Tinto Botella, SinIVA: 50400, ConIVA: 60000, Inv: 20, Min: 4
+Valores convertidos - Nombre: Vino Tinto Botella, Costo: 50000, SinIVA: 50400, ConIVA: 60000, Inv: 20, Min: 4
 SQL con nombre: Vino Tinto Botella
 Fila 20: ÉXITO - Producto creado
 Procesando fila 21: Array
 (
     [0] => Vino Blanco Botella
-    [1] => 50400
-    [2] => 60000
-    [3] => 18
-    [4] => 4
+    [1] => 50000
+    [2] => 50400
+    [3] => 60000
+    [4] => 18
+    [5] => 4
 )
 
-Valores convertidos - Nombre: Vino Blanco Botella, SinIVA: 50400, ConIVA: 60000, Inv: 18, Min: 4
+Valores convertidos - Nombre: Vino Blanco Botella, Costo: 50000, SinIVA: 50400, ConIVA: 60000, Inv: 18, Min: 4
 SQL con nombre: Vino Blanco Botella
 Fila 21: ÉXITO - Producto creado
 Procesando fila 22: Array
 (
     [0] => Margarita
-    [1] => 25200
-    [2] => 30000
-    [3] => 40
-    [4] => 8
+    [1] => 24800
+    [2] => 25200
+    [3] => 30000
+    [4] => 40
+    [5] => 8
 )
 
-Valores convertidos - Nombre: Margarita, SinIVA: 25200, ConIVA: 30000, Inv: 40, Min: 8
+Valores convertidos - Nombre: Margarita, Costo: 24800, SinIVA: 25200, ConIVA: 30000, Inv: 40, Min: 8
 SQL con nombre: Margarita
 Fila 22: ÉXITO - Producto creado
 Procesando fila 23: Array
 (
     [0] => Mojito
-    [1] => 23500
-    [2] => 28000
-    [3] => 45
-    [4] => 8
+    [1] => 23100
+    [2] => 23500
+    [3] => 28000
+    [4] => 45
+    [5] => 8
 )
 
-Valores convertidos - Nombre: Mojito, SinIVA: 23500, ConIVA: 28000, Inv: 45, Min: 8
+Valores convertidos - Nombre: Mojito, Costo: 23100, SinIVA: 23500, ConIVA: 28000, Inv: 45, Min: 8
 SQL con nombre: Mojito
 Fila 23: ÉXITO - Producto creado
 Procesando fila 24: Array
 (
     [0] => Cuba Libre
-    [1] => 21800
-    [2] => 26000
-    [3] => 50
-    [4] => 10
+    [1] => 21400
+    [2] => 21800
+    [3] => 26000
+    [4] => 50
+    [5] => 10
 )
 
-Valores convertidos - Nombre: Cuba Libre, SinIVA: 21800, ConIVA: 26000, Inv: 50, Min: 10
+Valores convertidos - Nombre: Cuba Libre, Costo: 21400, SinIVA: 21800, ConIVA: 26000, Inv: 50, Min: 10
 SQL con nombre: Cuba Libre
 Fila 24: ÉXITO - Producto creado
 Procesando fila 25: Array
 (
     [0] => Gin Tonic
-    [1] => 29400
-    [2] => 35000
-    [3] => 35
-    [4] => 7
+    [1] => 29000
+    [2] => 29400
+    [3] => 35000
+    [4] => 35
+    [5] => 7
 )
 
-Valores convertidos - Nombre: Gin Tonic, SinIVA: 29400, ConIVA: 35000, Inv: 35, Min: 7
+Valores convertidos - Nombre: Gin Tonic, Costo: 29000, SinIVA: 29400, ConIVA: 35000, Inv: 35, Min: 7
 SQL con nombre: Gin Tonic
 Fila 25: ÉXITO - Producto creado
 Procesando fila 26: Array
 (
     [0] => Piña Colada
-    [1] => 26900
-    [2] => 32000
-    [3] => 30
-    [4] => 6
+    [1] => 26500
+    [2] => 26900
+    [3] => 32000
+    [4] => 30
+    [5] => 6
 )
 
-Valores convertidos - Nombre: Piña Colada, SinIVA: 26900, ConIVA: 32000, Inv: 30, Min: 6
+Valores convertidos - Nombre: Piña Colada, Costo: 26500, SinIVA: 26900, ConIVA: 32000, Inv: 30, Min: 6
 SQL con nombre: Piña Colada
 Fila 26: ÉXITO - Producto creado
 Procesando fila 27: Array
 (
     [0] => Shot Aguardiente
-    [1] => 8400
-    [2] => 10000
-    [3] => 200
-    [4] => 40
+    [1] => 8000
+    [2] => 8400
+    [3] => 10000
+    [4] => 200
+    [5] => 40
 )
 
-Valores convertidos - Nombre: Shot Aguardiente, SinIVA: 8400, ConIVA: 10000, Inv: 200, Min: 40
+Valores convertidos - Nombre: Shot Aguardiente, Costo: 8000, SinIVA: 8400, ConIVA: 10000, Inv: 200, Min: 40
 SQL con nombre: Shot Aguardiente
 Fila 27: ÉXITO - Producto creado
 Procesando fila 28: Array
 (
     [0] => Shot Tequila
-    [1] => 10100
-    [2] => 12000
-    [3] => 150
-    [4] => 30
+    [1] => 9700
+    [2] => 10100
+    [3] => 12000
+    [4] => 150
+    [5] => 30
 )
 
-Valores convertidos - Nombre: Shot Tequila, SinIVA: 10100, ConIVA: 12000, Inv: 150, Min: 30
+Valores convertidos - Nombre: Shot Tequila, Costo: 9700, SinIVA: 10100, ConIVA: 12000, Inv: 150, Min: 30
 SQL con nombre: Shot Tequila
 Fila 28: ÉXITO - Producto creado
 Procesando fila 29: Array
 (
     [0] => Shot Vodka
-    [1] => 9200
-    [2] => 11000
-    [3] => 160
-    [4] => 30
+    [1] => 8800
+    [2] => 9200
+    [3] => 11000
+    [4] => 160
+    [5] => 30
 )
 
-Valores convertidos - Nombre: Shot Vodka, SinIVA: 9200, ConIVA: 11000, Inv: 160, Min: 30
+Valores convertidos - Nombre: Shot Vodka, Costo: 8800, SinIVA: 9200, ConIVA: 11000, Inv: 160, Min: 30
 SQL con nombre: Shot Vodka
 Fila 29: ÉXITO - Producto creado
 Procesando fila 30: Array
 (
     [0] => Agua Natural
-    [1] => 3400
-    [2] => 4000
-    [3] => 100
-    [4] => 20
+    [1] => 3000
+    [2] => 3400
+    [3] => 4000
+    [4] => 100
+    [5] => 20
 )
 
-Valores convertidos - Nombre: Agua Natural, SinIVA: 3400, ConIVA: 4000, Inv: 100, Min: 20
+Valores convertidos - Nombre: Agua Natural, Costo: 3000, SinIVA: 3400, ConIVA: 4000, Inv: 100, Min: 20
 SQL con nombre: Agua Natural
 Fila 30: ÉXITO - Producto creado
 Procesando fila 31: Array
 (
     [0] => Agua con Gas
-    [1] => 3400
-    [2] => 4000
-    [3] => 90
-    [4] => 20
+    [1] => 3000
+    [2] => 3400
+    [3] => 4000
+    [4] => 90
+    [5] => 20
 )
 
-Valores convertidos - Nombre: Agua con Gas, SinIVA: 3400, ConIVA: 4000, Inv: 90, Min: 20
+Valores convertidos - Nombre: Agua con Gas, Costo: 3000, SinIVA: 3400, ConIVA: 4000, Inv: 90, Min: 20
 SQL con nombre: Agua con Gas
 Fila 31: ÉXITO - Producto creado
 Procesando fila 32: Array
 (
     [0] => Gaseosa Personal
-    [1] => 4200
-    [2] => 5000
-    [3] => 95
-    [4] => 20
+    [1] => 3800
+    [2] => 4200
+    [3] => 5000
+    [4] => 95
+    [5] => 20
 )
 
-Valores convertidos - Nombre: Gaseosa Personal, SinIVA: 4200, ConIVA: 5000, Inv: 95, Min: 20
+Valores convertidos - Nombre: Gaseosa Personal, Costo: 3800, SinIVA: 4200, ConIVA: 5000, Inv: 95, Min: 20
 SQL con nombre: Gaseosa Personal
 Fila 32: ÉXITO - Producto creado
 Procesando fila 33: Array
 (
     [0] => Red Bull
-    [1] => 8400
-    [2] => 10000
-    [3] => 70
-    [4] => 15
+    [1] => 8000
+    [2] => 8400
+    [3] => 10000
+    [4] => 70
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Red Bull, SinIVA: 8400, ConIVA: 10000, Inv: 70, Min: 15
+Valores convertidos - Nombre: Red Bull, Costo: 8000, SinIVA: 8400, ConIVA: 10000, Inv: 70, Min: 15
 SQL con nombre: Red Bull
 Fila 33: ÉXITO - Producto creado
 Procesando fila 34: Array
 (
     [0] => Jugo Natural
-    [1] => 6700
-    [2] => 8000
-    [3] => 60
-    [4] => 12
+    [1] => 6300
+    [2] => 6700
+    [3] => 8000
+    [4] => 60
+    [5] => 12
 )
 
-Valores convertidos - Nombre: Jugo Natural, SinIVA: 6700, ConIVA: 8000, Inv: 60, Min: 12
+Valores convertidos - Nombre: Jugo Natural, Costo: 6300, SinIVA: 6700, ConIVA: 8000, Inv: 60, Min: 12
 SQL con nombre: Jugo Natural
 Fila 34: ÉXITO - Producto creado
 Procesando fila 35: Array
 (
     [0] => Papas Fritas
-    [1] => 10100
-    [2] => 12000
-    [3] => 40
-    [4] => 8
+    [1] => 9700
+    [2] => 10100
+    [3] => 12000
+    [4] => 40
+    [5] => 8
 )
 
-Valores convertidos - Nombre: Papas Fritas, SinIVA: 10100, ConIVA: 12000, Inv: 40, Min: 8
+Valores convertidos - Nombre: Papas Fritas, Costo: 9700, SinIVA: 10100, ConIVA: 12000, Inv: 40, Min: 8
 SQL con nombre: Papas Fritas
 Fila 35: ÉXITO - Producto creado
 Procesando fila 36: Array
 (
     [0] => Nachos con Queso
-    [1] => 16800
-    [2] => 20000
-    [3] => 35
-    [4] => 7
+    [1] => 16400
+    [2] => 16800
+    [3] => 20000
+    [4] => 35
+    [5] => 7
 )
 
-Valores convertidos - Nombre: Nachos con Queso, SinIVA: 16800, ConIVA: 20000, Inv: 35, Min: 7
+Valores convertidos - Nombre: Nachos con Queso, Costo: 16400, SinIVA: 16800, ConIVA: 20000, Inv: 35, Min: 7
 SQL con nombre: Nachos con Queso
 Fila 36: ÉXITO - Producto creado
 Procesando fila 37: Array
 (
     [0] => Alitas BBQ
-    [1] => 25200
-    [2] => 30000
-    [3] => 25
-    [4] => 5
+    [1] => 24800
+    [2] => 25200
+    [3] => 30000
+    [4] => 25
+    [5] => 5
 )
 
-Valores convertidos - Nombre: Alitas BBQ, SinIVA: 25200, ConIVA: 30000, Inv: 25, Min: 5
+Valores convertidos - Nombre: Alitas BBQ, Costo: 24800, SinIVA: 25200, ConIVA: 30000, Inv: 25, Min: 5
 SQL con nombre: Alitas BBQ
 Fila 37: ÉXITO - Producto creado
 Procesando fila 38: Array
 (
     [0] => Hamburguesa Clásica
-    [1] => 23500
-    [2] => 28000
-    [3] => 30
-    [4] => 6
+    [1] => 23100
+    [2] => 23500
+    [3] => 28000
+    [4] => 30
+    [5] => 6
 )
 
-Valores convertidos - Nombre: Hamburguesa Clásica, SinIVA: 23500, ConIVA: 28000, Inv: 30, Min: 6
+Valores convertidos - Nombre: Hamburguesa Clásica, Costo: 23100, SinIVA: 23500, ConIVA: 28000, Inv: 30, Min: 6
 SQL con nombre: Hamburguesa Clásica
 Fila 38: ÉXITO - Producto creado
 Procesando fila 39: Array
 (
     [0] => Hamburguesa Especial
-    [1] => 29400
-    [2] => 35000
-    [3] => 25
-    [4] => 5
+    [1] => 29000
+    [2] => 29400
+    [3] => 35000
+    [4] => 25
+    [5] => 5
 )
 
-Valores convertidos - Nombre: Hamburguesa Especial, SinIVA: 29400, ConIVA: 35000, Inv: 25, Min: 5
+Valores convertidos - Nombre: Hamburguesa Especial, Costo: 29000, SinIVA: 29400, ConIVA: 35000, Inv: 25, Min: 5
 SQL con nombre: Hamburguesa Especial
 Fila 39: ÉXITO - Producto creado
 Procesando fila 40: Array
 (
     [0] => Perro Caliente
-    [1] => 16800
-    [2] => 20000
-    [3] => 40
-    [4] => 8
+    [1] => 16400
+    [2] => 16800
+    [3] => 20000
+    [4] => 40
+    [5] => 8
 )
 
-Valores convertidos - Nombre: Perro Caliente, SinIVA: 16800, ConIVA: 20000, Inv: 40, Min: 8
+Valores convertidos - Nombre: Perro Caliente, Costo: 16400, SinIVA: 16800, ConIVA: 20000, Inv: 40, Min: 8
 SQL con nombre: Perro Caliente
 Fila 40: ÉXITO - Producto creado
 Procesando fila 41: Array
 (
     [0] => Chorizo con Arepa
-    [1] => 12600
-    [2] => 15000
-    [3] => 45
-    [4] => 9
+    [1] => 12200
+    [2] => 12600
+    [3] => 15000
+    [4] => 45
+    [5] => 9
 )
 
-Valores convertidos - Nombre: Chorizo con Arepa, SinIVA: 12600, ConIVA: 15000, Inv: 45, Min: 9
+Valores convertidos - Nombre: Chorizo con Arepa, Costo: 12200, SinIVA: 12600, ConIVA: 15000, Inv: 45, Min: 9
 SQL con nombre: Chorizo con Arepa
 Fila 41: ÉXITO - Producto creado
 Procesando fila 42: Array
 (
     [0] => Picada Personal
-    [1] => 33600
-    [2] => 40000
-    [3] => 20
-    [4] => 4
+    [1] => 33200
+    [2] => 33600
+    [3] => 40000
+    [4] => 20
+    [5] => 4
 )
 
-Valores convertidos - Nombre: Picada Personal, SinIVA: 33600, ConIVA: 40000, Inv: 20, Min: 4
+Valores convertidos - Nombre: Picada Personal, Costo: 33200, SinIVA: 33600, ConIVA: 40000, Inv: 20, Min: 4
 SQL con nombre: Picada Personal
 Fila 42: ÉXITO - Producto creado
 Procesando fila 43: Array
 (
     [0] => Picada para Dos
-    [1] => 50400
-    [2] => 60000
-    [3] => 15
-    [4] => 3
+    [1] => 50000
+    [2] => 50400
+    [3] => 60000
+    [4] => 15
+    [5] => 3
 )
 
-Valores convertidos - Nombre: Picada para Dos, SinIVA: 50400, ConIVA: 60000, Inv: 15, Min: 3
+Valores convertidos - Nombre: Picada para Dos, Costo: 50000, SinIVA: 50400, ConIVA: 60000, Inv: 15, Min: 3
 SQL con nombre: Picada para Dos
 Fila 43: ÉXITO - Producto creado
 Procesando fila 44: Array
 (
     [0] => Maní Salado
-    [1] => 6700
-    [2] => 8000
-    [3] => 70
-    [4] => 15
+    [1] => 6300
+    [2] => 6700
+    [3] => 8000
+    [4] => 70
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Maní Salado, SinIVA: 6700, ConIVA: 8000, Inv: 70, Min: 15
+Valores convertidos - Nombre: Maní Salado, Costo: 6300, SinIVA: 6700, ConIVA: 8000, Inv: 70, Min: 15
 SQL con nombre: Maní Salado
 Fila 44: ÉXITO - Producto creado
 Procesando fila 45: Array
 (
     [0] => Palomitas
-    [1] => 5900
-    [2] => 7000
-    [3] => 65
-    [4] => 15
+    [1] => 5500
+    [2] => 5900
+    [3] => 7000
+    [4] => 65
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Palomitas, SinIVA: 5900, ConIVA: 7000, Inv: 65, Min: 15
+Valores convertidos - Nombre: Palomitas, Costo: 5500, SinIVA: 5900, ConIVA: 7000, Inv: 65, Min: 15
 SQL con nombre: Palomitas
 Fila 45: ÉXITO - Producto creado
 Procesando fila 46: Array
 (
     [0] => Brownie
-    [1] => 8400
-    [2] => 10000
-    [3] => 30
-    [4] => 6
+    [1] => 8000
+    [2] => 8400
+    [3] => 10000
+    [4] => 30
+    [5] => 6
 )
 
-Valores convertidos - Nombre: Brownie, SinIVA: 8400, ConIVA: 10000, Inv: 30, Min: 6
+Valores convertidos - Nombre: Brownie, Costo: 8000, SinIVA: 8400, ConIVA: 10000, Inv: 30, Min: 6
 SQL con nombre: Brownie
 Fila 46: ÉXITO - Producto creado
 Procesando fila 47: Array
 (
     [0] => Cheesecake
-    [1] => 10900
-    [2] => 13000
-    [3] => 25
-    [4] => 5
+    [1] => 10500
+    [2] => 10900
+    [3] => 13000
+    [4] => 25
+    [5] => 5
 )
 
-Valores convertidos - Nombre: Cheesecake, SinIVA: 10900, ConIVA: 13000, Inv: 25, Min: 5
+Valores convertidos - Nombre: Cheesecake, Costo: 10500, SinIVA: 10900, ConIVA: 13000, Inv: 25, Min: 5
 SQL con nombre: Cheesecake
 Fila 47: ÉXITO - Producto creado
 Procesando fila 48: Array
 (
     [0] => Café
-    [1] => 3400
-    [2] => 4000
-    [3] => 80
-    [4] => 15
+    [1] => 3000
+    [2] => 3400
+    [3] => 4000
+    [4] => 80
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Café, SinIVA: 3400, ConIVA: 4000, Inv: 80, Min: 15
+Valores convertidos - Nombre: Café, Costo: 3000, SinIVA: 3400, ConIVA: 4000, Inv: 80, Min: 15
 SQL con nombre: Café
 Fila 48: ÉXITO - Producto creado
 Procesando fila 49: Array
 (
     [0] => Aromática
-    [1] => 2900
-    [2] => 3500
-    [3] => 85
-    [4] => 15
+    [1] => 2500
+    [2] => 2900
+    [3] => 3500
+    [4] => 85
+    [5] => 15
 )
 
-Valores convertidos - Nombre: Aromática, SinIVA: 2900, ConIVA: 3500, Inv: 85, Min: 15
+Valores convertidos - Nombre: Aromática, Costo: 2500, SinIVA: 2900, ConIVA: 3500, Inv: 85, Min: 15
 SQL con nombre: Aromática
 Fila 49: ÉXITO - Producto creado
