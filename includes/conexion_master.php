@@ -35,11 +35,16 @@ if (
 // Crear conexión a BD maestra
 $conexion_master = new mysqli(DB_MASTER_HOST, DB_MASTER_USER, DB_MASTER_PASS, DB_MASTER_NAME);
 
-// Verificar conexión
-if ($conexion_master->connect_error) {
-    die("Error de conexión a BD maestra: " . $conexion_master->connect_error);
-}
+// Nota: NO usamos die() aquí - el error será manejado por procesar_registro.php
+// Esto permite que procesar_registro.php devuelva JSON con el error
 
-// Configurar charset
-$conexion_master->set_charset("utf8mb4");
+// Verificar conexión y registrar error si es necesario
+if ($conexion_master && !$conexion_master->connect_error) {
+    // Conexión exitosa - configurar charset
+    $conexion_master->set_charset("utf8mb4");
+} else {
+    // Si hay error, lo manejará procesar_registro.php
+    // Solo registrar para debugging
+    error_log("Error de conexión a BD maestra (será manejado por procesar_registro.php): " . ($conexion_master ? $conexion_master->connect_error : "mysqli no inicializado"));
+}
 ?>

@@ -75,12 +75,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 3. Insertar restaurante en BD maestra
         // IMPORTANTE: nombre_bd ahora guarda el prefijo en Cloudways, el nombre de BD en local
         $valor_nombre_bd = $is_cloudways ? $table_prefix : $nombre_bd;
+        $plan = 'Premium'; // Todos los restaurantes normales son Premium
+        $fecha_expiracion = date('Y-m-d', strtotime('+30 days')); // 30 días para suscripción
         
         $stmt = $conexion_master->prepare("
-            INSERT INTO restaurantes (nombre, identificador, nombre_bd, contacto, email, telefono, estado) 
-            VALUES (?, ?, ?, ?, ?, ?, 'activo')
+            INSERT INTO restaurantes (nombre, identificador, nombre_bd, contacto, email, telefono, estado, plan, fecha_expiracion) 
+            VALUES (?, ?, ?, ?, ?, ?, 'activo', ?, ?)
         ");
-        $stmt->bind_param("ssssss", $nombre, $identificador, $valor_nombre_bd, $contacto, $email, $telefono);
+        $stmt->bind_param("ssssssss", $nombre, $identificador, $valor_nombre_bd, $contacto, $email, $telefono, $plan, $fecha_expiracion);
         $stmt->execute();
         $id_restaurante = $conexion_master->insert_id;
 
@@ -90,15 +92,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql_template = file_get_contents('sql/template_restaurante.sql');
             $sql_schema = str_replace('{PREFIX}', $table_prefix, $sql_template);
             
-            // Ejecutar en la BD actual (mgacgdnjkg)
-            $conexion_master->multi_query($sql_schema);
+            // Limpiar comentarios de SQL (-- comentarios en líneas) para evitar problemas con multi_query
+            // Pero preservar comentarios dentro de COMMENT='...'
+            $lineas = explode("\n", $sql_schema);
+            $sql_limpio = [];
+            foreach ($lineas as $linea) {
+                // Si la línea tiene -- pero NO está dentro de COMMENT='...'
+                if (strpos($linea, '--') !== false && strpos($linea, "COMMENT='") === false) {
+                    $linea = substr($linea, 0, strpos($linea, '--'));
+                }
+                $sql_limpio[] = trim($linea);
+            }
+            $sql_schema = implode("\n", $sql_limpio);
             
-            // Esperar a que terminen todas las consultas
+            // Ejecutar en la BD actual (mgacgdnjkg)
+            if (!$conexion_master->multi_query($sql_schema)) {
+                echo json_encode(['success' => false, 'message' => 'Error al crear tablas: ' . $conexion_master->error]);
+                exit();
+            }
+            
+            // Esperar a que terminen todas las consultas y contar
+            $tablasCreadas = 0;
             do {
                 if ($result = $conexion_master->store_result()) {
                     $result->free();
+                    $tablasCreadas++;
                 }
             } while ($conexion_master->more_results() && $conexion_master->next_result());
+            
+            error_log("[CREAR RESTAURANTE] Se crearon $tablasCreadas tablas para $identificador con prefijo: $table_prefix");
             
             // ===== CREAR TABLAS DE COSTEO AUTOMÁTICO =====
             $sql_costeo = "
@@ -268,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         echo json_encode([
             'success' => true,
-            'message' => 'Restaurante creado exitosamente. Ahora puedes crear usuarios desde el módulo Usuarios.',
+            'message' => 'Organización creada exitosamente. Ahora puedes crear usuarios desde el módulo Usuarios.',
             'id_restaurante' => $id_restaurante,
             'nombre_bd' => $valor_nombre_bd
         ]);
@@ -429,7 +451,7 @@ $('#formRestaurante').on('submit', function(e) {
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: '¡Restaurante creado!',
+                            title: '¡Organización creada!',
                             html: '<strong>Base de datos:</strong> ' + response.nombre_bd,
                             confirmButtonColor: '#27ae60'
                         }).then(() => {

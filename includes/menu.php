@@ -13,14 +13,141 @@ $totalNotificaciones = 0;
 if (isset($_SESSION['nombre_bd']) && $_SESSION['nombre_bd'] !== null && defined('TBL_PRODUCTOS')) {
     $tabla_productos = TBL_PRODUCTOS;
     $sqlBajoStock = "SELECT id_producto, nombre_producto, inventario FROM $tabla_productos WHERE inventario <= minimo_inventario AND estado = 'activo' ORDER BY inventario ASC";
+    
     $resultBajoStock = $conexion->query($sqlBajoStock);
-    if ($resultBajoStock && $resultBajoStock->num_rows > 0) {
+    
+    // Si hay error de tabla no encontrada, registrar pero no fallar
+    if (!$resultBajoStock) {
+        error_log("[MENU ERROR] Tabla no encontrada: $tabla_productos. Error: " . $conexion->error . ". Nombre BD: " . ($_SESSION['nombre_bd'] ?? 'N/A') . ", Identificador: " . ($_SESSION['identificador'] ?? 'N/A'));
+        // Continuar sin productos bajo stock
+        $productosBajoStock = [];
+    } elseif ($resultBajoStock->num_rows > 0) {
         while ($row = $resultBajoStock->fetch_assoc()) {
             $productosBajoStock[] = $row;
         }
     }
     $totalNotificaciones = count($productosBajoStock);
 }
+
+// ========================================
+// Verificar restaurantes próximos a expirar o expirados
+// ========================================
+$restaurantesProximosAExpirar = [];
+$alertaExpiración = [];
+
+if (isset($_SESSION['id_restaurante'])) {
+    $id_rest = $_SESSION['id_restaurante'];
+    
+    // 1. Primero, actualizar restaurantes que ya expiraron a estado 'inactivo'
+    $sqlExpiraron = "UPDATE restaurantes 
+                     SET estado = 'inactivo'
+                     WHERE id = $id_rest 
+                     AND fecha_expiracion IS NOT NULL 
+                     AND fecha_expiracion < CURDATE() 
+                     AND estado = 'activo'";
+    $conexion_master->query($sqlExpiraron);
+    
+    // 2. Verificar si el restaurante actual está próximo a expirar (5 días o menos)
+    $sqlProximoAExpirar = "SELECT 
+                            id, nombre, plan, fecha_expiracion,
+                            DATEDIFF(fecha_expiracion, CURDATE()) as dias_restantes,
+                            estado
+                           FROM restaurantes 
+                           WHERE id = $id_rest 
+                           AND fecha_expiracion IS NOT NULL
+                           AND DATEDIFF(fecha_expiracion, CURDATE()) BETWEEN 0 AND 5";
+    
+    $resultExpiracion = $conexion_master->query($sqlProximoAExpirar);
+    if ($resultExpiracion && $resultExpiracion->num_rows > 0) {
+        $rowExpiracion = $resultExpiracion->fetch_assoc();
+        
+        // Configurar alerta
+        $alertaExpiración = [
+            'id' => $rowExpiracion['id'],
+            'nombre' => $rowExpiracion['nombre'],
+            'plan' => $rowExpiracion['plan'],
+            'fecha_expiracion' => $rowExpiracion['fecha_expiracion'],
+            'dias_restantes' => $rowExpiracion['dias_restantes'],
+            'estado' => $rowExpiracion['estado']
+        ];
+        
+        // 3. Si no se ha enviado notificación, enviarla ahora y marcar
+        $sqlCheckNotificacion = "SELECT fecha_proxima_notificacion FROM restaurantes WHERE id = $id_rest";
+        $resultCheck = $conexion_master->query($sqlCheckNotificacion);
+        
+        if ($resultCheck && $resultCheck->num_rows > 0) {
+            $rowCheck = $resultCheck->fetch_assoc();
+            $fecha_proxima_notificacion = $rowCheck['fecha_proxima_notificacion'];
+            
+            // Si no hay fecha_proxima_notificacion o ya pasó, enviar notificación
+            if (empty($fecha_proxima_notificacion) || strtotime($fecha_proxima_notificacion) <= time()) {
+                // Enviar correo de expiración
+                if (!empty($_SESSION['email'])) {
+                    enviarNotificacionExpiración($conexion_master, $rowExpiracion, $_SESSION['email']);
+                }
+                
+                // Marcar que se envió la notificación (próxima notificación en 24 horas)
+                $fecha_proxima = date('Y-m-d H:i:s', strtotime('+24 hours'));
+                $sqlUpdateNotificacion = "UPDATE restaurantes SET fecha_proxima_notificacion = '$fecha_proxima' WHERE id = $id_rest";
+                $conexion_master->query($sqlUpdateNotificacion);
+            }
+        }
+        
+        // Agregar al contador de notificaciones
+        $totalNotificaciones += 1;
+    }
+}
+
+// ========================================
+// Función para enviar notificación de expiración
+// ========================================
+function enviarNotificacionExpiración($conexion_master, $restaurante, $emailDestino) {
+    global $idioma;
+    
+    try {
+        // Incluir mailer
+        require_once __DIR__ . '/mailer_helper.php';
+        
+        $nombreRestaurante = $restaurante['nombre'] ?? 'Su restaurante';
+        $diasRestantes = $restaurante['dias_restantes'] ?? 0;
+        $plan = $restaurante['plan'] ?? 'Premium';
+        $fechaExpiracion = $restaurante['fecha_expiracion'] ?? '';
+        
+        // Determinar entre demo o Premium
+        $tipoAlerta = ($plan === 'demo') ? 'demostración' : 'suscripción';
+        $urlAccion = ($plan === 'demo') ? 'renovar_demo.php' : 'renovar_suscripcion.php';
+        
+        // Asunto y contenido según idioma
+        if ($idioma === 'es') {
+            $asunto = "⏰ Alerta de Expiración - $nombreRestaurante";
+            $cuerpo = "
+                <h2>Alerta de Expiración de $tipoAlerta</h2>
+                <p>Tu restaurante <strong>$nombreRestaurante</strong> tiene <strong>$diasRestantes días</strong> antes de vencer.</p>
+                <p><strong>Fecha de Expiración:</strong> $fechaExpiracion</p>
+                <p>Por favor, renueva tu acceso antes de que expire.</p>
+                <p><a href='" . (isset($BASE_URL) ? $BASE_URL : 'http://localhost/fuddo/') . "$urlAccion' style='background-color: #FF6B6B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Renovar Ahora</a></p>
+            ";
+        } else {
+            $asunto = "⏰ Expiration Alert - $nombreRestaurante";
+            $cuerpo = "
+                <h2>$tipoAlerta Expiration Alert</h2>
+                <p>Your restaurant <strong>$nombreRestaurante</strong> will expire in <strong>$diasRestantes days</strong>.</p>
+                <p><strong>Expiration Date:</strong> $fechaExpiracion</p>
+                <p>Please renew your access before it expires.</p>
+                <p><a href='" . (isset($BASE_URL) ? $BASE_URL : 'http://localhost/fuddo/') . "$urlAccion' style='background-color: #FF6B6B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Renew Now</a></p>
+            ";
+        }
+        
+        // Enviar correo
+        enviarCorreo($emailDestino, $asunto, $cuerpo);
+        
+        error_log("[ALERTA EXPIRACIÓN] Notificación enviada a $emailDestino para $nombreRestaurante");
+        
+    } catch (Exception $e) {
+        error_log("[ERROR ALERTA EXPIRACIÓN] " . $e->getMessage());
+    }
+}
+
 
 // Obtener foto del usuario actual desde usuarios_master
 $fotoUsuario = 'dist/img/user2-160x160.jpg'; // Foto por defecto
@@ -112,11 +239,11 @@ function tieneReporte($clave) {
     return in_array($clave, $permisos_reportes);
 }
 
-// Definir BASE_URL si no está definido o corregir si está mal formada
-if (!isset($BASE_URL) || strpos($BASE_URL, '/fuddo/') === false) {
+// BASE_URL se debe definir en url.php antes de incluir este archivo
+// Si no está definido, usar un valor por defecto seguro
+if (!isset($BASE_URL)) {
   $BASE_URL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-  $BASE_URL .= "://" . $_SERVER['HTTP_HOST'];
-  $BASE_URL .= "/fuddo/";
+  $BASE_URL .= "://" . $_SERVER['HTTP_HOST'] . "/";
 }
 // Normalizar para evitar duplicados o rutas erróneas
 $BASE_URL = rtrim($BASE_URL, "/") . "/";
@@ -250,10 +377,42 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
           <?php endif; ?>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header"><?= $totalNotificaciones ?> <?= $totalNotificaciones != 1 ? $notif_notificaciones : $notif_notificacion ?> <?= $notif_stock_bajo ?></span>
+          <span class="dropdown-item dropdown-header"><?= $totalNotificaciones ?> <?= $totalNotificaciones != 1 ? $notif_notificaciones : $notif_notificacion ?></span>
           <div class="dropdown-divider"></div>
           
-          <?php if ($totalNotificaciones > 0): ?>
+          <?php if (!empty($alertaExpiración)): ?>
+            <!-- ALERTA DE EXPIRACIÓN -->
+            <a href="#" class="dropdown-item" style="background-color: #fff3cd; border-left: 4px solid #ff6b6b;">
+              <i class="fas fa-hourglass-end text-danger mr-2" style="font-size: 1.2em;"></i> 
+              <div style="margin-left: 30px;">
+                <strong style="color: #d32f2f;">
+                  <?php if ($alertaExpiración['dias_restantes'] === 0): ?>
+                    Expira HOY
+                  <?php elseif ($alertaExpiración['dias_restantes'] === 1): ?>
+                    Expira mañana (1 día)
+                  <?php else: ?>
+                    Expira en <?= $alertaExpiración['dias_restantes'] ?> días
+                  <?php endif; ?>
+                </strong>
+                <br/>
+                <small style="color: #666;">
+                  <?php if ($alertaExpiración['plan'] === 'demo'): ?>
+                    Período de demostración finaliza el <?= date('d/m/Y', strtotime($alertaExpiración['fecha_expiracion'])) ?>
+                  <?php else: ?>
+                    Tu suscripción vence el <?= date('d/m/Y', strtotime($alertaExpiración['fecha_expiracion'])) ?>
+                  <?php endif; ?>
+                </small>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+          <?php endif; ?>
+          
+          <?php if (count($productosBajoStock) > 0): ?>
+            <span class="dropdown-item dropdown-header"><?= count($productosBajoStock) ?> <?= count($productosBajoStock) != 1 ? $notif_notificaciones : $notif_notificacion ?> <?= $notif_stock_bajo ?></span>
+            <div class="dropdown-divider"></div>
+          <?php endif; ?>
+          
+          <?php if (count($productosBajoStock) > 0): ?>
             <?php foreach ($productosBajoStock as $producto): ?>
               <a href="<?= $BASE_URL ?>productos/productos.php" class="dropdown-item">
                 <i class="fas fa-exclamation-triangle text-warning mr-2"></i> 
@@ -264,19 +423,21 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
             <?php endforeach; ?>
             <a href="<?= $BASE_URL ?>productos/productos.php" class="dropdown-item dropdown-footer" style="color: #27ae60;"><?= $notif_ver_todos_productos ?></a>
           <?php else: ?>
-            <a href="#" class="dropdown-item text-center text-muted">
-              <i class="fas fa-check-circle mr-2"></i> <?= $notif_no_productos_bajo_stock ?>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="<?= $BASE_URL ?>productos/productos.php" class="dropdown-item dropdown-footer" style="color: #27ae60;"><?= $notif_ver_productos ?></a>
+            <?php if (empty($alertaExpiración)): ?>
+              <a href="#" class="dropdown-item text-center text-muted">
+                <i class="fas fa-check-circle mr-2"></i> <?= $notif_no_productos_bajo_stock ?>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="<?= $BASE_URL ?>productos/productos.php" class="dropdown-item dropdown-footer" style="color: #27ae60;"><?= $notif_ver_productos ?></a>
+            <?php endif; ?>
           <?php endif; ?>
         </div>
       </li>
 
-      <!-- Soporte Restaurantes (Solo Super-Admin) -->
+      <!-- Soporte a Organizaciones (Solo Super-Admin) -->
       <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'super-admin'): ?>
       <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalSoporteRestaurante" title="Soporte a Clientes">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalSoporteRestaurante" title="Soporte a Organizaciones">
           <i class="fas fa-tools"></i>
         </a>
       </li>
@@ -328,8 +489,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       <!-- Sidebar Menu -->
            <!-- Sidebar Menu -->
            <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column"
-    data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="padding-bottom: 40px;">
 
 
   <!-- Mesas -->
@@ -386,7 +546,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
     <a href="#" class="nav-link">
       <i class="nav-icon fas fa-calculator"></i>
       <p>
-        Costeo
+        <?php echo $menu_costeo; ?>
         <i class="right fas fa-angle-left"></i>
       </p>
     </a>
@@ -396,7 +556,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       <li class="nav-item">
         <a href="<?php echo $BASE_URL; ?>materias_primas/materias_primas.php" class="nav-link">
           <i class="fas fa-leaf nav-icon"></i>
-          <p>Materias Primas</p>
+          <p><?php echo $menu_materias_primas; ?></p>
         </a>
       </li>
       <?php endif; ?>
@@ -408,7 +568,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
           <span class="nav-icon-svg">
             <?php include __DIR__ . '/../assets/icons/recetas.svg'; ?>
           </span>
-          <p>Recetas</p>
+          <p><?php echo $menu_recetas; ?></p>
         </a>
       </li>
       <?php endif; ?>
@@ -433,7 +593,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>menu-digital/index.php" class="nav-link">
       <i class="nav-icon fas fa-qrcode"></i>
-      <p>Menú Digital</p>
+      <p><?php echo $menu_digital; ?></p>
     </a>
   </li>
   <?php endif; ?>
@@ -443,7 +603,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>usuarios/usuarios_organizacion.php" class="nav-link">
       <i class="nav-icon fas fa-user-tie"></i>
-      <p>Usuarios</p>
+      <p><?php echo $menu_usuarios; ?></p>
     </a>
   </li>
   <?php endif; ?>
@@ -455,20 +615,20 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       <span class="nav-icon-svg">
         <?php include __DIR__ . '/../assets/icons/carrito.svg'; ?>
       </span>
-      <p>Pedidos</p>
+      <p><?php echo $menu_pedidos; ?></p>
     </a>
   </li>
   <?php endif; ?>
 
   <!-- Separador para opciones de super-admin -->
   <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'super-admin'): ?>
-  <li class="nav-header">ADMINISTRACIÓN</li>
+  <li class="nav-header"><?php echo $menu_administracion; ?></li>
   
   <!-- Usuarios (solo para super-admin) -->
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>usuarios/usuarios.php" class="nav-link">
       <i class="nav-icon fas fa-users"></i>
-      <p>Usuarios</p>
+      <p><?php echo $menu_usuarios; ?></p>
     </a>
   </li>
 
@@ -476,7 +636,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
   <li class="nav-item">
     <a href="<?php echo $BASE_URL; ?>restaurantes/restaurantes.php" class="nav-link">
       <i class="nav-icon fas fa-building"></i>
-      <p>Organizaciones</p>
+      <p><?php echo $menu_restaurantes; ?></p>
     </a>
   </li>
 
@@ -485,7 +645,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
     <a href="#" class="nav-link">
       <i class="nav-icon fas fa-shield-alt"></i>
       <p>
-        Permisos
+        <?php echo $menu_permisos; ?>
         <i class="right fas fa-angle-left"></i>
       </p>
     </a>
@@ -493,13 +653,13 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       <li class="nav-item">
         <a href="<?php echo $BASE_URL; ?>permisos_restaurantes.php" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
-          <p>Aplicaciones</p>
+          <p><?php echo $menu_aplicaciones; ?></p>
         </a>
       </li>
       <li class="nav-item">
         <a href="<?php echo $BASE_URL; ?>permisos_reportes.php" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
-          <p>Reportes</p>
+          <p><?php echo $menu_permisos_reportes; ?></p>
         </a>
       </li>
       </li><li class="nav-item">
@@ -559,7 +719,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
         <div class="modal-content">
             <div class="modal-header" style="background-color: #27ae60; color: white;">
                 <h5 class="modal-title">
-                    <i class="fas fa-tools"></i> Soporte a Clientes
+                    <i class="fas fa-tools"></i> Soporte a Organizaciones
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" style="color: white;">
                     <span>&times;</span>
@@ -569,20 +729,22 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
                 <div class="modal-body">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> 
-                        Selecciona un restaurante para conectarte a su base de datos y brindar soporte técnico.
+                        <?php echo $sel_info_organizaciones; ?>
                     </div>
                     
                     <div class="form-group">
-                        <label for="restaurante_soporte">Seleccionar Restaurante <span class="text-danger">*</span></label>
+                        <label for="restaurante_soporte"><?php echo $sel_seleccionar_organizacion; ?> <span class="text-danger">*</span></label>
                         <select class="form-control" id="restaurante_soporte" name="id_restaurante" required>
-                            <option value="">-- Seleccione un restaurante --</option>
+                            <option value=""><?php echo $sel_seleccionar_organizacion_default; ?></option>
                             <?php
-                            $sqlRestaurantes = "SELECT id, nombre, nombre_bd FROM restaurantes WHERE estado = 'activo' ORDER BY nombre ASC";
+                            // Incluir restaurantes activos y demos para soporte
+                            $sqlRestaurantes = "SELECT id, nombre, nombre_bd, plan FROM restaurantes WHERE estado = 'activo' OR plan = 'demo' ORDER BY nombre ASC";
                             $resultRestaurantes = $conexion_master->query($sqlRestaurantes);
                             if ($resultRestaurantes && $resultRestaurantes->num_rows > 0) {
                                 while($rest = $resultRestaurantes->fetch_assoc()) {
+                                    $labelExtra = ($rest['plan'] === 'demo') ? ' [DEMO]' : '';
                                     echo '<option value="' . $rest['id'] . '" data-nombre-bd="' . $rest['nombre_bd'] . '">' 
-                                         . htmlspecialchars($rest['nombre']) . '</option>';
+                                         . htmlspecialchars($rest['nombre'] . $labelExtra) . '</option>';
                                 }
                             }
                             ?>
@@ -591,7 +753,7 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
 
                     <div id="infoRestauranteActual" class="alert alert-warning" style="display: none;">
                         <i class="fas fa-exclamation-triangle"></i> 
-                        Actualmente estás conectado a: <strong id="restauranteActualNombre"></strong>
+                        Actualmente conectado a: <strong id="restauranteActualNombre"></strong>
                     </div>
                 </div>
                 <div class="modal-footer">

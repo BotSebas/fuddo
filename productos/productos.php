@@ -19,7 +19,7 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> Acceso Restringido</h1>
+              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> <?php echo $msg_acceso_restringido_titulo; ?></h1>
             </div>
           </div>
         </div>
@@ -27,10 +27,10 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
       <section class="content">
         <div class="container-fluid">
           <div class="alert alert-warning">
-            <h5><i class="icon fas fa-info-circle"></i> Información</h5>
-            Para acceder a esta sección debes estar dando soporte a un restaurante específico.
+            <h5><i class="icon fas fa-info-circle"></i> <?php echo $msg_informacion_titulo; ?></h5>
+            <?php echo $msg_acceso_restringido_desc; ?>
             <br><br>
-            Ve al módulo <a href="../restaurantes/restaurantes.php" class="alert-link"><strong>Restaurantes</strong></a> y selecciona "Dar Soporte" al restaurante que deseas gestionar.
+            <?php echo $msg_ir_modulo_restaurantes; ?> <a href="../restaurantes/restaurantes.php" class="alert-link"><strong><?php echo $modulo_restaurantes_enlace; ?></strong></a> <?php echo $msg_selecciona_dar_soporte; ?>
           </div>
         </div>
       </section>
@@ -121,8 +121,8 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['exito']) && $_GET['exito'] == 'carga_masiva'): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong><i class="fas fa-check-circle"></i> ¡Carga Masiva Exitosa!</strong><br>
-          Se han creado <strong><?php echo isset($_GET['total']) ? intval($_GET['total']) : 0; ?></strong> productos correctamente.
+          <strong><i class="fas fa-check-circle"></i> <?php echo $msg_carga_masiva_exito; ?></strong><br>
+          <?php echo $msg_carga_masiva_total; ?> <strong><?php echo isset($_GET['total']) ? intval($_GET['total']) : 0; ?></strong> <?php echo $msg_carga_masiva_productos; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -131,7 +131,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['error']) && $_GET['error'] == 'acceso_denegado'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Error:</strong> Solo super-admins pueden realizar carga masiva.
+          <strong><?php echo $msg_error_titulo; ?>:</strong> <?php echo $msg_error_carga_acceso; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -140,7 +140,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_archivo'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Error:</strong> No se recibió ningún archivo.
+          <strong><?php echo $msg_error_titulo; ?>:</strong> <?php echo $msg_error_sin_archivo; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -149,7 +149,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['error']) && $_GET['error'] == 'formato_invalido'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Error:</strong> El archivo debe ser formato Excel (.xlsx o .xls).
+          <strong><?php echo $msg_error_titulo; ?>:</strong> <?php echo $msg_error_archivo_invalido; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -158,7 +158,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_productos'): ?>
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>Advertencia:</strong> No se pudo crear ningún producto. Verifica el formato del archivo.
+          <strong><?php echo $msg_exito_titulo; ?>:</strong> <?php echo $msg_error_sin_productos; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -167,7 +167,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
       
       <?php if(isset($_GET['error']) && $_GET['error'] == 'excepcion'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Error:</strong> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : 'Error al procesar el archivo'; ?>
+          <strong><?php echo $msg_error_titulo; ?>:</strong> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : $msg_error_procesar_archivo; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -180,7 +180,7 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
           <button class="btn btn-success" data-toggle="modal" data-target="#modalProducto" onclick="abrirModal()"><?php echo $producto_nuevo; ?></button>
           <?php if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' && isset($_SESSION['id_restaurante'])): ?>
             <button class="btn btn-info ml-2" data-toggle="modal" data-target="#modalCargaMasiva">
-              <i class="fas fa-file-csv"></i> Carga Masiva (CSV)
+              <i class="fas fa-file-csv"></i> <?php echo $modal_carga_masiva_titulo; ?>
             </button>
           <?php endif; ?>
         </div>
@@ -336,11 +336,11 @@ $productosPagina = array_slice($productos, $inicio, $porPagina);
         <form id="formCargaMasiva" method="POST" action="carga_masiva.php" enctype="multipart/form-data">
           <div class="form-group">
             <label for="archivoExcel">
-              <i class="fas fa-upload"></i> Seleccionar archivo CSV
+              <i class="fas fa-upload"></i> <?php echo $sel_seleccionar_archivo_csv; ?>
             </label>
             <div class="custom-file">
               <input type="file" class="custom-file-input" id="archivoExcel" name="archivo" accept=".csv" required>
-              <label class="custom-file-label" for="archivoExcel">Seleccionar archivo CSV...</label>
+              <label class="custom-file-label" for="archivoExcel"><?php echo $sel_seleccionar_archivo_csv; ?></label>
             </div>
           </div>
         </form>

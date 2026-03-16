@@ -62,9 +62,9 @@
           <input type="hidden" id="comandaIdNuevo" name="comanda_id">
           
           <div class="form-group">
-            <label for="productoComanda">Producto</label>
+            <label for="productoComanda"><?php echo $label_producto ?? 'Producto'; ?></label>
             <select class="form-control select2" id="productoComanda" name="producto_id" required style="width: 100%;">
-              <option value="">Seleccionar producto</option>
+              <option value=""><?php echo $sel_seleccionar_producto; ?></option>
               <?php
               include '../includes/conexion.php';
               $sqlProductos = "SELECT id, nombre_producto, valor_con_iva, inventario FROM " . TBL_PRODUCTOS . " WHERE estado = 'activo' AND inventario > 0 ORDER BY nombre_producto ASC";
@@ -138,9 +138,9 @@
         <div class="row mt-4">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="metodoPagoComanda"><strong>Método de Pago</strong></label>
+              <label for="metodoPagoComanda"><strong><?php echo $label_metodo ?? 'Método de Pago'; ?></strong></label>
               <select class="form-control" id="metodoPagoComanda" required>
-                <option value="">Seleccionar método</option>
+                <option value=""><?php echo $sel_seleccionar_metodo; ?></option>
                 <option value="efectivo">Efectivo</option>
                 <option value="llave">Llave</option>
                 <option value="nequi">Nequi</option>

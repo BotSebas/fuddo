@@ -40,7 +40,11 @@ if (session_status() === PHP_SESSION_NONE) {
 // Definir prefijo de tabla según el restaurante
 $TABLE_PREFIX = '';
 
-if (isset($_SESSION['identificador']) && !empty($_SESSION['identificador'])) {
+if (isset($_SESSION['nombre_bd']) && !empty($_SESSION['nombre_bd'])) {
+    // Si nombre_bd está seteado en sesión, usarlo directamente (prioritario)
+    // Esto es importante para soporte a restaurantes demo (prefijo: fuddo_demo_...)
+    $TABLE_PREFIX = $_SESSION['nombre_bd'];
+} elseif (isset($_SESSION['identificador']) && !empty($_SESSION['identificador'])) {
     // Usuario tiene restaurante asignado: usar prefijo
     $TABLE_PREFIX = 'fuddo_' . $_SESSION['identificador'] . '_';
 } elseif (isset($_SESSION['rol']) && $_SESSION['rol'] === 'super-admin') {

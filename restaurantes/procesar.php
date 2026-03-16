@@ -91,7 +91,7 @@ try {
             
             echo json_encode([
                 'success' => true,
-                'message' => 'Restaurante creado exitosamente con tablas prefijadas'
+                'message' => 'Organización creada exitosamente con tablas prefijadas'
             ]);
             
         } else {
@@ -142,7 +142,7 @@ try {
             
             echo json_encode([
                 'success' => true,
-                'message' => 'Restaurante creado exitosamente'
+                'message' => 'Organización creada exitosamente'
             ]);
         }
         

@@ -254,6 +254,275 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
     }
 }
 
+// IMPORTAR CSV
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'importar_csv') {
+    try {
+        // Verificar permisos (super-admin o user con app 'productos')
+        $tienePermiso = false;
+        
+        if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin') {
+            $tienePermiso = true;
+        } elseif (isset($_SESSION['rol']) && tienePermiso('productos')) {
+            $tienePermiso = true;
+        }
+        
+        if (!$tienePermiso) {
+            throw new Exception('No tienes permisos para importar materias primas');
+        }
+        
+        // Validar archivo
+        if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
+            throw new Exception('Error al subir el archivo');
+        }
+        
+        $file = $_FILES['csv_file'];
+        $filePath = $file['tmp_name'];
+        
+        // Validar tipo y tamaño
+        $maxSize = 5 * 1024 * 1024; // 5MB
+        if ($file['size'] > $maxSize) {
+            throw new Exception('El archivo supera 5MB');
+        }
+        
+        if (!in_array($file['type'], ['text/csv', 'application/vnd.ms-excel', 'text/plain'])) {
+            if (!preg_match('/\.csv$/i', $file['name'])) {
+                throw new Exception('El archivo debe ser formato CSV');
+            }
+        }
+        
+        // Abrir y procesar CSV
+        if (!file_exists($filePath) || !is_readable($filePath)) {
+            throw new Exception('No se puede leer el archivo');
+        }
+        
+        $handle = fopen($filePath, 'r');
+        if (!$handle) {
+            throw new Exception('Error al abrir el archivo');
+        }
+        
+        // Detectar separador: leer primera línea y contar comas vs punto-comas
+        $primeraLinea = fgets($handle);
+        if (!$primeraLinea) {
+            fclose($handle);
+            throw new Exception('El archivo está vacío');
+        }
+        
+        // Normalizar la línea (remover espacios, comillas extras)
+        $primeraLinea = trim($primeraLinea);
+        
+        // Detectar separador automáticamente
+        $contarComas = substr_count($primeraLinea, ',');
+        $contarPuntoComas = substr_count($primeraLinea, ';');
+        $separador = ($contarPuntoComas > $contarComas) ? ';' : ',';
+        
+        error_log("DEBUG: Primera línea: $primeraLinea");
+        error_log("DEBUG: Separador detectado: $separador (comas: $contarComas, punto-comas: $contarPuntoComas)");
+        
+        // Volver al inicio para procesar con el separador correcto
+        rewind($handle);
+        
+        // Leer encabezado con el separador detectado
+        $encabezado = fgetcsv($handle, 0, $separador);
+        if (!$encabezado) {
+            fclose($handle);
+            throw new Exception('El archivo está vacío o no es un CSV válido');
+        }
+        
+        // Normalizar encabezado - ULTRA ROBUSTO (igual que frontend)
+        $encabezado = array_map(function($col) {
+            $col = trim($col);
+            
+            // Remover BOM UTF-8 si existe (carácter especial al inicio)
+            if (substr($col, 0, 3) === "\xEF\xBB\xBF") {
+                $col = substr($col, 3);
+            }
+            
+            // Remover comillas dobles
+            $col = str_replace('"', '', $col);
+            // Remover comillas simples
+            $col = str_replace("'", '', $col);
+            
+            return trim($col);
+        }, $encabezado);
+        
+        // Convertir a minúsculas
+        $encabezado = array_map('strtolower', $encabezado);
+        
+        // Filtrar columnas vacías
+        $encabezado = array_filter($encabezado, function($col) {
+            return !empty($col);
+        });
+        
+        // Validar columnas requeridas (SIN id_materia_prima porque se genera automáticamente)
+        $columnasRequeridas = ['nombre', 'unidad_medida', 'cantidad_base_comprada', 'costo_total_base'];
+        
+        // Usar array_intersect para encontrar columnas que existen EN AMBOS arrays
+        $columnasEncontradas = array_intersect($columnasRequeridas, $encabezado);
+        
+        error_log("DEBUG: Encabezado procesado: " . json_encode($encabezado));
+        error_log("DEBUG: Columnas requeridas: " . json_encode($columnasRequeridas));
+        error_log("DEBUG: Columnas encontradas: " . json_encode($columnasEncontradas));
+        error_log("DEBUG: Validación: " . count($columnasEncontradas) . " de " . count($columnasRequeridas));
+        
+        if (count($columnasEncontradas) !== count($columnasRequeridas)) {
+            $faltantes = array_diff($columnasRequeridas, $columnasEncontradas);
+            fclose($handle);
+            error_log("ERROR: Faltantes: " . json_encode($faltantes));
+            throw new Exception('El CSV no tiene todas las columnas requeridas: ' . implode(', ', $columnasRequeridas) . ' | Encontrado: ' . implode(', ', $encabezado));
+        }
+        
+        // Obtener el próximo número de ID automático
+        $sqlMaxId = "SELECT id_materia_prima FROM " . TBL_MATERIAS_PRIMAS . " WHERE id_materia_prima LIKE 'MP-%' ORDER BY CAST(SUBSTRING(id_materia_prima, 4) AS UNSIGNED) DESC LIMIT 1";
+        $resMaxId = $conexion->query($sqlMaxId);
+        $proximoNumero = 1;
+        if ($resMaxId && $resMaxId->num_rows > 0) {
+            $rowMaxId = $resMaxId->fetch_assoc();
+            $ultimoId = $rowMaxId['id_materia_prima'];
+            // Extraer número de MP-123 → 123
+            $numero = intval(substr($ultimoId, 3));
+            $proximoNumero = $numero + 1;
+        }
+        
+        // Procesar datos
+        $insertadas = 0;
+        $errores = 0;
+        $erroresDetalle = [];
+        $idosExistentes = [];
+        $linea = 2; // Contador de línea (comenzando en 2 porque 1 es encabezado)
+        
+        // Preparar statement
+        $sql = "INSERT INTO " . TBL_MATERIAS_PRIMAS . " 
+                (id_materia_prima, nombre, unidad_medida, cantidad_base_comprada, costo_total_base, 
+                 costo_por_unidad_minima, unidad_minima, cantidad_en_unidad_minima, estado, fecha_creacion) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'activo', NOW())";
+        
+        $stmt = $conexion->prepare($sql);
+        if (!$stmt) {
+            throw new Exception('Error al preparar la consulta: ' . $conexion->error);
+        }
+        
+        while (($fila = fgetcsv($handle, 0, $separador)) !== false) {
+            // Limpiar y normalizar todos los valores de la fila
+            $fila = array_map(function($valor) {
+                $valor = trim($valor);
+                
+                // Remover BOM UTF-8 si existe
+                if (substr($valor, 0, 3) === "\xEF\xBB\xBF") {
+                    $valor = substr($valor, 3);
+                }
+                
+                // Remover comillas
+                $valor = str_replace('"', '', $valor);
+                $valor = str_replace("'", '', $valor);
+                
+                return trim($valor);
+            }, $fila);
+            
+            // Mapear a índices (SIN id_materia_prima porque se genera automáticamente)
+            $nombre = $fila[array_search('nombre', $encabezado)] ?? '';
+            $unidad = strtolower($fila[array_search('unidad_medida', $encabezado)] ?? '');
+            $cantidad = floatval($fila[array_search('cantidad_base_comprada', $encabezado)] ?? 0);
+            $costo = floatval($fila[array_search('costo_total_base', $encabezado)] ?? 0);
+            
+            // Generar ID automático
+            $idMateria = 'MP-' . $proximoNumero;
+            
+            // Validaciones
+            if (empty($nombre) || empty($unidad) || $cantidad <= 0 || $costo < 0) {
+                $errores++;
+                $erroresDetalle[] = "Línea $linea: Datos inválidos o incompletos";
+                $linea++;
+                continue;
+            }
+            
+            // Validar unidad
+            $unidadesValidas = ['kg', 'g', 'lb', 'l', 'ml', 'und'];
+            if (!in_array($unidad, $unidadesValidas)) {
+                $errores++;
+                $erroresDetalle[] = "Línea $linea: Unidad inválida '$unidad'";
+                $linea++;
+                continue;
+            }
+            
+            // Calcular conversión
+            try {
+                $conversion = convertirAUnidadMinima($cantidad, $unidad);
+                $costoUnitario = calcularCostoUnitarioMinimo($costo, $cantidad, $unidad);
+            } catch (Exception $e) {
+                $errores++;
+                $erroresDetalle[] = "Línea $linea: " . $e->getMessage();
+                $linea++;
+                continue;
+            }
+            
+            // Escapar strings
+            $idMateria = $conexion->real_escape_string($idMateria);
+            $nombre = $conexion->real_escape_string($nombre);
+            $unidadMinima = $conexion->real_escape_string($conversion['unidad_minima']);
+            
+            // Preparar bind
+            $bind = [
+                's', // id_materia_prima
+                's', // nombre
+                's', // unidad_medida
+                'd', // cantidad_base_comprada
+                'd', // costo_total_base
+                'd', // costo_por_unidad_minima
+                's', // unidad_minima
+                'd'  // cantidad_en_unidad_minima
+            ];
+            
+            $stmt->bind_param(
+                implode('', $bind),
+                $idMateria,
+                $nombre,
+                $unidad,
+                $cantidad,
+                $costo,
+                $costoUnitario,
+                $unidadMinima,
+                $conversion['cantidad_convertida']
+            );
+            
+            if (!$stmt->execute()) {
+                $errores++;
+                $erroresDetalle[] = "Línea $linea: " . $conexion->error;
+            } else {
+                $insertadas++;
+                $proximoNumero++; // Incrementar para la siguiente iteración
+            }
+            
+            $linea++;
+        }
+        
+        fclose($handle);
+        $stmt->close();
+        
+        // Responder con resumen
+        $mensaje = "Importación completada";
+        if (count($idosExistentes) > 0) {
+            $mensaje .= "\n" . count($idosExistentes) . " registros actualizados (ya existían)";
+        }
+        
+        echo json_encode([
+            'exito' => true,
+            'insertadas' => $insertadas,
+            'errores' => $errores,
+            'mensaje' => $mensaje,
+            'detalles' => array_slice($erroresDetalle, 0, 5) // Máximo 5 errores
+        ]);
+        exit();
+        
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode([
+            'exito' => false,
+            'mensaje' => $e->getMessage()
+        ]);
+        exit();
+    }
+}
+
 // Si no hay acción válida
 header("Location: materias_primas.php");
 exit();

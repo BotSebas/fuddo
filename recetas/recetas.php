@@ -20,7 +20,7 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> Acceso Restringido</h1>
+              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> <?php echo $msg_acceso_restringido_titulo; ?></h1>
             </div>
           </div>
         </div>
@@ -28,8 +28,8 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
       <section class="content">
         <div class="container-fluid">
           <div class="alert alert-warning">
-            <h5><i class="icon fas fa-info-circle"></i> Información</h5>
-            Para acceder a esta sección debes estar dando soporte a un restaurante específico.
+            <h5><i class="icon fas fa-info-circle"></i> <?php echo $msg_informacion_titulo; ?></h5>
+            <?php echo $msg_acceso_restringido_desc; ?>
           </div>
         </div>
       </section>
@@ -385,7 +385,7 @@ if ($resMP && $resMP->num_rows > 0) {
 
           <hr>
 
-          <div class="alert alert-info">
+          <div class="alert alert-gray">
             <strong><i class="fas fa-calculator"></i> Costo Total de la Receta:</strong><br>
             <h4 style="color: #27ae60;"><strong id="costoTotalReceta">$0.00</strong></h4>
           </div>

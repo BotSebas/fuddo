@@ -1,0 +1,107 @@
+[09-Mar-2026 21:51:42 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO] Iniciando creación de BD: fuddo_demo_elbuensazon_6
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO] BD creada: fuddo_demo_elbuensazon_6
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en fuddo_demo_elbuensazon_6
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian0 (ID: 14)
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 13, Identificador: fuddo_demo_elbuensazon)
+[09-Mar-2026 21:51:59 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian0@gmail.com | BD: fuddo_demo_elbuensazon_6 | Identificador: fuddo_demo_elbuensazon
+[09-Mar-2026 22:04:31 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_parrillasantanderiana_
+[09-Mar-2026 22:04:32 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_parrillasantanderiana_
+[09-Mar-2026 22:04:32 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian333 (ID: 15)
+[09-Mar-2026 22:04:32 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: parrilla santanderiana (ID: 15, Identificador: fuddo_demo_parrillasantanderiana, Prefijo: fuddo_demo_parrillasantanderiana_)
+[09-Mar-2026 22:04:32 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian333@gmail.com | Prefijo: fuddo_demo_parrillasantanderiana_ | Identificador: fuddo_demo_parrillasantanderiana
+[09-Mar-2026 22:32:35 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Mar-2026 22:32:49 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_parrillagastro_
+[09-Mar-2026 22:32:50 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_parrillagastro_
+[09-Mar-2026 22:32:50 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian123 (ID: 16)
+[09-Mar-2026 22:32:50 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: parrilla gastro (ID: 16, Identificador: fuddo_demo_parrillagastro, Prefijo: fuddo_demo_parrillagastro_)
+[09-Mar-2026 22:32:52 Europe/Berlin] [CORREO ENVIADO] A: aryastian123@gmail.com | Asunto: ¡Bienvenido a parrilla gastro en FUDDO!
+[09-Mar-2026 22:32:52 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian123@gmail.com
+[09-Mar-2026 22:32:52 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian123@gmail.com | Prefijo: fuddo_demo_parrillagastro_ | Identificador: fuddo_demo_parrillagastro | Token enviado
+[09-Mar-2026 23:14:15 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:14:16 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:14:16 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian (ID: 17)
+[09-Mar-2026 23:14:16 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 17, Identificador: fuddo_demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_)
+[09-Mar-2026 23:14:18 Europe/Berlin] [CORREO ENVIADO] A: aryastian@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Mar-2026 23:14:18 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian@gmail.com
+[09-Mar-2026 23:14:18 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: fuddo_demo_elbuensazon | Token enviado
+[09-Mar-2026 23:14:47 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:14:47 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:14:47 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian (ID: 18)
+[09-Mar-2026 23:14:47 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 18, Identificador: fuddo_demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_)
+[09-Mar-2026 23:14:49 Europe/Berlin] [CORREO ENVIADO] A: aryastian@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Mar-2026 23:14:49 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian@gmail.com
+[09-Mar-2026 23:14:49 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: fuddo_demo_elbuensazon | Token enviado
+[09-Mar-2026 23:22:49 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_laabuelahome_
+[09-Mar-2026 23:22:50 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_laabuelahome_
+[09-Mar-2026 23:22:50 Europe/Berlin] [DEMO REGISTRO] Usuario creado: sebastian.penaloza.gutierrez (ID: 19)
+[09-Mar-2026 23:22:50 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: la abuela home (ID: 19, Identificador: fuddo_demo_laabuelahome, Prefijo: fuddo_demo_laabuelahome_)
+[09-Mar-2026 23:22:52 Europe/Berlin] [CORREO ENVIADO] A: sebastian.penaloza.gutierrez@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Mar-2026 23:22:52 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: sebastian.penaloza.gutierrez@gmail.com
+[09-Mar-2026 23:22:52 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: sebastian.penaloza.gutierrez@gmail.com | Prefijo: fuddo_demo_laabuelahome_ | Identificador: fuddo_demo_laabuelahome | Token enviado
+[09-Mar-2026 23:34:05 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_laabuelahome_
+[09-Mar-2026 23:34:05 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_laabuelahome_
+[09-Mar-2026 23:34:05 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian (ID: 20)
+[09-Mar-2026 23:34:05 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: la abuela home (ID: 20, Identificador: demo_laabuelahome, Prefijo: fuddo_demo_laabuelahome_)
+[09-Mar-2026 23:34:08 Europe/Berlin] [CORREO ENVIADO] A: aryastian@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Mar-2026 23:34:08 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian@gmail.com
+[09-Mar-2026 23:34:08 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian@gmail.com | Prefijo: fuddo_demo_laabuelahome_ | Identificador: demo_laabuelahome | Token enviado
+[09-Mar-2026 23:46:14 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:46:14 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[09-Mar-2026 23:46:14 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian@gmail.com (ID: 21)
+[09-Mar-2026 23:46:14 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 21, Identificador: demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_)
+[09-Mar-2026 23:46:17 Europe/Berlin] [CORREO ENVIADO] A: aryastian@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Mar-2026 23:46:17 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian@gmail.com
+[09-Mar-2026 23:46:17 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: demo_elbuensazon | Token enviado
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO] SQL limpio generado para ejecutar
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas, 0 errores en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_mesas
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_productos
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios_total
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas_total
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_menu_digital
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian22@gmail.com (ID: 22)
+[16-Mar-2026 18:14:25 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 23, Identificador: demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_)
+[16-Mar-2026 18:14:28 Europe/Berlin] [CORREO ENVIADO] A: aryastian22@gmail.com | Asunto: Bienvenido a FUDDO
+[16-Mar-2026 18:14:28 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian22@gmail.com
+[16-Mar-2026 18:14:28 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian22@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: demo_elbuensazon | Token enviado
+[16-Mar-2026 18:30:13 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[16-Mar-2026 18:30:13 Europe/Berlin] [DEMO REGISTRO] SQL limpio generado para ejecutar
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas, 0 errores en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_mesas
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_productos
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios_total
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas_total
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_menu_digital
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian22@gmail.com (ID: 23)
+[16-Mar-2026 18:30:14 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 24, Identificador: demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_, Expira: 2026-03-23)
+[16-Mar-2026 18:30:16 Europe/Berlin] [CORREO ENVIADO] A: aryastian22@gmail.com | Asunto: Bienvenido a FUDDO
+[16-Mar-2026 18:30:16 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian22@gmail.com
+[16-Mar-2026 18:30:16 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian22@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: demo_elbuensazon | Token enviado
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_elbuensazon_
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] SQL limpio generado para ejecutar
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas, 0 errores en mgacgdnjkg con prefijo: fuddo_demo_elbuensazon_
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_mesas
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_productos
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_servicios_total
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_comandas_total
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_elbuensazon_menu_digital
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian22@gmail.com (ID: 24)
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: el buen sazon (ID: 25, Identificador: demo_elbuensazon, Prefijo: fuddo_demo_elbuensazon_, Expira: 2026-03-23)
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: mesas (ID: 1) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: productos (ID: 2) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: cocina (ID: 3) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: reportes (ID: 4) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: menu_digital (ID: 7) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: usuarios (ID: 8) al restaurante ID: 25
+[16-Mar-2026 19:09:10 Europe/Berlin] [DEMO REGISTRO] Total de aplicaciones asignadas: 6 para tipo: restaurante-bar
+[16-Mar-2026 19:09:13 Europe/Berlin] [CORREO ENVIADO] A: aryastian22@gmail.com | Asunto: Bienvenido a FUDDO
+[16-Mar-2026 19:09:13 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian22@gmail.com
+[16-Mar-2026 19:09:13 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian22@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: demo_elbuensazon | Token enviado
