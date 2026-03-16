@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <!-- Custom Login Style -->
   <link rel="stylesheet" href="assets/css/fuddo-login.css">
+  <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/logo-fuddo.ico">
 </head>
 <body class="hold-transition login-page fuddo-login-bg">
 <div class="login-box">

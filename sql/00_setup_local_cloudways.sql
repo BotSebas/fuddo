@@ -1,4 +1,4 @@
-﻿-- ============================================
+-- ============================================
 -- SETUP LOCAL PARA SIMULAR CLOUDWAYS
 -- Este script crea BD y usuario igual que en Cloudways
 -- para poder probar localmente antes del deployment
@@ -19,7 +19,7 @@ FLUSH PRIVILEGES;
 -- 4. Usar la base de datos
 USE mgacgdnjkg;
 
--- 5. Mostrar informaci├│n
+-- 5. Mostrar información
 SELECT 'Base de datos creada exitosamente!' as Mensaje;
 SELECT DATABASE() as 'Base de Datos Actual';
 SELECT USER() as 'Usuario Actual';

@@ -1,4 +1,4 @@
-﻿-- CONFIGURACI├ôN COMPLETA PARA CLOUDWAYS (UNA SOLA BASE DE DATOS)
+-- CONFIGURACIÓN COMPLETA PARA CLOUDWAYS (UNA SOLA BASE DE DATOS)
 -- Ejecutar este archivo en la base de datos mgacgdnjkg
 
 -- =====================================================
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS usuarios_master (
     INDEX idx_restaurante (id_restaurante)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de aplicaciones/m├│dulos disponibles
+-- Tabla de aplicaciones/módulos disponibles
 CREATE TABLE IF NOT EXISTS aplicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(50) UNIQUE NOT NULL,
@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS productos (
     id_restaurante INT NOT NULL,
     id_producto VARCHAR(50) NOT NULL,
     nombre_producto VARCHAR(150) NOT NULL,
+    costo_producto DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     valor_sin_iva DECIMAL(10,2) NOT NULL,
     valor_con_iva DECIMAL(10,2) NOT NULL,
     inventario INT NOT NULL DEFAULT 0,
@@ -163,21 +164,21 @@ ON DUPLICATE KEY UPDATE usuario=usuario;
 
 -- Insertar aplicaciones base
 INSERT INTO aplicaciones (clave, nombre, descripcion, icono, orden) VALUES
-('mesas', 'Mesas', 'Gesti├│n de mesas y servicios del restaurante', 'fas fa-utensils', 1),
-('productos', 'Productos', 'Administraci├│n de productos e inventario', 'fas fa-box', 2),
+('mesas', 'Mesas', 'Gestión de mesas y servicios del restaurante', 'fas fa-utensils', 1),
+('productos', 'Productos', 'Administración de productos e inventario', 'fas fa-box', 2),
 ('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 3),
-('reportes', 'Reportes', 'Reportes y estad├¡sticas de ventas', 'fas fa-chart-bar', 4),
-('pedidos', 'Pedidos', 'Gesti├│n de pedidos', 'fas fa-shopping-cart', 5)
+('reportes', 'Reportes', 'Reportes y estadísticas de ventas', 'fas fa-chart-bar', 4),
+('pedidos', 'Pedidos', 'Gestión de pedidos', 'fas fa-shopping-cart', 5)
 ON DUPLICATE KEY UPDATE clave=clave;
 
 -- Insertar reportes base
 INSERT INTO reportes (clave, nombre, descripcion, archivo, icono, orden) VALUES
-('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por d├¡a, semana o mes con desglose por m├®todo de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
-('inventario_valorizado', 'Inventario Valorizado', 'Valorizaci├│n del inventario con alertas de stock bajo, cr├¡tico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2)
+('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por día, semana o mes con desglose por método de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
+('inventario_valorizado', 'Inventario Valorizado', 'Valorización del inventario con alertas de stock bajo, crítico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2)
 ON DUPLICATE KEY UPDATE clave=clave;
 
 -- =====================================================
--- CONFIGURACI├ôN COMPLETADA
+-- CONFIGURACIÓN COMPLETADA
 -- =====================================================
 
 SELECT 'Base de datos configurada exitosamente para Cloudways!' as Mensaje;

@@ -3,11 +3,7 @@
 }
 
 .fuddo-login-bg {
-    background-image: url('../img/bg-login.jpg') !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
+    background-color: #141414 !important;
     min-height: 100vh !important;
 }
 
@@ -16,11 +12,7 @@
 }
 
 .hold-transition.login-page {
-    background-image: url('../img/bg-login.jpg') !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
+    background-color: #141414 !important;
     min-height: 100vh !important;
     display: flex;
     align-items: center;
@@ -56,6 +48,7 @@
 .login-box .card-body {
     padding: 30px 20px;
     background: rgba(255, 255, 255, 0.98);
+    border-radius: 10px;
 }
 
 .login-box-msg {

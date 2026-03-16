@@ -1,4 +1,4 @@
-﻿-- CONFIGURACI├ôN MASTER PARA CLOUDWAYS (UNA SOLA BASE DE DATOS)
+-- CONFIGURACIÓN MASTER PARA CLOUDWAYS (UNA SOLA BASE DE DATOS)
 -- Ejecutar este archivo PRIMERO en mgacgdnjkg
 
 -- =====================================================
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS usuarios_master (
     INDEX idx_restaurante (id_restaurante)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de aplicaciones/m├│dulos disponibles
+-- Tabla de aplicaciones/módulos disponibles
 CREATE TABLE IF NOT EXISTS aplicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(50) UNIQUE NOT NULL,
@@ -90,24 +90,25 @@ CREATE TABLE IF NOT EXISTS restaurante_reportes (
 -- DATOS INICIALES
 -- =====================================================
 
--- Usuario super-admin (password: admin123 - C├üMBIALO DESPU├ëS)
+-- Usuario super-admin (password: admin123 - CÁMBIALO DESPUÉS)
 INSERT INTO usuarios_master (usuario, password, nombre, email, rol, estado) 
 VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrador FUDDO', 'admin@fuddo.com', 'super-admin', 'activo')
 ON DUPLICATE KEY UPDATE usuario=usuario;
 
 -- Aplicaciones base
 INSERT INTO aplicaciones (clave, nombre, descripcion, icono, orden) VALUES
-('mesas', 'Mesas', 'Gesti├│n de mesas y servicios del restaurante', 'fas fa-utensils', 1),
-('productos', 'Productos', 'Administraci├│n de productos e inventario', 'fas fa-box', 2),
-('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 3),
-('reportes', 'Reportes', 'Reportes y estad├¡sticas de ventas', 'fas fa-chart-bar', 4),
-('pedidos', 'Pedidos', 'Gesti├│n de pedidos', 'fas fa-shopping-cart', 5)
+('mesas', 'Mesas', 'Gestión de mesas y servicios del restaurante', 'fas fa-utensils', 1),
+('comandas', 'Comandas', 'Gestión de comandas y ventas rápidas', 'fas fa-receipt', 2),
+('productos', 'Productos', 'Administración de productos e inventario', 'fas fa-box', 3),
+('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 4),
+('reportes', 'Reportes', 'Reportes y estadísticas de ventas', 'fas fa-chart-bar', 5),
+('pedidos', 'Pedidos', 'Gestión de pedidos', 'fas fa-shopping-cart', 6)
 ON DUPLICATE KEY UPDATE clave=clave;
 
 -- Reportes base
 INSERT INTO reportes (clave, nombre, descripcion, archivo, icono, orden) VALUES
-('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por d├¡a, semana o mes con desglose por m├®todo de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
-('inventario_valorizado', 'Inventario Valorizado', 'Valorizaci├│n del inventario con alertas de stock bajo, cr├¡tico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2)
+('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por día, semana o mes con desglose por método de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
+('inventario_valorizado', 'Inventario Valorizado', 'Valorización del inventario con alertas de stock bajo, crítico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2)
 ON DUPLICATE KEY UPDATE clave=clave;
 
 SELECT 'Tablas MASTER creadas exitosamente!' as Mensaje;

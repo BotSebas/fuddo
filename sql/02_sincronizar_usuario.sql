@@ -1,4 +1,4 @@
-﻿-- PASO 6: Sincronizar usuario en BD local
+-- PASO 6: Sincronizar usuario en BD local
 -- Ejecutar este SQL en phpMyAdmin
 
 USE fuddo_herenciaargentina;
@@ -21,5 +21,5 @@ ON DUPLICATE KEY UPDATE
     rol = 'fuddo-admin',
     estado = 'activo';
 
--- Verificar que se cre├│ correctamente
+-- Verificar que se creó correctamente
 SELECT id, usuario, nombre, rol, estado FROM usuarios WHERE usuario = 'admin';

@@ -1,4 +1,4 @@
-﻿-- Agregar columna foto a usuarios_master
+-- Agregar columna foto a usuarios_master
 USE fuddo_master;
 
 ALTER TABLE usuarios_master 

@@ -1,4 +1,4 @@
-﻿-- Verificar si la columna ultimo_acceso existe en usuarios_master
+-- Verificar si la columna ultimo_acceso existe en usuarios_master
 -- Si NO existe, ejecutar el ALTER TABLE
 
 USE fuddo_master;

@@ -1,7 +1,7 @@
-﻿-- Sistema de permisos de aplicaciones por restaurante
+-- Sistema de permisos de aplicaciones por restaurante
 USE fuddo_master;
 
--- Tabla de aplicaciones/m├│dulos disponibles en el sistema
+-- Tabla de aplicaciones/módulos disponibles en el sistema
 CREATE TABLE IF NOT EXISTS aplicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(50) UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS aplicaciones (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de relaci├│n restaurante-aplicaciones (permisos)
+-- Tabla de relación restaurante-aplicaciones (permisos)
 CREATE TABLE IF NOT EXISTS restaurante_aplicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_restaurante INT NOT NULL,
@@ -26,10 +26,10 @@ CREATE TABLE IF NOT EXISTS restaurante_aplicaciones (
 
 -- Insertar aplicaciones base del sistema
 INSERT INTO aplicaciones (clave, nombre, descripcion, icono, orden) VALUES
-('mesas', 'Mesas', 'Gesti├│n de mesas y servicios del restaurante', 'fas fa-utensils', 1),
-('productos', 'Productos', 'Administraci├│n de productos e inventario', 'fas fa-box', 2),
+('mesas', 'Mesas', 'Gestión de mesas y servicios del restaurante', 'fas fa-utensils', 1),
+('productos', 'Productos', 'Administración de productos e inventario', 'fas fa-box', 2),
 ('cocina', 'Cocina', 'Vista de pedidos para cocina', 'fas fa-fire', 3),
-('reportes', 'Reportes', 'Reportes y estad├¡sticas de ventas', 'fas fa-chart-bar', 4),
-('pedidos', 'Pedidos', 'Gesti├│n de pedidos', 'fas fa-shopping-cart', 5);
+('reportes', 'Reportes', 'Reportes y estadísticas de ventas', 'fas fa-chart-bar', 4),
+('pedidos', 'Pedidos', 'Gestión de pedidos', 'fas fa-shopping-cart', 5);
 
 SELECT 'Sistema de permisos creado exitosamente!' as Mensaje;

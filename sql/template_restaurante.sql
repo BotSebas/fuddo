@@ -1,5 +1,5 @@
 -- TEMPLATE PARA CREAR TABLAS DE UN RESTAURANTE
--- Este archivo ser?? usado por crear_restaurante.php
+-- Este archivo será usado por crear_restaurante.php
 -- Reemplazar {PREFIX} con fuddo_{identificador}_
 
 -- Tabla de mesas
@@ -87,15 +87,15 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}comandas_total` (
     KEY `idx_fecha` (`fecha_comanda`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de men?? digital (bloques/secciones del men?? p??blico)
+-- Tabla de menú digital (bloques/secciones del menú público)
 CREATE TABLE IF NOT EXISTS `{PREFIX}menu_digital` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `titulo_seccion` varchar(100) NOT NULL,
     `productos_ids` text NOT NULL COMMENT 'IDs de productos separados por comas',
     `orden` int(11) NOT NULL DEFAULT 0,
-    `color_tema` varchar(20) DEFAULT 'verde' COMMENT 'Tema de color del men?? p??blico',
+    `color_tema` varchar(20) DEFAULT 'verde' COMMENT 'Tema de color del menú público',
     `modo_oscuro` TINYINT(1) DEFAULT 0 COMMENT 'Modo oscuro (0=claro, 1=oscuro)',
-    `logo_menu` VARCHAR(255) DEFAULT NULL COMMENT 'Nombre del archivo del logo del men??',
+    `logo_menu` VARCHAR(255) DEFAULT NULL COMMENT 'Nombre del archivo del logo del menú',
     `facebook` VARCHAR(255) DEFAULT NULL,
     `instagram` VARCHAR(255) DEFAULT NULL,
     `tiktok` VARCHAR(255) DEFAULT NULL,
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}materias_primas` (
     `unidad_medida` enum('kg','g','lb','l','ml','und') NOT NULL COMMENT 'Unidad de medida: kg=kilogramo, g=gramo, lb=libra, l=litro, ml=mililitro, und=unidad',
     `cantidad_base_comprada` decimal(10,3) NOT NULL COMMENT 'Cantidad en la unidad de medida original',
     `costo_total_base` decimal(10,2) NOT NULL COMMENT 'Costo total de la cantidad base comprada',
-    `costo_por_unidad_minima` decimal(15,6) NOT NULL COMMENT 'Costo en la unidad m??nima est??ndar (g, ml, und)',
-    `unidad_minima` varchar(10) NOT NULL COMMENT 'Unidad m??nima para c??lculos (g, ml, und)',
-    `cantidad_en_unidad_minima` decimal(15,3) NOT NULL COMMENT 'Cantidad convertida a la unidad m??nima',
+    `costo_por_unidad_minima` decimal(15,6) NOT NULL COMMENT 'Costo en la unidad mínima estándar (g, ml, und)',
+    `unidad_minima` varchar(10) NOT NULL COMMENT 'Unidad mínima para cálculos (g, ml, und)',
+    `cantidad_en_unidad_minima` decimal(15,3) NOT NULL COMMENT 'Cantidad convertida a la unidad mínima',
     `estado` enum('activo','inactivo') DEFAULT 'activo',
     `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
     `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}recetas` (
     `nombre_platillo` varchar(200) NOT NULL,
     `descripcion` text,
     `costo_total_receta` decimal(10,2) DEFAULT 0.00 COMMENT 'Costo total calculado de todos los ingredientes',
-    `id_producto_asociado` int(11) COMMENT 'FK a la tabla de productos si se crea autom??ticamente',
+    `id_producto_asociado` int(11) COMMENT 'FK a la tabla de productos si se crea automáticamente',
     `estado` enum('activo','inactivo') DEFAULT 'activo',
     `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
     `fecha_ultima_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}receta_ingredientes` (
     FOREIGN KEY (`id_materia_prima`) REFERENCES `{PREFIX}materias_primas` (`id_materia_prima`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ??ndice adicional para b??squedas r??pidas
+-- Índice adicional para búsquedas rápidas
 CREATE INDEX idx_receta_materia ON `{PREFIX}receta_ingredientes` (`id_receta`, `id_materia_prima`);
 
 

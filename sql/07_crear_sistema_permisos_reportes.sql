@@ -1,4 +1,4 @@
-﻿-- Sistema de permisos de reportes por restaurante
+-- Sistema de permisos de reportes por restaurante
 USE fuddo_master;
 
 -- Tabla de reportes disponibles en el sistema
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS reportes (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de relaci├│n restaurante-reportes (permisos)
+-- Tabla de relación restaurante-reportes (permisos)
 CREATE TABLE IF NOT EXISTS restaurante_reportes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_restaurante INT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS restaurante_reportes (
 
 -- Insertar reportes base del sistema
 INSERT INTO reportes (clave, nombre, descripcion, archivo, icono, orden) VALUES
-('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por d├¡a, semana o mes con desglose por m├®todo de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
-('inventario_valorizado', 'Inventario Valorizado', 'Valorizaci├│n del inventario con alertas de stock bajo, cr├¡tico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2);
+('cierre_caja', 'Cierre de Caja', 'Reporte detallado de ventas por día, semana o mes con desglose por método de pago y productos', 'cierre_caja.php', 'fas fa-cash-register', 1),
+('inventario_valorizado', 'Inventario Valorizado', 'Valorización del inventario con alertas de stock bajo, crítico y sin existencias', 'inventario_valorizado.php', 'fas fa-boxes', 2);
 
 SELECT 'Sistema de permisos de reportes creado exitosamente!' as Mensaje;

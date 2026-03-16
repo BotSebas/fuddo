@@ -1,4 +1,4 @@
-﻿-- PASO 1: Crear base de datos maestra
+-- PASO 1: Crear base de datos maestra
 CREATE DATABASE IF NOT EXISTS fuddo_master CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE fuddo_master;
@@ -37,7 +37,7 @@ CREATE TABLE usuarios_master (
     INDEX idx_restaurante (id_restaurante)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- IMPORTANTE: Cambiar 'tupassword123' por tu contrase├▒a deseada
+-- IMPORTANTE: Cambiar 'tupassword123' por tu contraseña deseada
 -- Ejecutar en consola PHP para generar el hash:
 -- echo password_hash('tupassword123', PASSWORD_DEFAULT);
 

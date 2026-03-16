@@ -1,14 +1,14 @@
-﻿-- =============================================
--- SCRIPT DE VERIFICACI├ôN - SISTEMA FUDDO
+-- =============================================
+-- SCRIPT DE VERIFICACIÓN - SISTEMA FUDDO
 -- Ejecutar para verificar estado de la BD
 -- =============================================
 
 USE mgacgdnjkg;
 
--- 1. INFORMACI├ôN GENERAL
-SELECT '=== INFORMACI├ôN GENERAL ===' as '';
+-- 1. INFORMACIÓN GENERAL
+SELECT '=== INFORMACIÓN GENERAL ===' as '';
 SELECT DATABASE() as 'Base de Datos Actual';
-SELECT VERSION() as 'Versi├│n MySQL';
+SELECT VERSION() as 'Versión MySQL';
 SELECT NOW() as 'Fecha/Hora Actual';
 
 -- 2. TABLAS MAESTRAS
@@ -18,8 +18,8 @@ SHOW TABLES LIKE '%usuario%';
 SHOW TABLES LIKE '%aplicacion%';
 SHOW TABLES LIKE '%reporte%';
 
--- 3. ESTAD├ìSTICAS
-SELECT '\n=== ESTAD├ìSTICAS ===' as '';
+-- 3. ESTADÍSTICAS
+SELECT '\n=== ESTADÍSTICAS ===' as '';
 SELECT COUNT(*) as 'Total Restaurantes' FROM restaurantes;
 SELECT COUNT(*) as 'Total Usuarios' FROM usuarios_master;
 SELECT COUNT(*) as 'Total Aplicaciones' FROM aplicaciones;
@@ -43,7 +43,7 @@ SHOW TABLES LIKE 'fuddo_%';
 
 -- 7. PERMISOS ASIGNADOS
 SELECT '\n=== PERMISOS DE APLICACIONES ===' as '';
-SELECT r.nombre as 'Restaurante', a.nombre as 'Aplicaci├│n', ra.tiene_acceso as 'Acceso'
+SELECT r.nombre as 'Restaurante', a.nombre as 'Aplicación', ra.tiene_acceso as 'Acceso'
 FROM restaurante_aplicaciones ra
 INNER JOIN restaurantes r ON ra.id_restaurante = r.id
 INNER JOIN aplicaciones a ON ra.id_aplicacion = a.id
@@ -82,4 +82,4 @@ SELECT
      WHERE table_schema = 'mgacgdnjkg' 
      AND table_name LIKE 'fuddo_%') as 'Tablas con Prefijo';
 
-SELECT '=== VERIFICACI├ôN COMPLETADA ===' as '';
+SELECT '=== VERIFICACIÓN COMPLETADA ===' as '';

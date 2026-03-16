@@ -1,11 +1,11 @@
-﻿-- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generaci├│n: 15-01-2026 a las 17:52:37
--- Versi├│n del servidor: 10.4.32-MariaDB
--- Versi├│n de PHP: 8.2.12
+-- Tiempo de generación: 15-01-2026 a las 17:52:37
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -101,7 +101,7 @@ CREATE TABLE `servicios_total` (
 
 -- --------------------------------------------------------
 
--- ├ìndices para tablas volcadas
+-- Índices para tablas volcadas
 --
 
 --
