@@ -302,6 +302,7 @@
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            justify-items: center;
         }
 
         .price-card {
@@ -313,6 +314,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            width: 450px;
         }
 
         .price-card.featured {
