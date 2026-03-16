@@ -110,9 +110,9 @@ if ($id_restaurante_seleccionado) {
           
           <!-- Selector de restaurante -->
           <div class="form-group">
-            <label for="restaurante_select">Seleccionar Restaurante:</label>
+            <label for="restaurante_select"><?php echo $sel_seleccionar_restaurante; ?>:</label>
             <select id="restaurante_select" class="form-control select2" style="width: 100%;" onchange="cargarPermisos(this.value)">
-              <option value="">-- Seleccione un restaurante --</option>
+              <option value="">-- <?php echo $sel_seleccionar_restaurante; ?> --</option>
               <?php 
               $result_restaurantes->data_seek(0);
               while ($rest = $result_restaurantes->fetch_assoc()): 

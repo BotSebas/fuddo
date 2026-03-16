@@ -20,7 +20,7 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> Acceso Restringido</h1>
+              <h1 class="m-0"><i class="fas fa-exclamation-triangle text-warning"></i> <?php echo $msg_acceso_restringido_titulo; ?></h1>
             </div>
           </div>
         </div>
@@ -28,8 +28,8 @@ if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin' 
       <section class="content">
         <div class="container-fluid">
           <div class="alert alert-warning">
-            <h5><i class="icon fas fa-info-circle"></i> Información</h5>
-            Para acceder a esta sección debes estar dando soporte a un restaurante específico.
+            <h5><i class="icon fas fa-info-circle"></i> <?php echo $msg_informacion_titulo; ?></h5>
+            <?php echo $msg_acceso_restringido_desc; ?>
           </div>
         </div>
       </section>
@@ -170,6 +170,13 @@ $unidades = obtenerUnidadesDisponibles();
           </form>
         </div>
         <div class="col-md-6 text-right">
+          <!-- Botón Importar CSV (Solo Super-Admin) -->
+          <?php if (isset($_SESSION['rol_master']) && $_SESSION['rol_master'] === 'super-admin'): ?>
+            <button type="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#modalImportarCSV" title="Importar materias primas desde archivo CSV">
+              <i class="fas fa-file-upload"></i> Importar CSV
+            </button>
+          <?php endif; ?>
+          
           <button type="button" class="btn" style="background-color: #27ae60; color: white;" data-toggle="modal" data-target="#modalNuevaMateriaPrima">
             <i class="fas fa-plus"></i> Nueva Materia Prima
           </button>
@@ -387,6 +394,120 @@ $unidades = obtenerUnidadesDisponibles();
   </div>
 </div>
 
+<!-- Modal para Importar CSV -->
+<div class="modal fade" id="modalImportarCSV" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-white" style="background-color: #3498db;">
+        <h5 class="modal-title" id="modalImportarLabel">
+          <i class="fas fa-file-upload"></i> Importar Materias Primas desde CSV
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="formImportarCSV" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="alert alert-gray">
+            <i class="fas fa-info-circle"></i> <strong>Formato del archivo:</strong> CSV con columnas: 
+            <code>nombre, unidad_medida, cantidad_base_comprada, costo_total_base</code>
+            <br><small>El ID (MP-1, MP-2, etc) se genera automáticamente</small>
+            <br><a href="#" onclick="descargarTemplateCSV(); return false;" class="alert-link">
+              <i class="fas fa-download"></i> Descargar plantilla de ejemplo
+            </a>
+          </div>
+
+          <div class="form-group">
+            <label for="csvFile"><strong>Selecciona el archivo CSV *</strong></label>
+            <input type="file" class="form-control-file" id="csvFile" name="csv_file" accept=".csv" required>
+            <small class="form-text text-muted">Tamaño máximo: 5MB. Solo archivos CSV.</small>
+          </div>
+
+          <!-- DIV para mostrar errores de validación -->
+          <div id="errorValidacion" class="alert alert-danger" style="display: none;">
+            <i class="fas fa-times-circle"></i> <strong>Error en la validación del CSV:</strong>
+            <div style="margin-top: 10px; font-family: monospace; font-size: 12px;">
+              <div><strong>Encabezados esperados (4):</strong></div>
+              <div style="background-color: #f8f9fa; padding: 8px; margin-bottom: 10px; border-radius: 3px;">
+                <code id="encabezadosEsperados">nombre, unidad_medida, cantidad_base_comprada, costo_total_base</code>
+              </div>
+              <div><strong>Encabezados encontrados:</strong></div>
+              <div style="background-color: #f8f9fa; padding: 8px; margin-bottom: 10px; border-radius: 3px;">
+                <code id="encabezadosEncontrados"></code>
+              </div>
+              <div><strong>Faltantes:</strong></div>
+              <div style="background-color: #f8f9fa; padding: 8px; border-radius: 3px;">
+                <code id="columnasFaltantes"></code>
+              </div>
+            </div>
+            <div class="mt-3">
+              <small class="text-muted">
+                <strong>💡 Consejos:</strong>
+                <ul>
+                  <li>No edites los nombres de las columnas</li>
+                  <li>Usa la plantilla descargada del sistema</li>
+                  <li>No uses Excel, usa Notepad++ o VSCode</li>
+                  <li>Guarda el archivo como CSV (UTF-8)</li>
+                  <li>Lee la guía: <a href="GUIA_CSV_PASO_A_PASO.md" target="_blank">GUIA_CSV_PASO_A_PASO.md</a></li>
+                </ul>
+              </small>
+            </div>
+          </div>
+
+          <div id="previewCSV" style="display: none;">
+            <hr>
+            <label><strong>✅ Vista previa de los datos:</strong></label>
+            <small class="text-success">El CSV está correctamente formateado</small>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+              <table class="table table-sm table-bordered" id="tablaPreview">
+                <thead class="table-light">
+                  <tr id="encabezadoPreview"></tr>
+                </thead>
+                <tbody id="bodyPreview"></tbody>
+              </table>
+            </div>
+            <div id="advertenciasPreview" class="alert alert-warning" style="display: none;">
+              <i class="fas fa-exclamation-triangle"></i> <strong>Advertencias encontradas:</strong>
+              <ul id="listaAdvertencias"></ul>
+            </div>
+            <div class="progress" id="progressImport" style="display: none;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnPreviewCSV" onclick="previewizarCSV()">
+            <i class="fas fa-eye"></i> Ver Previa
+          </button>
+          <button type="button" class="btn btn-success" id="btnImportarCSV" onclick="importarCSV()" style="display: none;">
+            <i class="fas fa-upload"></i> Importar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Script para inicializar el modal de importar CSV -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('#modalImportarCSV').on('show.bs.modal', function() {
+        // Ocultar divs anteriores
+        document.getElementById('errorValidacion').style.display = 'none';
+        document.getElementById('previewCSV').style.display = 'none';
+        
+        // Limpiar campo de archivo
+        document.getElementById('csvFile').value = '';
+        document.getElementById('formImportarCSV').reset();
+        
+        // Mostrar botón "Ver Previa", ocultar "Importar"
+        document.getElementById('btnPreviewCSV').style.display = 'inline-block';
+        document.getElementById('btnImportarCSV').style.display = 'none';
+    });
+});
+</script>
+
 <!-- Modal para Confirmar Eliminación -->
 <div class="modal fade" id="modalConfirmarEliminacion" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -578,6 +699,255 @@ document.getElementById('btnEliminarConfirmado')?.addEventListener('click', func
     })
     .catch(error => console.error('Error:', error));
 });
+
+// ===== FUNCIONES PARA CSV =====
+
+// Descargar plantilla CSV
+function descargarTemplateCSV() {
+    window.location.href = 'descargar_plantilla.php';
+}
+
+// Previewizar CSV
+function previewizarCSV() {
+    const fileInput = document.getElementById('csvFile');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Por favor selecciona un archivo CSV');
+        return;
+    }
+    
+    // Validar tipo de archivo
+    if (!file.name.endsWith('.csv') && file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
+        alert('El archivo debe ser formato CSV');
+        fileInput.value = '';
+        return;
+    }
+    
+    // Validar tamaño (5MB máximo)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+        alert('El archivo no puede superar 5MB');
+        fileInput.value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        let csv = e.target.result;
+        
+        // Remover BOM UTF-8 si existe
+        if (csv.charCodeAt(0) === 0xFEFF) {
+            csv = csv.slice(1);
+        }
+        
+        const lineas = csv.trim().split(/\r?\n/);
+        
+        if (lineas.length < 2) {
+            alert('El archivo CSV debe tener encabezado y al menos una fila de datos');
+            return;
+        }
+        
+        // Detectar automáticamente el separador (coma o punto y coma)
+        const primeraLinea = lineas[0];
+        let separador = ',';
+        
+        // Contar ocurrencias de coma y punto y coma
+        const contarComas = (primeraLinea.match(/,/g) || []).length;
+        const contarPuntoComas = (primeraLinea.match(/;/g) || []).length;
+        
+        // Usar el separador que aparece más veces
+        if (contarPuntoComas > contarComas) {
+            separador = ';';
+        }
+        
+        console.log('Separador detectado:', separador, '(comas:', contarComas, ', punto-comas:', contarPuntoComas + ')');
+        
+        // Procesar encabezado - ULTRA ROBUSTO
+        const encabezadoOriginal = primeraLinea
+            .split(separador)
+            .map(h => h
+                .trim()
+                .replace(/^"|"$/g, '') // Eliminar comillas dobles al inicio/fin
+                .replace(/^'|'$/g, '') // Eliminar comillas simples al inicio/fin
+                .trim() // Trim nuevamente después de quitar comillas
+            )
+            .filter(h => h.length > 0);
+        
+        const encabezadoLower = encabezadoOriginal.map(h => h.toLowerCase());
+        const columnasEsperadas = ['nombre', 'unidad_medida', 'cantidad_base_comprada', 'costo_total_base'];
+        
+        // Debug: mostrar en consola qué se encontró
+        console.log('Encabezado original:', encabezadoOriginal);
+        console.log('Encabezado lower:', encabezadoLower);
+        console.log('Esperadas:', columnasEsperadas);
+        console.log('Primera línea RAW:', lineas[0]);
+        console.log('Cantidad de columnas encontradas:', encabezadoOriginal.length);
+        
+        // Verificar que todas las columnas esperadas existan
+        const columnasEncontradas = columnasEsperadas.filter(col => encabezadoLower.includes(col));
+        
+        console.log('Validación de columnas:');
+        console.log('  - Esperadas (4):', columnasEsperadas);
+        console.log('  - Encontradas:', columnasEncontradas);
+        console.log('  - Encabezado procesado:', encabezadoLower);
+        console.log('  - Verificación: ' + columnasEncontradas.length + ' de ' + columnasEsperadas.length);
+        
+        if (columnasEncontradas.length !== columnasEsperadas.length) {
+            const faltantes = columnasEsperadas.filter(col => !encabezadoLower.includes(col));
+            console.log('❌ Faltantes:', faltantes);
+            
+            // Mostrar error en el modal en lugar de alert
+            document.getElementById('encabezadosEncontrados').textContent = encabezadoLower.join(', ');
+            document.getElementById('columnasFaltantes').innerHTML = faltantes.map(c => `<span style="color: red; font-weight: bold;">${c}</span>`).join(', ');
+            document.getElementById('errorValidacion').style.display = 'block';
+            document.getElementById('previewCSV').style.display = 'none';
+            
+            return;
+        }
+        
+        // Obtener índices de las columnas en el CSV original
+        const idxNombre = encabezadoLower.indexOf('nombre');
+        const idxUnidad = encabezadoLower.indexOf('unidad_medida');
+        const idxCantidad = encabezadoLower.indexOf('cantidad_base_comprada');
+        const idxCosto = encabezadoLower.indexOf('costo_total_base');
+        
+        // Logging de índices para debugging
+        console.log('Índices de columnas encontrados:');
+        console.log('  - nombre:', idxNombre, '(esperado: >= 0)');
+        console.log('  - unidad_medida:', idxUnidad, '(esperado: >= 0)');
+        console.log('  - cantidad_base_comprada:', idxCantidad, '(esperado: >= 0)');
+        console.log('  - costo_total_base:', idxCosto, '(esperado: >= 0)');
+        
+        // Verificar que todos los índices sean válidos
+        if (idxNombre < 0 || idxUnidad < 0 || idxCantidad < 0 || idxCosto < 0) {
+            console.error('❌ ERROR: No se encontraron todos los índices de columnas');
+            document.getElementById('encabezadosEncontrados').textContent = encabezadoLower.join(', ');
+            document.getElementById('columnasFaltantes').innerHTML = '<span style="color: red; font-weight: bold;">Error en mapeo de índices - ver consola</span>';
+            document.getElementById('errorValidacion').style.display = 'block';
+            document.getElementById('previewCSV').style.display = 'none';
+            return;
+        }
+        
+        // Mostrar vista previa
+        let htmlEncabezado = '';
+        encabezadoOriginal.forEach(col => {
+            htmlEncabezado += `<th>${col}</th>`;
+        });
+        document.getElementById('encabezadoPreview').innerHTML = htmlEncabezado;
+        
+        let htmlBody = '';
+        let advertencias = [];
+        const unidadesValidas = ['kg', 'g', 'lb', 'l', 'ml', 'und'];
+        
+        for (let i = 1; i < Math.min(lineas.length, 11); i++) {
+            const linea = lineas[i].trim();
+            if (linea.length === 0) continue; // Ignorar líneas vacías
+            
+            const valores = linea.split(separador).map(v => v.trim());
+            let htmlFila = '';
+            
+            // Validaciones por fila
+            if (valores.length !== encabezadoOriginal.length) {
+                advertencias.push(`Fila ${i}: número de columnas incorrecto (esperado ${encabezadoOriginal.length}, encontrado ${valores.length})`);
+            }
+            
+            const nombre = valores[idxNombre] ? valores[idxNombre].trim() : '';
+            const unidad = valores[idxUnidad] ? valores[idxUnidad].trim().toLowerCase() : '';
+            const cantidad = parseFloat(valores[idxCantidad]);
+            const costo = parseFloat(valores[idxCosto]);
+            
+            if (!nombre || nombre.length === 0) {
+                advertencias.push(`Fila ${i}: Nombre vacío`);
+            }
+            
+            if (!unidadesValidas.includes(unidad)) {
+                advertencias.push(`Fila ${i}: Unidad inválida "${unidad}". Válidas: ${unidadesValidas.join(', ')}`);
+            }
+            
+            if (isNaN(cantidad) || cantidad <= 0) {
+                advertencias.push(`Fila ${i}: Cantidad debe ser número positivo`);
+            }
+            
+            if (isNaN(costo) || costo < 0) {
+                advertencias.push(`Fila ${i}: Costo debe ser número no negativo`);
+            }
+            
+            encabezadoOriginal.forEach((col, idx) => {
+                htmlFila += `<td>${valores[idx] || ''}</td>`;
+            });
+            
+            htmlBody += `<tr>${htmlFila}</tr>`;
+        }
+        
+        document.getElementById('bodyPreview').innerHTML = htmlBody;
+        document.getElementById('previewCSV').style.display = 'block';
+        
+        // Mostrar advertencias si las hay
+        if (advertencias.length > 0) {
+            document.getElementById('advertenciasPreview').style.display = 'block';
+            const listaHTML = advertencias.map(adv => `<li>${adv}</li>`).join('');
+            document.getElementById('listaAdvertencias').innerHTML = listaHTML;
+        } else {
+            document.getElementById('advertenciasPreview').style.display = 'none';
+        }
+        
+        // Mostrar botón de importar
+        document.getElementById('btnPreviewCSV').style.display = 'none';
+        document.getElementById('btnImportarCSV').style.display = 'inline-block';
+    };
+    
+    reader.readAsText(file);
+}
+
+// Importar CSV
+function importarCSV() {
+    const fileInput = document.getElementById('csvFile');
+    const file = fileInput.files[0];
+    
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('accion', 'importar_csv');
+    formData.append('csv_file', file);
+    
+    const progressBar = document.getElementById('progressImport');
+    progressBar.style.display = 'block';
+    
+    document.getElementById('btnImportarCSV').disabled = true;
+    document.getElementById('btnImportarCSV').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importando...';
+    
+    fetch('procesar.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        progressBar.style.display = 'none';
+        
+        if (data.exito) {
+            alert(`✓ Importación completada!\n\nInsertadas: ${data.insertadas}\nErrores: ${data.errores}`);
+            if (data.errores === 0) {
+                location.href = 'materias_primas.php?exito=importado';
+            } else {
+                $('#modalImportarCSV').modal('hide');
+                location.reload();
+            }
+        } else {
+            alert('Error: ' + (data.mensaje || 'Error desconocido'));
+            document.getElementById('btnImportarCSV').disabled = false;
+            document.getElementById('btnImportarCSV').innerHTML = '<i class="fas fa-upload"></i> Importar';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error en la solicitud: ' + error);
+        progressBar.style.display = 'none';
+        document.getElementById('btnImportarCSV').disabled = false;
+        document.getElementById('btnImportarCSV').innerHTML = '<i class="fas fa-upload"></i> Importar';
+    });
+}
+
 </script>
 
 <?php include '../includes/footer.php'; ?>

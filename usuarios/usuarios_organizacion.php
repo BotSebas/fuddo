@@ -126,7 +126,7 @@ $roles = [
 
       <?php if($error_db): ?>
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong><i class="fas fa-info-circle"></i> Información:</strong> El módulo de usuarios está siendo inicializado. Por favor, intenta en unos momentos.
+          <strong><i class="fas fa-info-circle"></i> <?php echo $msg_informacion_titulo; ?>:</strong> <?php echo $usuarios_error_inicializando; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -135,7 +135,7 @@ $roles = [
 
       <?php if(isset($_GET['error']) && $_GET['error'] == 'usuario_existe'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong><i class="fas fa-exclamation-circle"></i> Error:</strong> El nombre de usuario ya existe.
+          <strong><i class="fas fa-exclamation-circle"></i> <?php echo $msg_error_titulo; ?>:</strong> <?php echo $usuarios_error_usuario_existe; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -144,7 +144,7 @@ $roles = [
 
       <?php if(isset($_GET['error']) && $_GET['error'] == 'campos_vacios'): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong><i class="fas fa-exclamation-circle"></i> Error:</strong> Completa todos los campos requeridos.
+          <strong><i class="fas fa-exclamation-circle"></i> <?php echo $msg_error_titulo; ?>:</strong> <?php echo $usuarios_error_campos_requeridos; ?>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

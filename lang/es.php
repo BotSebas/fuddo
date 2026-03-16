@@ -123,6 +123,16 @@ $menu_reportes = "Reportes";
 $menu_usuarios = "Usuarios";
 $menu_perfil = "Perfil";
 $menu_cerrar_sesion = "Cerrar Sesión";
+$menu_costeo = "Costeo";
+$menu_materias_primas = "Materias Primas";
+$menu_recetas = "Recetas";
+$menu_digital = "Menú Digital";
+$menu_pedidos = "Pedidos";
+$menu_administracion = "ADMINISTRACIÓN";
+$menu_restaurantes = "Organizaciones";
+$menu_permisos = "Permisos";
+$menu_aplicaciones = "Aplicaciones";
+$menu_permisos_reportes = "Reportes";
 
 // === MESAS ===
 $mesas_titulo = "Mesas";
@@ -378,6 +388,61 @@ $chat_volver_comandas = "⬅️ Volver a Comandas";
 $chat_volver_cuentas = "⬅️ Volver a Cuentas";
 $chat_menu_principal = "🏠 Menú principal";
 
+// === CHATBOT NUEVOS MÓDULOS ===
+$chat_cocina = "👨‍🍳 Cocina";
+$chat_costeo = "🧮 Costeo";
+$chat_materias_primas = "🌿 Materias Primas";
+$chat_recetas = "📖 Recetas";
+$chat_reportes = "📊 Reportes";
+$chat_menu_digital = "📱 Menú Digital";
+$chat_usuarios = "👥 Usuarios";
+
+$chat_cocina_pregunta = "¿Qué necesitas sobre la cocina?";
+$chat_costeo_pregunta = "¿Qué necesitas saber sobre costeo?";
+$chat_reportes_pregunta = "¿Qué reportes te gustaría consultar?";
+$chat_menu_digital_pregunta = "¿Qué necesitas sobre el menú digital?";
+$chat_usuarios_pregunta = "¿Qué necesitas sobre usuarios?";
+
+$chat_ver_ordenes_cocina = "Ver órdenes activas";
+$chat_marcar_listo = "Marcar platillo como listo";
+$chat_cocina_inst = "La cocina muestra en tiempo real:\n\n🔴 Órdenes nuevas\n🟡 En preparación\n🟢 Listas para servir\n\nCada platillo se actualiza automáticamente según su estado. Los meseros reciben notificaciones cuando están listos.";
+
+$chat_gestionar_materias = "Gestionar materias primas";
+$chat_gestionar_recetas = "Gestionar recetas";
+$chat_ver_costos = "Ver costos automatizados";
+$chat_costeo_inst = "El sistema de costeo automático:\n\n📊 Calcula automáticamente el costo de cada receta\n💰 Basado en materias primas y cantidades\n📈 Genera reportes de márgenes de ganancia\n\nAsegura rentabilidad en tus productos.";
+
+$chat_reportes_ventas = "Reporte de ventas";
+$chat_reportes_inventario = "Reporte de inventario";
+$chat_reportes_costos = "Reporte de costos";
+$chat_reportes_inst = "Los reportes incluyen:\n\n💵 Ventas totales y por periodo\n📦 Estado del inventario\n🎯 Productos más vendidos\n📊 Márgenes y rentabilidad\n\nTodos exportables a Excel.";
+
+$chat_menu_digital_inst = "El menú digital permite:\n\n📱 QR escaneables por clientes\n🎨 Personalización de diseño\n📝 Organización por categorías\n💰 Precios actualizados automáticamente\n\nPerfecto para modernizar tu servicio.";
+
+$chat_usuarios_inst = "Gestión de usuarios del restaurante:\n\n👤 Crear y editar usuarios\n🔐 Asignar roles y permisos\n📋 Ver historial de actividades\n🛡️ Permisos por módulo\n\nCada usuario puede acceder solo a lo que necesita.";
+
+$chat_volver_cocina = "⬅️ Volver a Cocina";
+$chat_volver_costeo = "⬅️ Volver a Costeo";
+$chat_volver_reportes = "⬅️ Volver a Reportes";
+$chat_volver_menu_digital = "⬅️ Volver a Menú Digital";
+$chat_volver_usuarios = "⬅️ Volver a Usuarios";
+
+// === CHATBOT TEXTOS ADICIONALES ===
+$chat_marcar_listo_inst = "Los platillos se marcan como listos cuando se terminan de preparar, notificando al mesero automáticamente para que los sirva.";
+$chat_materias_inst = "Gestiona tus materias primas (ingredientes base) con sus costos unitarios. Estas cantidades se utilizan automáticamente en tus recetas para calcular costos de productos.";
+$chat_recetas_inst = "Las recetas combinan materias primas con cantidades específicas. El sistema calcula automáticamente el costo total de cada receta basado en tus ingredientes.";
+$chat_reportes_ventas_inst = "El reporte de ventas te muestra: total de ventas, periodo, productos más vendidos, tickets promedio y tendencias de venta.";
+$chat_reportes_inventario_inst = "El reporte de inventario te permite ver: stock actual de productos, productos bajo stock, alertas de reorden y movimientos de inventario.";
+$chat_reportes_costos_inst = "El reporte de costos detalla: costo de materias primas, costo unitario de productos, márgenes de ganancia y rentabilidad por producto.";
+$chat_crear_editar_menu = "Crear/Editar menú";
+$chat_generar_qr = "Generar QR";
+$chat_editar_menu_digital_inst = "Crea un menú moderno y atractivo. Personaliza colores, agrega categorías de productos, secciones, y deja que tus clientes lo escaneen con QR desde sus teléfonos.";
+$chat_crear_usuario = "Crear nuevo usuario";
+$chat_editar_usuario = "Editar usuario";
+$chat_gestionar_permisos = "Gestionar permisos";
+$chat_crear_usuario_inst = "Para crear un usuario: ve a Administración > Usuarios, haz clic en '+ Nuevo Usuario', completa nombre, email, contraseña y selecciona su rol (Admin, Mesero, Cocinero, etc.).";
+$chat_editar_usuario_inst = "Para editar un usuario: busca el usuario en la tabla, haz clic en el ícono de editar, modifica los datos necesarios y guarda los cambios.";
+
 // === REPORTES EXTENDIDO ===
 $reportes_resumen_rapido = "Resumen Rápido de Ventas";
 $reportes_filtros = "Filtros de Búsqueda";
@@ -572,5 +637,216 @@ $msg_exito_titulo = "Éxito";
 $msg_ver_reporte = "Ver Reporte";
 $msg_confirmar_eliminar = "¿Estás seguro?";
 $msg_accion_no_deshacer = "Esta acción no se puede deshacer";
+
+// === LANDING PAGE MODERNA ===
+// Hero Section
+$landing_mod_hero_badge = "🚀 Solución integral para tu negocio";
+$landing_mod_hero_title = "El POS profesional que maximiza tus ventas y simplifica tu operación";
+$landing_mod_hero_description = "FUDDO es la plataforma de gestión especializada para cualquier comercio. Gestiona ventas, inventario, operaciones y reportes desde un único sistema. Potente, intuitivo y diseñado para tu éxito.";
+$landing_mod_hero_btn_trial = "Prueba 7 Días Gratis";
+$landing_mod_hero_btn_learn = "Conocer más";
+$landing_mod_hero_no_card = "Sin tarjeta de crédito requerida";
+
+// Features Section
+$landing_mod_features_title = "Herramientas profesionales para administrar tu negocio";
+$landing_mod_features_subtitle = "Todo lo que necesitas en un único sistema, diseñado para maximizar eficiencia y rentabilidad";
+
+$landing_mod_feature_mesas = "Gestión de Puntos de Venta";
+$landing_mod_feature_mesas_desc = "Control completo de cada sección de tu negocio. Monitoreo en tiempo real de ocupación y desempeño.";
+
+$landing_mod_feature_comandas = "Sistema de Órdenes";
+$landing_mod_feature_comandas_desc = "Gestión de órdenes rápida e intuitiva. Integración automática con todas las áreas de tu operación.";
+
+$landing_mod_feature_cocina = "Panel de Operaciones";
+$landing_mod_feature_cocina_desc = "Visualización clara de todas las órdenes. Priorización automática y tracking de tiempo de ejecución.";
+
+$landing_mod_feature_inventario = "Control de Inventario";
+$landing_mod_feature_inventario_desc = "Gestiona stock en tiempo real, alertas de bajo inventario y trazabilidad completa de tus productos.";
+
+$landing_mod_feature_reportes = "Reportes y Analytics";
+$landing_mod_feature_reportes_desc = "Análisis avanzados de ventas, márgenes y rendimiento. Datos accionables para decisiones inteligentes.";
+
+$landing_mod_feature_usuarios = "Gestión de Equipos";
+$landing_mod_feature_usuarios_desc = "Control de permisos y roles por empleado. Administra acceso según responsabilidades y funciones.";
+
+$landing_mod_feature_costeo = "Costeo Automático";
+$landing_mod_feature_costeo_desc = "Cálculo automático de costos de productos. Optimiza precios y márgenes de ganancias.";
+
+$landing_mod_feature_menu_digital = "Menú Digital QR";
+$landing_mod_feature_menu_digital_desc = "Catálogo digital interactivo con códigos QR. Mejora experiencia del cliente y agiliza ventas.";
+
+$landing_mod_feature_nube = "100% en la Nube";
+$landing_mod_feature_nube_desc = "Acceso desde cualquier dispositivo, en cualquier lugar. Sincronización automática en tiempo real.";
+
+// Pricing Section
+$landing_mod_pricing_title = "Precios Transparentes";
+$landing_mod_pricing_subtitle = "Un único plan profesional con todas las herramientas que tu negocio necesita para crecer";
+$landing_mod_pricing_plan_name = "Plan Premium Empresarial";
+$landing_mod_pricing_monthly = "por mes";
+$landing_mod_pricing_annual = "$600.000 al año (ahorra $120.000)";
+$landing_mod_pricing_badge = "RECOMENDADO";
+$landing_mod_pricing_feature_mesas = "Gestión ilimitada de puntos de venta";
+$landing_mod_pricing_feature_comandas = "Sistema completo de órdenes";
+$landing_mod_pricing_feature_cocina = "Panel profesional de operaciones";
+$landing_mod_pricing_feature_inventario = "Control total de inventario y stock";
+$landing_mod_pricing_feature_reportes = "Reportes avanzados y business intelligence";
+$landing_mod_pricing_feature_costeo = "Costeo automático y análisis de márgenes";
+$landing_mod_pricing_feature_menu = "Menú Digital QR sin límites";
+$landing_mod_pricing_feature_usuarios = "Usuarios ilimitados por organización";
+$landing_mod_pricing_feature_soporte = "Soporte técnico premium 24/7";
+$landing_mod_pricing_feature_updates = "Actualizaciones y mejoras continuas";
+$landing_mod_pricing_btn = "Comienza tu prueba gratis sin costo";
+$landing_mod_pricing_contact_question = "¿Preguntas sobre inversión o implementación?";
+$landing_mod_pricing_contact_link = "Contacta con nuestro equipo especializado";
+
+// Trial Section
+$landing_mod_trial_title = "Prueba FUDDO Completamente Gratis por 7 Días";
+$landing_mod_trial_subtitle = "Sin tarjeta de crédito, sin compromisos. Acceso completo a todas las características. Descubre cómo FUDDO transforma la gestión de tu negocio.";
+$landing_mod_trial_feature1_title = "Acceso Completo a Todas las Funciones";
+$landing_mod_trial_feature1_desc = "Experimenta la plataforma completa sin limitaciones ni restricciones";
+$landing_mod_trial_feature2_title = "Soporte y Capacitación Profesional";
+$landing_mod_trial_feature2_desc = "Equipo dedicado para asegurar tu éxito desde el primer día";
+$landing_mod_trial_feature3_title = "Datos Seguros y Backup Automático";
+$landing_mod_trial_feature3_desc = "Encriptación de nivel empresarial y protección de datos 24/7";
+$landing_mod_trial_btn = "Crear Cuenta de Prueba Ahora";
+
+// Testimonials Section
+$landing_mod_testimonials_title = "Confían en FUDDO";
+$landing_mod_testimonials_subtitle = "Miles de negocios han optimizado su operación y aumentado sus ganancias con nuestra plataforma";
+
+
+$landing_mod_testimonial1_text = "Implementar FUDDO fue transformacional para nuestro negocio. Pasamos de procesos manuales a una operación completamente automatizada. Nuestros márgenes mejoraron significativamente.";
+$landing_mod_testimonial1_author = "Fabio Rodríguez";
+$landing_mod_testimonial1_company = "Gerente General - Retail Group";
+
+$landing_mod_testimonial2_text = "La facilidad de uso es sorprendente. Nuestro equipo requirió minimal training. Los analytics en tiempo real nos dieron visibilidad que nunca habíamos tenido de nuestras operaciones.";
+$landing_mod_testimonial2_author = "María García";
+$landing_mod_testimonial2_company = "Directora de Operaciones - Cadena de Tiendas";
+
+$landing_mod_testimonial3_text = "El retorno de inversión fue inmediato. El soporte fue impecable durante la implementación. FUDDO es una solución empresarial seria que recomendamos ampliamente.";
+$landing_mod_testimonial3_author = "Juan Espinosa";
+$landing_mod_testimonial3_company = "Propietario - Grupo Comercial";
+
+// FAQ Section
+$landing_mod_faq_title = "Preguntas Frecuentes";
+$landing_mod_faq_subtitle = "Resuelve todas tus dudas sobre FUDDO y cómo puede transformar tu negocio";
+
+$landing_mod_faq1_q = "¿Debo proporcionar tarjeta de crédito para la prueba?";
+$landing_mod_faq1_a = "No. Acceso completamente gratuito por 7 días sin requerimiento de información de pago. Solo si continúas después de la prueba se activa tu suscripción.";
+
+$landing_mod_faq2_q = "¿Cuántos usuarios puedo tener?";
+$landing_mod_faq2_a = "Plan Premium incluye usuarios ilimitados. Cada miembro de tu equipo puede tener acceso con permisos y roles personalizados según su función.";
+
+$landing_mod_faq3_q = "¿Es seguro almacenar datos en la nube?";
+$landing_mod_faq3_a = "Totalmente seguro. Encriptación de nivel empresarial SSL, backups automatizados diarios, servidores certificados ISO, cumplimiento GDPR y protección 24/7. Tus datos son prioridad máxima.";
+
+$landing_mod_faq4_q = "¿Puedo cancelar cuando quiera?";
+$landing_mod_faq4_a = "Sí, sin penalizaciones. Cancela en cualquier momento desde tu panel. La suscripción termina al final del período actual. Política simple y transparente.";
+
+$landing_mod_faq5_q = "¿Requiere instalación compleja?";
+$landing_mod_faq5_a = "Cero instalación. 100% en nube. Solo necesitas navegador web y conexión a internet. Acceso inmediato desde cualquier dispositivo, en cualquier lugar.";
+
+$landing_mod_faq6_q = "¿Cuál es el soporte disponible?";
+$landing_mod_faq6_a = "Soporte técnico 24/7/365 por chat, email y teléfono. Equipo profesional con expertise en soluciones de negocio. Tiempo de respuesta garantizado.";
+
+$landing_mod_faq7_q = "¿Puedo importar datos de otros sistemas?";
+$landing_mod_faq7_a = "Sí, con ayuda de nuestro equipo. Contamos con especialistas en migración de datos que garantizan transición suave desde tus sistemas anteriores.";
+
+// CTA Final
+$landing_mod_cta_title = "Transforma tu Negocio con FUDDO";
+$landing_mod_cta_subtitle = "Únete a miles de empresas que están optimizando operaciones y aumentando rentabilidad. Comienza ahora, sin riesgo, 7 días completamente gratis.";
+
+// Footer
+$landing_mod_footer_tagline = "La solución de gestión integral para negocios modernos.";
+$landing_mod_footer_product = "Producto";
+$landing_mod_footer_company = "Empresa";
+$landing_mod_footer_legal = "Legal";
+$landing_mod_footer_features = "Características";
+$landing_mod_footer_faq = "Preguntas Frecuentes";
+$landing_mod_footer_about = "Acerca de Nosotros";
+$landing_mod_footer_blog = "Blog";
+$landing_mod_footer_contact = "Contacto";
+$landing_mod_footer_terms = "Términos de Servicio";
+$landing_mod_footer_privacy = "Política de Privacidad";
+$landing_mod_footer_cookies = "Política de Cookies";
+$landing_mod_footer_copyright = "© 2026 FUDDO. Todos los derechos reservados. Solución profesional de gestión para negocios.";
+
+// === GESTIÓN DE USUARIOS ===
+$usuarios_titulo = "Gestión de Usuarios";
+$usuarios_nuevo = "Nuevo Usuario";
+$usuarios_foto = "Foto";
+$usuarios_usuario = "Usuario";
+$usuarios_restaurante = "Restaurante";
+$usuarios_rol = "Rol";
+$usuarios_estado = "Estado";
+$usuarios_acciones = "Acciones";
+$usuarios_buscar = "Buscar usuario...";
+$usuarios_btn_buscar = "Buscar";
+$usuarios_editar_titulo = "Editar Usuario";
+$usuarios_sin_asignar = "Sin asignar";
+$usuarios_sin_resultados = "No se encontraron usuarios";
+$usuarios_rol_mantener = "Mantener rol actual";
+$usuarios_nombre_completo = "Nombre Completo";
+$usuarios_email = "Email";
+$usuarios_restaurante_label = "Restaurante (no requerido para Super Admin)";
+$usuarios_rol_label = "Rol";
+$usuarios_password = "Contraseña";
+$usuarios_password_opcional = "(dejar vacío para mantener)";
+$usuarios_foto_label = "Foto de Perfil";
+$usuarios_foto_desc = "JPG, PNG o GIF (máx. 2MB)";
+$usuarios_btn_cancelar = "Cancelar";
+$usuarios_btn_guardar = "Guardar";
+$usuarios_estado_activo = "Activo";
+$usuarios_estado_inactivo = "Inactivo";
+
+// === SELECTORES Y PLACEHOLDERS ===
+$sel_seleccionar = "Seleccionar...";
+$sel_seleccionar_archivo_csv = "Seleccionar archivo CSV...";
+$sel_seleccionar_restaurante = "Seleccionar Restaurante";
+$sel_seleccionar_restaurante_dots = "Seleccionar restaurante...";
+$sel_seleccionar_organizacion = "Seleccionar Organización";
+$sel_seleccionar_organizacion_default = "-- Seleccione una organización --";
+$sel_seleccionar_producto = "Seleccionar producto";
+$sel_seleccionar_metodo = "Seleccionar método";
+$sel_info_organizaciones = "Selecciona una organización para conectarte a su base de datos y brindar soporte técnico.";
+
+// === MENSAJES DE ACCESO Y PERMISOS ===
+$msg_acceso_restringido_titulo = "Acceso Restringido";
+$msg_acceso_restringido_desc = "Para acceder a esta sección debes estar dando soporte a un restaurante específico.";
+$msg_ir_modulo_restaurantes = "Ve al módulo";
+$msg_selecciona_dar_soporte = "y selecciona \"Dar Soporte\" al restaurante que deseas gestionar.";
+$msg_permiso_denegado_titulo = "Permiso Denegado";
+$msg_permiso_denegado_desc = "No tienes permisos para acceder a esta sección. Por favor, contacta al administrador del restaurante.";
+$msg_informacion_titulo = "Información";
+
+// === MENSAJES DE CARGA MASIVA ===
+$msg_carga_masiva_exito = "¡Carga Masiva Exitosa!";
+$msg_carga_masiva_total = "Se han creado";
+$msg_carga_masiva_productos = "productos correctamente.";
+$msg_error_carga_acceso = "Error: Solo super-admins pueden realizar carga masiva.";
+$msg_error_sin_archivo = "Error: No se recibió ningún archivo.";
+$msg_error_archivo_invalido = "Error: El archivo debe ser formato Excel (.xlsx o .xls).";
+$msg_error_sin_productos = "Advertencia: No se pudo crear ningún producto. Verifica el formato del archivo.";
+$msg_error_excepto = "Error: ";
+$msg_error_procesar_archivo = "Error al procesar el archivo";
+
+// === MÓDULOS - HOME LINK ===
+$modulo_home_enlace = "Home";
+$modulo_restaurantes_enlace = "Restaurantes";
+$modulo_dar_soporte = "Dar Soporte";
+
+// === USUARIOS - MENSAJES DE ERROR ===
+$usuarios_error_inicializando = "El módulo de usuarios está siendo inicializado. Por favor, intenta en unos momentos.";
+$usuarios_error_usuario_existe = "El nombre de usuario ya existe.";
+$usuarios_error_campos_requeridos = "Completa todos los campos requeridos.";
+
+// === OPCIONES DE ROL CON DESCRIPCIÓN ===
+$role_opciones_texto = "• Cocinero: Acceso solo a cocina";
+
+// === MENSAJES DE ARCHIVO ===
+$msg_solo_jpg_png_gif = "Solo se permiten archivos JPG, PNG o GIF";
+
+// === MODAL DE CARGA MASIVA ===
+$modal_carga_masiva_titulo = "Carga Masiva (CSV)";
 
 ?>

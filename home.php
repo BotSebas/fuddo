@@ -155,8 +155,11 @@ const chatData = {
       { text: <?php echo json_encode($chat_gestion_mesas); ?>, next: "mesas" },
       { text: <?php echo json_encode($chat_manejo_pedidos); ?>, next: "pedidos" },
       { text: <?php echo json_encode($chat_productos_inventario); ?>, next: "productos" },
-      { text: <?php echo json_encode($chat_gestion_comandas); ?>, next: "comandas" },
-      { text: <?php echo json_encode($chat_cerrar_cuentas); ?>, next: "cuentas" }
+      { text: <?php echo json_encode($chat_cocina); ?>, next: "cocina" },
+      { text: <?php echo json_encode($chat_costeo); ?>, next: "costeo" },
+      { text: <?php echo json_encode($chat_reportes); ?>, next: "reportes" },
+      { text: <?php echo json_encode($chat_menu_digital); ?>, next: "menu_digital" },
+      { text: <?php echo json_encode($chat_usuarios); ?>, next: "usuarios" }
     ]
   },
   mesas: {
@@ -314,6 +317,140 @@ const chatData = {
     message: <?php echo json_encode($chat_historial_inst); ?>,
     options: [
       { text: <?php echo json_encode($chat_volver_cuentas); ?>, next: "cuentas" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  cocina: {
+    message: <?php echo json_encode($chat_cocina_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_ver_ordenes_cocina); ?>, next: "ordenes_cocina" },
+      { text: <?php echo json_encode($chat_marcar_listo); ?>, next: "marcar_listo" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  ordenes_cocina: {
+    message: <?php echo json_encode($chat_cocina_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_cocina); ?>, next: "cocina" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  marcar_listo: {
+    message: <?php echo json_encode($chat_marcar_listo_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_cocina); ?>, next: "cocina" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  costeo: {
+    message: <?php echo json_encode($chat_costeo_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_gestionar_materias); ?>, next: "materias" },
+      { text: <?php echo json_encode($chat_gestionar_recetas); ?>, next: "recetas" },
+      { text: <?php echo json_encode($chat_ver_costos); ?>, next: "ver_costos" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  materias: {
+    message: <?php echo json_encode($chat_materias_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_costeo); ?>, next: "costeo" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  recetas: {
+    message: <?php echo json_encode($chat_recetas_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_costeo); ?>, next: "costeo" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  ver_costos: {
+    message: <?php echo json_encode($chat_costeo_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_costeo); ?>, next: "costeo" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  reportes: {
+    message: <?php echo json_encode($chat_reportes_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_reportes_ventas); ?>, next: "reportes_ventas" },
+      { text: <?php echo json_encode($chat_reportes_inventario); ?>, next: "reportes_inventario" },
+      { text: <?php echo json_encode($chat_reportes_costos); ?>, next: "reportes_costos" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  reportes_ventas: {
+    message: <?php echo json_encode($chat_reportes_ventas_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_reportes); ?>, next: "reportes" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  reportes_inventario: {
+    message: <?php echo json_encode($chat_reportes_inventario_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_reportes); ?>, next: "reportes" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  reportes_costos: {
+    message: <?php echo json_encode($chat_reportes_costos_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_reportes); ?>, next: "reportes" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  menu_digital: {
+    message: <?php echo json_encode($chat_menu_digital_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_crear_editar_menu); ?>, next: "editar_menu_digital" },
+      { text: <?php echo json_encode($chat_generar_qr); ?>, next: "generar_qr" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  editar_menu_digital: {
+    message: <?php echo json_encode($chat_editar_menu_digital_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_menu_digital); ?>, next: "menu_digital" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  generar_qr: {
+    message: <?php echo json_encode($chat_menu_digital_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_menu_digital); ?>, next: "menu_digital" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  usuarios: {
+    message: <?php echo json_encode($chat_usuarios_pregunta); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_crear_usuario); ?>, next: "crear_usuario" },
+      { text: <?php echo json_encode($chat_editar_usuario); ?>, next: "editar_usuario" },
+      { text: <?php echo json_encode($chat_gestionar_permisos); ?>, next: "permisos_usuarios" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  crear_usuario: {
+    message: <?php echo json_encode($chat_crear_usuario_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_usuarios); ?>, next: "usuarios" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  editar_usuario: {
+    message: <?php echo json_encode($chat_editar_usuario_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_usuarios); ?>, next: "usuarios" },
+      { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
+    ]
+  },
+  permisos_usuarios: {
+    message: <?php echo json_encode($chat_usuarios_inst); ?>,
+    options: [
+      { text: <?php echo json_encode($chat_volver_usuarios); ?>, next: "usuarios" },
       { text: <?php echo json_encode($chat_menu_principal); ?>, next: "welcome" }
     ]
   }

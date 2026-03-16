@@ -1,5 +1,0 @@
-SELECT TABLE_NAME 
-FROM information_schema.TABLES 
-WHERE TABLE_SCHEMA = 'mgacgdnjkg' 
-AND TABLE_NAME LIKE 'fuddo_barrock_%'
-ORDER BY TABLE_NAME;

@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Obtener información del restaurante
-    $stmt = $conexion_master->prepare("SELECT id, nombre, identificador, nombre_bd FROM restaurantes WHERE id = ? AND estado = 'activo'");
+    // Obtener información del restaurante (incluir demos)
+    $stmt = $conexion_master->prepare("SELECT id, nombre, identificador, nombre_bd, plan FROM restaurantes WHERE id = ? AND (estado = 'activo' OR plan = 'demo')");
     $stmt->bind_param("i", $id_restaurante);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -30,27 +30,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Verificar que las tablas del restaurante existan
         // Si nombre_bd termina en _ es un prefijo (modo Cloudways), si no es nombre de BD (modo legacy)
+        $nombre_bd_a_usar = $restaurante['nombre_bd'];
+        $tabla_encontrada = false;
+        
         if (substr($restaurante['nombre_bd'], -1) === '_') {
             // Modo Cloudways: verificar que exista al menos una tabla con el prefijo
             $tabla_test = $restaurante['nombre_bd'] . 'mesas';
             $check_table = $conexion_master->query("SHOW TABLES LIKE '$tabla_test'");
-            if ($check_table->num_rows === 0) {
-                echo json_encode(['success' => false, 'message' => 'Las tablas del restaurante no existen']);
+            
+            if (!$check_table || $check_table->num_rows === 0) {
+                // Registrar en log para debug
+                error_log("[SOPORTE ERROR] Tabla no encontrada: $tabla_test. Nombre BD del restaurante: {$restaurante['nombre_bd']}, Identificador: {$restaurante['identificador']}, Plan: " . ($restaurante['plan'] ?? 'N/A'));
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Las tablas del restaurante no existen. Detalles: Tabla esperada: ' . $tabla_test . ' (ID: ' . $id_restaurante . ')'
+                ]);
                 exit();
             }
         } else {
             // Modo legacy: verificar que la BD exista
             $check_db = $conexion_master->query("SHOW DATABASES LIKE '{$restaurante['nombre_bd']}'");
             if ($check_db->num_rows === 0) {
-                echo json_encode(['success' => false, 'message' => 'La base de datos del restaurante no existe']);
-                exit();
+                // Si no existe, intentar con nombre demo
+                $identificador_limpio = preg_replace('/[^a-z0-9_]/', '', strtolower($restaurante['identificador']));
+                $db_name_demo = 'fuddo_demo_' . $identificador_limpio;
+                $check_db_demo = $conexion_master->query("SHOW DATABASES LIKE '$db_name_demo'");
+                if ($check_db_demo->num_rows === 0) {
+                    echo json_encode(['success' => false, 'message' => 'La base de datos del restaurante no existe']);
+                    exit();
+                }
+                $nombre_bd_a_usar = $db_name_demo;
             }
         }
 
         // Actualizar sesión para conectarse al restaurante
         $_SESSION['id_restaurante'] = $restaurante['id'];
         $_SESSION['identificador'] = $restaurante['identificador']; // CRÍTICO: Para generar TABLE_PREFIX
-        $_SESSION['nombre_bd'] = $restaurante['nombre_bd'];
+        $_SESSION['nombre_bd'] = $nombre_bd_a_usar; // Usar el nombre_bd encontrado (puede ser demo o normal)
         $_SESSION['nombre_restaurante'] = $restaurante['nombre'];
         $_SESSION['modo_soporte'] = true; // Flag para indicar que está en modo soporte
 

@@ -11,6 +11,10 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'super-admin') {
 }
 
 try {
+    // DEBUGGING: Log todos los datos recibidos
+    error_log("=== NUEVA SOLICITUD ===");
+    error_log("POST data recibido: " . json_encode($_POST));
+    
     $id = $_POST['id'] ?? null;
     $usuario = trim($_POST['usuario'] ?? '');
     $nombre = trim($_POST['nombre'] ?? '');
@@ -19,23 +23,99 @@ try {
     $password = $_POST['password'] ?? '';
     $id_restaurante = $_POST['id_restaurante'] ?? null;
     
+    error_log("Variables parseadas:");
+    error_log("  id: '$id'");
+    error_log("  usuario: '$usuario'");
+    error_log("  rol: '$rol'");
+    error_log("  esEdicion: " . (!empty($id) ? 'true' : 'false'));
+    
+    // Determinar si es edición o creación
+    $esEdicion = !empty($id);
+    $rolFueProvidoPorUsuario = !empty($rol); // Guardar si el usuario explícitamente especificó rol
+    
     // Validaciones básicas
-    if (empty($usuario) || empty($nombre) || empty($rol)) {
+    if (empty($usuario) || empty($nombre)) {
         throw new Exception('Por favor completa todos los campos obligatorios');
     }
     
-    // Validar rol primero
-    if (!in_array($rol, ['admin-restaurante', 'super-admin'])) {
-        throw new Exception('Rol no válido');
+    // Si es NUEVO usuario, rol es obligatorio
+    if (!$esEdicion && empty($rol)) {
+        throw new Exception('Debes seleccionar un rol para el nuevo usuario');
     }
     
-    // Solo requerir restaurante si NO es super-admin
+    // Si es EDICIÓN y el rol está vacío, obtener el rol actual (no cambiar)
+    if ($esEdicion && empty($rol)) {
+        error_log("DEBUG: Entrando a obtener rol actual para edición...");
+        
+        // Obtener rol actual del usuario
+        $sqlGet = "SELECT rol FROM usuarios_master WHERE id = " . intval($id);
+        error_log("DEBUG: Query: $sqlGet");
+        
+        $queryRolActual = $conexion_master->query($sqlGet);
+        
+        if (!$queryRolActual) {
+            $error = $conexion_master->error;
+            error_log("ERROR: Query SQL falló: $error");
+            throw new Exception('Error de base de datos: ' . $error);
+        }
+        
+        error_log("DEBUG: Query ejecutada. Num rows: " . $queryRolActual->num_rows);
+        
+        if ($queryRolActual->num_rows > 0) {
+            $rowRol = $queryRolActual->fetch_assoc();
+            $rol = $rowRol['rol'];
+            error_log("DEBUG: Rol obtenido: '$rol'");
+        } else {
+            error_log("ERROR: No existe usuario con ID: $id");
+            throw new Exception('No se encontró el usuario a editar (ID: ' . $id . ')');
+        }
+    }
+    
+    // Obtener lista de roles válidos desde la base de datos
+    $rolesValidos = [];
+    $sqlRoles = "SELECT DISTINCT rol FROM usuarios_master WHERE rol IS NOT NULL AND rol != ''";
+    $resultRoles = $conexion_master->query($sqlRoles);
+    if ($resultRoles && $resultRoles->num_rows > 0) {
+        while ($rowRole = $resultRoles->fetch_assoc()) {
+            $rolesValidos[] = $rowRole['rol'];
+        }
+    }
+    
+    error_log("DEBUG: Roles válidos en BD: " . json_encode($rolesValidos));
+    
+    // Validar rol después de obtener el actual si es edición
+    if (empty($rol)) {
+        throw new Exception('Rol no puede estar vacío');
+    }
+    
+    if (!in_array($rol, $rolesValidos)) {
+        error_log("ERROR: Rol encontrado pero inválido: '$rol'");
+        throw new Exception('Rol no válido: "' . htmlspecialchars($rol) . '". Roles válidos: ' . implode(', ', $rolesValidos));
+    }
+    
+    // Validar restaurante basado en el rol
+    // Solo super-admin puede NO tener restaurante asignado
     if ($rol !== 'super-admin' && empty($id_restaurante)) {
-        throw new Exception('Debes seleccionar un restaurante para este rol');
+        // Si es nuevo usuario: requerir restaurante
+        if (!$esEdicion) {
+            throw new Exception('Debes seleccionar un restaurante para el rol "' . $rol . '"');
+        }
+        
+        // Si es edición: verificar que al menos mantenga el restaurante actual
+        $sqlRestActual = "SELECT id_restaurante FROM usuarios_master WHERE id = " . intval($id);
+        $queryRestActual = $conexion_master->query($sqlRestActual);
+        if ($queryRestActual && $queryRestActual->num_rows > 0) {
+            $rowRest = $queryRestActual->fetch_assoc();
+            if (empty($rowRest['id_restaurante'])) {
+                // No tiene restaurante y no está seleccionando uno
+                throw new Exception('Este rol requiere tener asignado un restaurante');
+            }
+            // Si tiene restaurante actual, permitir (mantendrá el actual)
+        }
     }
     
     // Si es nuevo usuario, password es obligatorio
-    if (empty($id) && empty($password)) {
+    if (!$esEdicion && empty($password)) {
         throw new Exception('La contraseña es obligatoria para usuarios nuevos');
     }
     
@@ -133,18 +213,26 @@ try {
         $tipos .= "s";
         $valores[] = $email;
         
-        $campos[] = "rol = ?";
-        $tipos .= "s";
-        $valores[] = $rol;
+        // Solo actualizar rol si el usuario lo especificó explícitamente
+        if ($rolFueProvidoPorUsuario) {
+            $campos[] = "rol = ?";
+            $tipos .= "s";
+            $valores[] = $rol;
+        }
         
-        // Solo actualizar id_restaurante según el rol
+        // Actualizar restaurante solo si es necesario
+        // Si es super-admin: siempre NULL
+        // Si es admin-restaurante y se especificó restaurante: actualizar
+        // Si es admin-restaurante y NO se especificó: mantener actual
         if ($rol === 'super-admin') {
             $campos[] = "id_restaurante = NULL";
-        } else {
+        } else if (!empty($id_restaurante)) {
+            // Solo actualizar si se especificó un valor
             $campos[] = "id_restaurante = ?";
             $tipos .= "i";
             $valores[] = $id_restaurante;
         }
+        // Si id_restaurante está vacío y no es super-admin, no actualizar (mantener actual)
         
         // Solo actualizar password si se proporcionó uno nuevo
         if (!empty($password)) {

@@ -480,3 +480,9 @@ a:hover {
 .tema-colores span {
   flex: 1;
 }
+
+.alert-gray {
+    color: #000000;
+    background-color: #b3b3b3;
+    border-color: #929595;
+}

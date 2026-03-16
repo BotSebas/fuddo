@@ -21,12 +21,12 @@ $resultado = $conexion_master->query($sql);
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-store"></i> Gestión de Restaurantes</h1>
+                    <h1><i class="fas fa-store"></i> Gestión de Organizaciones</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="../home.php">Home</a></li>
-                        <li class="breadcrumb-item active">Restaurantes</li>
+                        <li class="breadcrumb-item active">Organizaciones</li>
                     </ol>
                 </div>
             </div>
@@ -39,10 +39,10 @@ $resultado = $conexion_master->query($sql);
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Lista de Restaurantes</h3>
+                            <h3 class="card-title">Lista de Organizaciones</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-fuddo" id="btnNuevoRestaurante">
-                                    <i class="fas fa-plus"></i> Nuevo Restaurante
+                                    <i class="fas fa-plus"></i> Nueva Organización
                                 </button>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ $resultado = $conexion_master->query($sql);
                                     else:
                                     ?>
                                     <tr>
-                                        <td colspan="7" class="text-center">No hay restaurantes registrados</td>
+                                        <td colspan="7" class="text-center">No hay organizaciones registradas</td>
                                     </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -121,12 +121,12 @@ $resultado = $conexion_master->query($sql);
     </section>
 </div>
 
-<!-- Modal Restaurante -->
+<!-- Modal Organización -->
 <div class="modal fade" id="modalRestaurante" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #27ae60; color: white;">
-                <h5 class="modal-title" id="modalRestauranteLabel">Nuevo Restaurante</h5>
+                <h5 class="modal-title" id="modalRestauranteLabel">Nueva Organización</h5>
                 <button type="button" class="close" data-dismiss="modal" style="color: white;">
                     <span>&times;</span>
                 </button>
@@ -138,7 +138,7 @@ $resultado = $conexion_master->query($sql);
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="nombre">Nombre del Restaurante <span class="text-danger">*</span></label>
+                                <label for="nombre">Nombre de la Organización <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
                         </div>
@@ -177,9 +177,8 @@ $resultado = $conexion_master->query($sql);
                             <div class="form-group">
                                 <label for="plan">Plan</label>
                                 <select class="form-control" id="plan" name="plan">
-                                    <option value="basico">Básico</option>
-                                    <option value="premium">Premium</option>
-                                    <option value="enterprise">Enterprise</option>
+                                    <option value="demo">Demo</option>
+                                    <option value="Premium">Premium</option>
                                 </select>
                             </div>
                         </div>
@@ -367,43 +366,130 @@ $(document).ready(function() {
         const nombre = $(this).data('nombre');
         
         Swal.fire({
-            title: '¿Estás seguro?',
-            html: `Se eliminará el restaurante <strong>${nombre}</strong> y su base de datos.<br><br><span class="text-danger">Esta acción no se puede deshacer.</span>`,
+            title: 'Estás a punto de eliminar la organización',
+            html: `<strong>${nombre}</strong><br><br>
+                    <p class="text-muted">¿Deseas hacer una copia de la información?</p>`,
             icon: 'warning',
+            showDenyButton: true,
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
+            confirmButtonColor: '#28a745',
+            denyButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Si, genera copia',
+            denyButtonText: 'No, elimina',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                $.ajax({
-                    url: 'eliminar.php',
-                    method: 'POST',
-                    data: { id: id },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Eliminado',
-                                text: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire('Error', response.message, 'error');
-                        }
-                    },
-                    error: function() {
-                        Swal.fire('Error', 'Error al eliminar el restaurante', 'error');
+                // Opción 1: Generar backup
+                generarBackupYEliminar(id, nombre);
+            } else if (result.isDenied) {
+                // Opción 2: Eliminar sin backup
+                Swal.fire({
+                    title: '¿Confirmar eliminación?',
+                    html: `Se eliminará permanentemente <strong>${nombre}</strong> y todos sus datos.<br>
+                            <span class="text-danger"><strong>Esta acción no se puede deshacer.</strong></span>`,
+                    icon: 'error',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Si, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result2) => {
+                    if (result2.isConfirmed) {
+                        eliminarRestaurante(id, nombre, false);
                     }
                 });
             }
         });
     });
+
+    // Función para generar backup y luego eliminar
+    function generarBackupYEliminar(id, nombre) {
+        Swal.fire({
+            title: 'Generando backup...',
+            html: 'Por favor espera mientras se genera la copia de seguridad.',
+            icon: 'info',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Descargar backup
+        const form = $('<form>', {
+            'method': 'POST',
+            'action': 'eliminar_backup.php'
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'id',
+            'value': id
+        }));
+
+        $('body').append(form);
+        form.submit();
+        form.remove();
+
+        // Esperar un segundo y luego mostrar confirmación para eliminar
+        setTimeout(() => {
+            Swal.close();
+            Swal.fire({
+                title: 'Backup generado',
+                html: `Se ha descargado el archivo de respaldo de <strong>${nombre}</strong>.<br><br>
+                        <p>¿Deseas proceder a eliminar la organización?</p>`,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    eliminarRestaurante(id, nombre, true);
+                }
+            });
+        }, 2000);
+    }
+
+    // Función para eliminar la organización
+    function eliminarRestaurante(id, nombre, conBackup) {
+        Swal.fire({
+            title: 'Eliminando restaurante...',
+            html: 'Por favor espera.',
+            icon: 'info',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'eliminar.php',
+            method: 'POST',
+            data: { id: id },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Restaurante eliminado',
+                        html: response.message + (conBackup ? '<br><br>El backup se descargó exitosamente.' : ''),
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                Swal.fire('Error', 'Error al eliminar la organización. Revisa la consola para más detalles.', 'error');
+            }
+        });
+    }
 });
 </script>
 
