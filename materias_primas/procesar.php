@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
             $resCount = $conexion->query($sqlCount);
             $rowCount = $resCount->fetch_assoc();
             $siguiente_numero = $rowCount['total'] + 1;
-            $id_materia_prima = "MP-" . str_pad($siguiente_numero, 5, '0', STR_PAD_LEFT);
+            $id_materia_prima = "MP-" . $siguiente_numero;
             
             // Insertar
             $sql = "INSERT INTO " . TBL_MATERIAS_PRIMAS . " 
