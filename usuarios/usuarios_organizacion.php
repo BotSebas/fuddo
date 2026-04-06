@@ -72,16 +72,25 @@ $totalPaginas = ceil($total / $porPagina);
 $inicio = ($paginaActual - 1) * $porPagina;
 $usuariosPagina = array_slice($usuarios, $inicio, $porPagina);
 
-// Definir roles disponibles (todos los roles válidos en usuarios_master)
-$roles = [
-    'admin-restaurante' => 'Admin de la Organización',
-    'admin' => 'Administrador',
-    'mesero' => 'Mesero',
-    'cocinero' => 'Cocinero',
-    'vendedor' => 'Vendedor',
-    'mesero_vendedor' => 'Mesero + Vendedor',
-    'super-admin' => 'Super Admin'
-];
+// Obtener roles disponibles desde la tabla roles_master
+$roles_query = $conexion_master->query("SELECT id, rol FROM roles_master ORDER BY rol");
+$roles = [];
+if ($roles_query && $roles_query->num_rows > 0) {
+    while ($role_row = $roles_query->fetch_assoc()) {
+        $roles[$role_row['rol']] = $role_row['rol'];
+    }
+} else {
+    // Fallback si no hay roles en la tabla
+    $roles = [
+        'admin-restaurante' => 'Admin de la Organización',
+        'admin' => 'Administrador',
+        'mesero' => 'Mesero',
+        'cocinero' => 'Cocinero',
+        'vendedor' => 'Vendedor',
+        'mesero_vendedor' => 'Mesero + Vendedor',
+        'super-admin' => 'Super Admin'
+    ];
+}
 ?>
 <!-- Content Wrapper -->
 <div class="content-wrapper">
@@ -296,8 +305,18 @@ $roles = [
 
           <div class="form-group">
             <label for="password"><strong>Contraseña *</strong></label>
-            <input type="password" class="form-control" id="password" name="password" required>
-            <small class="form-text text-muted">Mínimo 6 caracteres</small>
+            <div class="input-group">
+              <input type="password" class="form-control" id="password" name="password" required>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="btnGenerarPassword" onclick="generarPasswordSugerida()" title="Generar contraseña aleatoria de 10 caracteres">
+                  <i class="fas fa-dice"></i> Sugerir
+                </button>
+                <button type="button" class="btn btn-outline-secondary" id="btnMostrarPassword" onclick="togglePasswordVisibility()" title="Mostrar/Ocultar contraseña">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <small class="form-text text-muted">Mínimo 6 caracteres • Sugerencia: 10 caracteres (mayúsculas, minúsculas, números)</small>
           </div>
 
           <div class="form-group" id="divPasswordConfirm" style="display: none;">
@@ -431,6 +450,60 @@ document.getElementById('buscar').addEventListener('keypress', function(event) {
     buscarUsuarios();
   }
 });
+
+// Función para generar contraseña sugerida
+function generarPasswordSugerida() {
+  const mayusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const minusculas = 'abcdefghijklmnopqrstuvwxyz';
+  const numeros = '0123456789';
+  const caracteres = mayusculas + minusculas + numeros;
+  
+  let password = '';
+  
+  // Asegurar al menos uno de cada tipo
+  password += mayusculas.charAt(Math.floor(Math.random() * mayusculas.length));
+  password += minusculas.charAt(Math.floor(Math.random() * minusculas.length));
+  password += numeros.charAt(Math.floor(Math.random() * numeros.length));
+  
+  // Llenar el resto aleatoriamente (10 caracteres totales)
+  for (let i = password.length; i < 10; i++) {
+    password += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  
+  // Mezclar la contraseña
+  password = password.split('').sort(() => Math.random() - 0.5).join('');
+  
+  // Asignar al campo
+  const passwordField = document.getElementById('password');
+  passwordField.value = password;
+  passwordField.type = 'text'; // Mostrar la contraseña generada
+  
+  // Cambiar el icono del botón temporalmente
+  const btnGenerar = document.getElementById('btnGenerarPassword');
+  const iconoOriginal = btnGenerar.innerHTML;
+  btnGenerar.innerHTML = '<i class="fas fa-check text-success"></i> Copiada';
+  btnGenerar.disabled = true;
+  
+  // Restaurar el botón después de 2 segundos
+  setTimeout(() => {
+    btnGenerar.innerHTML = iconoOriginal;
+    btnGenerar.disabled = false;
+  }, 2000);
+}
+
+// Función para mostrar/ocultar contraseña
+function togglePasswordVisibility() {
+  const passwordField = document.getElementById('password');
+  const btnMostrar = document.getElementById('btnMostrarPassword');
+  
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    btnMostrar.innerHTML = '<i class="fas fa-eye-slash"></i>';
+  } else {
+    passwordField.type = 'password';
+    btnMostrar.innerHTML = '<i class="fas fa-eye"></i>';
+  }
+}
 </script>
 
 <?php

@@ -247,7 +247,15 @@ $(document).ready(function() {
             $('#restaurante_id').val('');
             $('#modalRestauranteLabel').text('Nuevo Restaurante');
             $('#identificador').prop('readonly', false);
+            
+            // Establecer fecha de expiración por defecto a un mes adelante
+            const hoy = new Date();
+            const unMesAdelante = new Date(hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate());
+            const fechaFormato = unMesAdelante.toISOString().split('T')[0];
+            $('#fecha_expiracion').val(fechaFormato);
+            
             console.log('✓ Formulario reseteado');
+            console.log('✓ Fecha expiración establecida a:', fechaFormato);
             
             $('#modalRestaurante').modal('show');
             console.log('✓ Modal.show() ejecutado');

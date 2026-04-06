@@ -3,7 +3,21 @@
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: " . dirname($_SERVER['PHP_SELF']) . "/login.php?sesion=1");
+    // Construir URL completa dinámicamente
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $baseUrl = $scheme . $host;
+    
+    // Detectar si es localhost (desarrollo) o dominio (producción)
+    if (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false) {
+        // Desarrollo local: localhost/fuddo/login.php
+        $redirect_url = $baseUrl . '/fuddo/login.php?sesion=1';
+    } else {
+        // Producción (fuddo.co): fuddo.co/login.php
+        $redirect_url = $baseUrl . '/login.php?sesion=1';
+    }
+    
+    header('Location: ' . $redirect_url);
     exit();
 }
 

@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS restaurante_reportes (
 
 -- Usuario super-admin (password: admin123 - CÁMBIALO DESPUÉS)
 INSERT INTO usuarios_master (usuario, password, nombre, email, rol, estado) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrador FUDDO', 'admin@fuddo.com', 'super-admin', 'activo')
+VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrador FUDDO', 'admin@fuddo.co', 'super-admin', 'activo')
 ON DUPLICATE KEY UPDATE usuario=usuario;
 
 -- Aplicaciones base

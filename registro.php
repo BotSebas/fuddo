@@ -505,7 +505,7 @@
                             required
                             style="width: auto; cursor: pointer; margin-top: 0.15rem;"
                         >
-                        <span>Acepto los <a href="#" style="color: #27ae60; text-decoration: none;">Términos de Servicio</a> y la <a href="#" style="color: #27ae60; text-decoration: none;">Política de Privacidad</a></span>
+                        <span>Acepto los <a href="terminos-servicio.php" target="_blank" style="color: #27ae60; text-decoration: none;">Términos de Servicio</a> y la <a href="politica-privacidad.php" target="_blank" style="color: #27ae60; text-decoration: none;">Política de Privacidad</a></span>
                     </label>
                     <div class="error-message" id="errorTerminos"></div>
                 </div>

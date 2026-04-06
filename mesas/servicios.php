@@ -150,6 +150,26 @@
           </div>
         </div>
 
+        <!-- Toggle Factura Electrónica -->
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitchMesas" onchange="toggleCorreoFacturaMesas()">
+              <label class="custom-control-label" for="customSwitchMesas">Factura Electrónica</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campo de Correo para Factura Electrónica -->
+        <div class="row mt-3" id="correoFacturaRowMesas" style="display: none;">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="correoFacturaMesas">Correo para Factura Electrónica</label>
+              <input type="email" class="form-control" id="correoFacturaMesas" placeholder="ejemplo@correo.com">
+            </div>
+          </div>
+        </div>
+
         <div class="row mt-3">
           <div class="col-md-6">
             <div class="form-group">
@@ -468,6 +488,8 @@ function finalizarCuenta() {
   const total = parseFloat(document.getElementById('totalCuentaCierre').getAttribute('data-total')) || 0;
   const montoPago = parseFloat(document.getElementById('montoPago').value) || 0;
   const metodoPago = document.getElementById('metodoPago').value;
+  const facturaElectronicaEnabled = document.getElementById('customSwitchMesas').checked;
+  const correoFactura = document.getElementById('correoFacturaMesas').value.trim();
   
   // Validar método de pago
   if (!metodoPago) {
@@ -484,6 +506,16 @@ function finalizarCuenta() {
       icon: 'warning',
       title: 'Pago insuficiente',
       text: 'El monto ingresado no cubre el total de la cuenta'
+    });
+    return;
+  }
+
+  // Validar correo si factura electrónica está habilitada
+  if (facturaElectronicaEnabled && !correoFactura) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Correo requerido',
+      text: 'Por favor ingrese un correo para la factura electrónica'
     });
     return;
   }
@@ -506,6 +538,9 @@ function finalizarCuenta() {
       formData.append('mesa_id', mesaId);
       formData.append('total', total);
       formData.append('metodo_pago', metodoPago);
+      if (facturaElectronicaEnabled && correoFactura) {
+        formData.append('correo_factura_electronica', correoFactura);
+      }
       
       fetch('finalizar_cuenta.php', {
         method: 'POST',
@@ -633,4 +668,15 @@ $('#modalAgregarProducto').on('hidden.bs.modal', function () {
     $('#producto').select2('destroy');
   }
 });
+
+function toggleCorreoFacturaMesas() {
+  const correoRow = document.getElementById('correoFacturaRowMesas');
+  const checkbox = document.getElementById('customSwitchMesas');
+  
+  if (checkbox.checked) {
+    correoRow.style.display = 'flex';
+  } else {
+    correoRow.style.display = 'none';
+  }
+}
 </script>

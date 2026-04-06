@@ -206,6 +206,28 @@ $result_dias = $conexion->query($sql_dias);
           </div>
           <?php endif; ?>
 
+          <!-- Facturación Electrónica -->
+          <div class="col-lg-4 col-md-6">
+            <div class="card">
+              <div class="card-header" style="background-color: #2980b9; color: white;">
+                <h3 class="card-title"><i class="fas fa-file-invoice"></i> Facturación Electrónica</h3>
+              </div>
+              <div class="card-body">
+                <p>Reporte de cierres de caja con datos de facturación electrónica.</p>
+                <ul>
+                  <li>Filtrado por período (día, semana, mes)</li>
+                  <li>Datos de mesas y comandas</li>
+                  <li>Correos asignados a facturas</li>
+                  <li>Resumen de facturación</li>
+                  <li>Exportación a Excel</li>
+                </ul>
+                <a href="reportes/facturacion_electronica.php" class="btn btn-primary btn-block">
+                  <i class="fas fa-eye"></i> Ver Reporte
+                </a>
+              </div>
+            </div>
+          </div>
+
           <!-- Resumen de Ventas (Actual) -->
           <div class="col-lg-4 col-md-6">
             <div class="card">

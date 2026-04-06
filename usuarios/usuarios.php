@@ -19,8 +19,8 @@ while ($rest = $restaurantes_query->fetch_assoc()) {
     $restaurantes[] = $rest;
 }
 
-// Obtener lista de roles disponibles en la BD
-$roles_query = $conexion_master->query("SELECT DISTINCT rol FROM usuarios_master WHERE rol IS NOT NULL AND rol != '' ORDER BY rol");
+// Obtener lista de roles disponibles desde la tabla roles_master
+$roles_query = $conexion_master->query("SELECT rol FROM roles_master ORDER BY rol");
 $roles_disponibles = [];
 while ($role = $roles_query->fetch_assoc()) {
     $roles_disponibles[] = $role['rol'];
@@ -256,8 +256,18 @@ $usuariosPagina = array_slice($usuarios, $inicio, $porPagina);
             <div class="col-md-6">
               <div class="form-group">
                 <label for="password"><?php echo $usuarios_password; ?> <span id="password_opcional" style="color: #999;"><?php echo $usuarios_password_opcional; ?></span></label>
-                <input type="password" class="form-control" id="password" name="password" minlength="6">
-                <small class="text-muted">Mínimo 6 caracteres</small>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="password" name="password" minlength="6">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" id="btnGenerarPassword" onclick="generarPasswordSugerida()" title="Generar contraseña aleatoria de 10 caracteres">
+                      <i class="fas fa-dice"></i> Sugerir
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnMostrarPassword" onclick="togglePasswordVisibility()" title="Mostrar/Ocultar contraseña">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <small class="text-muted">Mínimo 6 caracteres • Sugerencia: 10 caracteres (mayúsculas, minúsculas, números)</small>
               </div>
             </div>
             
@@ -467,6 +477,60 @@ function eliminarUsuario(id) {
       });
     }
   });
+}
+
+// Función para generar contraseña sugerida
+function generarPasswordSugerida() {
+  const mayusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const minusculas = 'abcdefghijklmnopqrstuvwxyz';
+  const numeros = '0123456789';
+  const caracteres = mayusculas + minusculas + numeros;
+  
+  let password = '';
+  
+  // Asegurar al menos uno de cada tipo
+  password += mayusculas.charAt(Math.floor(Math.random() * mayusculas.length));
+  password += minusculas.charAt(Math.floor(Math.random() * minusculas.length));
+  password += numeros.charAt(Math.floor(Math.random() * numeros.length));
+  
+  // Llenar el resto aleatoriamente (10 caracteres totales)
+  for (let i = password.length; i < 10; i++) {
+    password += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  
+  // Mezclar la contraseña
+  password = password.split('').sort(() => Math.random() - 0.5).join('');
+  
+  // Asignar al campo
+  const passwordField = document.getElementById('password');
+  passwordField.value = password;
+  passwordField.type = 'text'; // Mostrar la contraseña generada
+  
+  // Cambiar el icono del botón temporalmente
+  const btnGenerar = document.getElementById('btnGenerarPassword');
+  const iconoOriginal = btnGenerar.innerHTML;
+  btnGenerar.innerHTML = '<i class="fas fa-check text-success"></i> Copiada';
+  btnGenerar.disabled = true;
+  
+  // Restaurar el botón después de 2 segundos
+  setTimeout(() => {
+    btnGenerar.innerHTML = iconoOriginal;
+    btnGenerar.disabled = false;
+  }, 2000);
+}
+
+// Función para mostrar/ocultar contraseña
+function togglePasswordVisibility() {
+  const passwordField = document.getElementById('password');
+  const btnMostrar = document.getElementById('btnMostrarPassword');
+  
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    btnMostrar.innerHTML = '<i class="fas fa-eye-slash"></i>';
+  } else {
+    passwordField.type = 'password';
+    btnMostrar.innerHTML = '<i class="fas fa-eye"></i>';
+  }
 }
 </script>
 

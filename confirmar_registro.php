@@ -279,7 +279,7 @@ header('Content-Type: text/html; charset=utf-8');
         </div>
 
         <div class="footer">
-            <p style="margin: 0;">¿Necesitas ayuda? <a href="mailto:soporte@fuddo.com">Contacta a Soporte</a></p>
+            <p style="margin: 0;">¿Necesitas ayuda? <a href="mailto:fuddocol@gmail.com">Contacta a Soporte</a></p>
             <p style="margin: 10px 0 0 0;">© 2026 FUDDO - Sistema Profesional de Gestión de Restaurantes</p>
         </div>
     </div>

@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `servicios_total` (
   `metodo_pago` enum('efectivo','llave','nequi','daviplata','tarjeta') NOT NULL DEFAULT 'efectivo',
   `fecha_servicio` date NOT NULL,
   `hora_cierre_servicio` time NOT NULL,
+  `correo_factura_electronica` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -75,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `comandas_total` (
   `metodo_pago` enum('efectivo','llave','nequi','daviplata','tarjeta') NOT NULL DEFAULT 'efectivo',
   `fecha_comanda` date NOT NULL,
   `hora_cierre_comanda` time NOT NULL,
+  `correo_factura_electronica` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/conexion_master.php';
+include '../includes/enviar_correo.php';
 
 header('Content-Type: application/json');
 
@@ -71,9 +72,9 @@ try {
         }
     }
     
-    // Obtener lista de roles válidos desde la base de datos
+    // Obtener lista de roles válidos desde la tabla roles_master
     $rolesValidos = [];
-    $sqlRoles = "SELECT DISTINCT rol FROM usuarios_master WHERE rol IS NOT NULL AND rol != ''";
+    $sqlRoles = "SELECT rol FROM roles_master ORDER BY rol";
     $resultRoles = $conexion_master->query($sqlRoles);
     if ($resultRoles && $resultRoles->num_rows > 0) {
         while ($rowRole = $resultRoles->fetch_assoc()) {
@@ -177,6 +178,19 @@ try {
         $stmt->bind_param("sssssss", $usuario, $passwordHash, $nombre, $email, $id_restaurante, $rol, $rutaFoto);
         
         if ($stmt->execute()) {
+            // Enviar correo de bienvenida con credenciales
+            if (!empty($email)) {
+                // Construir URL de login dinámicamente
+                $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                $loginUrl = $scheme . $host . '/login.php';
+                
+                $asunto = 'FUDDO - Bienvenido al Sistema POS';
+                $cuerpoHTML = generarHTMLBienvenidaUsuario($nombre, $usuario, $email, $password, $rol, $loginUrl);
+                
+                enviarCorreo($email, $asunto, $cuerpoHTML, $nombre);
+            }
+            
             echo json_encode([
                 'success' => true,
                 'message' => 'Usuario creado exitosamente'

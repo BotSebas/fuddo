@@ -835,13 +835,13 @@
                     </div>
 
                     <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ff9800;">
-                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; font-weight: 600;">⚙️ Integración Inicial (Valor Único)</div>
-                        <div style="font-size: 1.8rem; color: #ff9800; font-weight: 700; margin-bottom: 0.5rem;">$600.000</div>
-                        <p style="font-size: 0.9rem; color: #666; margin: 0;">Incluye setup completo de tu instancia, configuración profesional y capacitación del equipo</p>
+                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; font-weight: 600;">⚙️ <?php echo $landing_mod_pricing_unique; ?></div>
+                        <div style="font-size: 1.8rem; color: #ff9800; font-weight: 700; margin-bottom: 0.5rem;">$300.000</div>
+                        <p style="font-size: 0.9rem; color: #666; margin: 0;"><?php echo $landing_mod_pricing_unique_2; ?></p>
                     </div>
 
                     <div style="margin-bottom: 2rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
-                        <p style="font-size: 0.95rem; color: #27ae60; font-weight: 600; margin-bottom: 1rem;"><i class="fas fa-check-circle"></i> Incluye:</p>
+                        <p style="font-size: 0.95rem; color: #27ae60; font-weight: 600; margin-bottom: 1rem;"><i class="fas fa-check-circle"></i> <?php echo $landing_mod_pricing_cover; ?></p>
                         <ul>
                             <li><i class="fas fa-check"></i> <?php echo $landing_mod_pricing_feature_mesas; ?></li>
                             <li><i class="fas fa-check"></i> <?php echo $landing_mod_pricing_feature_comandas; ?></li>
@@ -866,7 +866,7 @@
                     <i class="fas fa-question-circle" style="color: #27ae60;"></i> 
                     <?php echo $landing_mod_pricing_contact_question; ?>
                 </p>
-                <a href="mailto:contacto@fuddo.com" style="color: #27ae60; font-weight: 600; text-decoration: none;">
+                <a href="mailto:contacto@fuddo.co" style="color: #27ae60; font-weight: 600; text-decoration: none;">
                     <?php echo $landing_mod_pricing_contact_link; ?>
                 </a>
             </div>
@@ -1050,10 +1050,10 @@
     <!-- CTA Final -->
     <section style="padding: 4rem 2rem; background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; text-align: center;">
         <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.5rem; margin-bottom: 1rem;">Toma el control de tu restaurante hoy</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">Únete a cientos de restaurantes que ya están creciendo con FUDDO. Comienza tu prueba gratis de 7 días ahora.</p>
+            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.5rem; margin-bottom: 1rem;"><?php echo $landing_mod_MSG_1; ?></h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;"><?php echo $landing_mod_MSG_2; ?></p>
             <button class="btn-trial" onclick="goToRegister()">
-                <i class="fas fa-rocket"></i> Crear Cuenta Gratis
+                <i class="fas fa-rocket"></i> <?php echo $landing_mod_MSG_3; ?>
             </button>
         </div>
     </section>
@@ -1070,20 +1070,17 @@
                 <a href="#features"><?php echo $landing_mod_footer_features; ?></a>
                 <a href="#pricing">Precios</a>
                 <a href="#faq"><?php echo $landing_mod_footer_faq; ?></a>
-                <a href="#">Seguridad</a>
             </div>
             <div class="footer-section">
                 <h4><?php echo $landing_mod_footer_company; ?></h4>
                 <a href="#"><?php echo $landing_mod_footer_about; ?></a>
                 <a href="#"><?php echo $landing_mod_footer_blog; ?></a>
                 <a href="#"><?php echo $landing_mod_footer_contact; ?></a>
-                <a href="#">Careers</a>
             </div>
             <div class="footer-section">
                 <h4><?php echo $landing_mod_footer_legal; ?></h4>
-                <a href="#"><?php echo $landing_mod_footer_terms; ?></a>
-                <a href="#"><?php echo $landing_mod_footer_privacy; ?></a>
-                <a href="#"><?php echo $landing_mod_footer_cookies; ?></a>
+                <a href="terminos-servicio.php"><?php echo $landing_mod_footer_terms; ?></a>
+                <a href="politica-privacidad.php"><?php echo $landing_mod_footer_privacy; ?></a>
             </div>
         </div>
         <div class="footer-bottom">

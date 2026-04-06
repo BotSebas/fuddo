@@ -10,7 +10,22 @@ define('SESSION_TIMEOUT', 30 * 60);
 // Validar si existe sesión activa de usuario
 if (!isset($_SESSION['user_id'])) {
     // No hay sesión, redirigir a login
-    header('Location: ' . dirname(__DIR__) . '/login.php');
+    
+    // Construir URL completa dinámicamente
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $baseUrl = $scheme . $host;
+    
+    // Detectar si es localhost (desarrollo) o dominio (producción)
+    if (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false) {
+        // Desarrollo local: localhost/fuddo/login.php
+        $redirect_url = $baseUrl . '/fuddo/login.php?sesion=1';
+    } else {
+        // Producción (fuddo.co): fuddo.co/login.php
+        $redirect_url = $baseUrl . '/login.php?sesion=1';
+    }
+    
+    header('Location: ' . $redirect_url);
     exit();
 }
 
@@ -23,7 +38,22 @@ if ($inactive_time > SESSION_TIMEOUT) {
     // Sesión expirada por inactividad
     session_destroy();
     $_SESSION = [];
-    header('Location: ' . dirname(__DIR__) . '/login.php?expired=1');
+    
+    // Construir URL completa dinámicamente
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $baseUrl = $scheme . $host;
+    
+    // Detectar si es localhost (desarrollo) o dominio (producción)
+    if (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false) {
+        // Desarrollo local: localhost/fuddo/login.php
+        $redirect_url = $baseUrl . '/fuddo/login.php?expired=1';
+    } else {
+        // Producción (fuddo.co): fuddo.co/login.php
+        $redirect_url = $baseUrl . '/login.php?expired=1';
+    }
+    
+    header('Location: ' . $redirect_url);
     exit();
 }
 

@@ -7,11 +7,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comanda_id = intval($_POST['comanda_id'] ?? 0);
         $total = floatval($_POST['total'] ?? 0);
         $metodo_pago = isset($_POST['metodo_pago']) ? $conexion->real_escape_string($_POST['metodo_pago']) : 'efectivo';
+        $correo_factura = isset($_POST['correo_factura_electronica']) ? trim($_POST['correo_factura_electronica']) : '';
+        $correo_factura = !empty($correo_factura) ? $conexion->real_escape_string($correo_factura) : NULL;
 
         // Validar método de pago
         $metodos_validos = ['efectivo', 'llave', 'nequi', 'daviplata', 'tarjeta'];
         if (!in_array($metodo_pago, $metodos_validos)) {
             echo json_encode(['success' => false, 'message' => 'Método de pago no válido']);
+            exit();
+        }
+
+        // Validar email si se proporciona
+        if ($correo_factura && !filter_var($correo_factura, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['success' => false, 'message' => 'Email de factura electrónica inválido']);
             exit();
         }
 
@@ -39,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hora_cierre = date('H:i:s');
 
         // Insertar en comandas_total con método de pago
-        $sqlTotal = "INSERT INTO " . TBL_COMANDAS_TOTAL . " (id_comanda, total, metodo_pago, fecha_comanda, hora_cierre_comanda) 
-                    VALUES ('" . $conexion->real_escape_string($id_comanda) . "', $total, '" . $metodo_pago . "', '" . $fecha_servicio . "', '" . $hora_cierre . "')";
+        $sqlTotal = "INSERT INTO " . TBL_COMANDAS_TOTAL . " (id_comanda, total, metodo_pago, fecha_comanda, hora_cierre_comanda, correo_factura_electronica) 
+                    VALUES ('" . $conexion->real_escape_string($id_comanda) . "', $total, '" . $metodo_pago . "', '" . $fecha_servicio . "', '" . $hora_cierre . "', " . ($correo_factura ? "'$correo_factura'" : "NULL") . ")";
 
         if ($conexion->query($sqlTotal) === TRUE) {
             // Descontar del inventario los productos vendidos

@@ -1,6 +1,7 @@
 <?php
 include '../includes/auth.php';
 include '../includes/conexion_master.php';
+include '../includes/enviar_correo.php';
 
 // Verificar que sea admin de la organización o super-admin
 if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'super-admin' && $_SESSION['rol'] !== 'admin-restaurante')) {
@@ -37,8 +38,14 @@ if ($accion === 'crear') {
         exit();
     }
 
-    // Validar rol (roles de usuarios_master)
-    $roles_validos = ['super-admin', 'admin-restaurante', 'admin', 'mesero', 'cocinero', 'vendedor', 'mesero_vendedor'];
+    // Validar rol desde roles_master
+    $roles_validos = [];
+    $rolesQuery = $conexion_master->query("SELECT rol FROM roles_master");
+    if ($rolesQuery && $rolesQuery->num_rows > 0) {
+        while ($roleRow = $rolesQuery->fetch_assoc()) {
+            $roles_validos[] = $roleRow['rol'];
+        }
+    }
     if (!in_array($rol, $roles_validos)) {
         header("Location: usuarios_organizacion.php?error=rol_invalido");
         exit();
@@ -78,6 +85,19 @@ if ($accion === 'crear') {
     $stmt->bind_param("ssssssi", $usuario, $password_hash, $nombre, $email, $rol, $estado, $id_restaurante);
 
     if ($stmt->execute()) {
+        // Enviar correo de bienvenida con credenciales
+        if (!empty($email)) {
+            // Construir URL de login dinámicamente
+            $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+            $loginUrl = $scheme . $host . '/login.php';
+            
+            $asunto = 'FUDDO - Bienvenido al Sistema POS';
+            $cuerpoHTML = generarHTMLBienvenidaUsuario($nombre, $usuario, $email, $password, $rol, $loginUrl);
+            
+            enviarCorreo($email, $asunto, $cuerpoHTML, $nombre);
+        }
+        
         header("Location: usuarios_organizacion.php?exito=creado");
         exit();
     } else {
@@ -102,8 +122,14 @@ elseif ($accion === 'actualizar') {
         exit();
     }
 
-    // Validar rol
-    $roles_validos = ['super-admin', 'admin-restaurante', 'admin', 'mesero', 'cocinero', 'vendedor', 'mesero_vendedor'];
+    // Validar rol desde roles_master
+    $roles_validos = [];
+    $rolesQuery = $conexion_master->query("SELECT rol FROM roles_master");
+    if ($rolesQuery && $rolesQuery->num_rows > 0) {
+        while ($roleRow = $rolesQuery->fetch_assoc()) {
+            $roles_validos[] = $roleRow['rol'];
+        }
+    }
     if (!in_array($rol, $roles_validos)) {
         header("Location: usuarios_organizacion.php?error=rol_invalido");
         exit();

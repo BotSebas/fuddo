@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}servicios_total` (
     `metodo_pago` enum('efectivo','llave','nequi','daviplata','tarjeta') NOT NULL DEFAULT 'efectivo',
     `fecha_servicio` date NOT NULL,
     `hora_cierre_servicio` time NOT NULL,
+    `correo_factura_electronica` varchar(100) DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_servicio` (`id_servicio`),
     KEY `idx_fecha` (`fecha_servicio`)
@@ -82,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}comandas_total` (
     `metodo_pago` enum('efectivo','llave','nequi','daviplata','tarjeta') NOT NULL DEFAULT 'efectivo',
     `fecha_comanda` date NOT NULL,
     `hora_cierre_comanda` time NOT NULL,
+    `correo_factura_electronica` varchar(100) DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_comanda` (`id_comanda`),
     KEY `idx_fecha` (`fecha_comanda`)

@@ -685,6 +685,9 @@ $landing_mod_pricing_plan_name = "Plan Premium Empresarial";
 $landing_mod_pricing_monthly = "por mes";
 $landing_mod_pricing_annual = "$600.000 al año (ahorra $120.000)";
 $landing_mod_pricing_badge = "RECOMENDADO";
+$landing_mod_pricing_unique = "Integración Inicial (Valor Único)";
+$landing_mod_pricing_unique_2 = "Incluye setup completo de tu instancia, configuración profesional y capacitación del equipo";
+$landing_mod_pricing_cover = "Incluye:";
 $landing_mod_pricing_feature_mesas = "Gestión ilimitada de puntos de venta";
 $landing_mod_pricing_feature_comandas = "Sistema completo de órdenes";
 $landing_mod_pricing_feature_cocina = "Panel profesional de operaciones";
@@ -751,6 +754,10 @@ $landing_mod_faq6_a = "Soporte técnico 24/7/365 por chat, email y teléfono. Eq
 
 $landing_mod_faq7_q = "¿Puedo importar datos de otros sistemas?";
 $landing_mod_faq7_a = "Sí, con ayuda de nuestro equipo. Contamos con especialistas en migración de datos que garantizan transición suave desde tus sistemas anteriores.";
+
+$landing_mod_MSG_1 = "Toma el control de tu restaurante hoy";
+$landing_mod_MSG_2 = "Únete a cientos de restaurantes que ya están creciendo con FUDDO. Comienza tu prueba gratis de 7 días ahora.";
+$landing_mod_MSG_3 = "Crear Cuenta Gratis";
 
 // CTA Final
 $landing_mod_cta_title = "Transforma tu Negocio con FUDDO";

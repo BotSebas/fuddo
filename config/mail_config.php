@@ -13,7 +13,7 @@ define('MAIL_PORT', 587);
 define('MAIL_USERNAME', 'tu_email@gmail.com'); // Tu email Gmail
 define('MAIL_PASSWORD', 'tu_app_password'); // Contraseña de aplicación (NO contraseña de Gmail)
 define('MAIL_ENCRYPTION', 'tls');
-define('MAIL_FROM_ADDRESS', 'noreply@fuddo.com');
+define('MAIL_FROM_ADDRESS', 'noreply@fuddo.co');
 define('MAIL_FROM_NAME', 'FUDDO - Sistema de Gestión');
 
 /**

@@ -151,6 +151,26 @@
           </div>
         </div>
 
+        <!-- Toggle Factura Electrónica -->
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" onchange="toggleCorreoFacturaComanda()">
+              <label class="custom-control-label" for="customSwitch1">Factura Electrónica</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campo de Correo para Factura Electrónica -->
+        <div class="row mt-3" id="correoFacturaRowComanda" style="display: none;">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="correoFacturaComanda">Correo para Factura Electrónica</label>
+              <input type="email" class="form-control" id="correoFacturaComanda" placeholder="ejemplo@correo.com">
+            </div>
+          </div>
+        </div>
+
         <div class="row mt-3">
           <div class="col-md-6">
             <div class="form-group">
@@ -544,6 +564,8 @@ function finalizarCuentaComanda() {
   const montoPago = parseFloat(document.getElementById('montoPagoComanda').value) || 0;
   const metodoPago = document.getElementById('metodoPagoComanda').value;
   const comandaId = document.getElementById('comandaIdNuevoHidden').value;
+  const facturaElectronicaEnabled = document.getElementById('customSwitch1').checked;
+  const correoFactura = document.getElementById('correoFacturaComanda').value.trim();
   
   // Validar método de pago
   if (!metodoPago) {
@@ -563,6 +585,16 @@ function finalizarCuentaComanda() {
     });
     return;
   }
+
+  // Validar correo si factura electrónica está habilitada
+  if (facturaElectronicaEnabled && !correoFactura) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Correo requerido',
+      text: 'Por favor ingrese un correo para la factura electrónica'
+    });
+    return;
+  }
   
   Swal.fire({
     title: '¿Confirmar cierre de cuenta?',
@@ -579,6 +611,9 @@ function finalizarCuentaComanda() {
       formData.append('comanda_id', comandaId);
       formData.append('total', total);
       formData.append('metodo_pago', metodoPago);
+      if (facturaElectronicaEnabled && correoFactura) {
+        formData.append('correo_factura_electronica', correoFactura);
+      }
       
       fetch('finalizar_comanda.php', {
         method: 'POST',
@@ -627,6 +662,17 @@ function finalizarCuentaComanda() {
       });
     }
   });
+}
+
+function toggleCorreoFacturaComanda() {
+  const correoRow = document.getElementById('correoFacturaRowComanda');
+  const checkbox = document.getElementById('customSwitch1');
+  
+  if (checkbox.checked) {
+    correoRow.style.display = 'flex';
+  } else {
+    correoRow.style.display = 'none';
+  }
 }
 
 function cerrarModalNuevaComanda() {
