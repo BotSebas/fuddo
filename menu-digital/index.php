@@ -50,7 +50,7 @@ if ($resultProductos && $resultProductos->num_rows > 0) {
 }
 
 // Obtener bloques del menú digital
-$sqlMenu = "SELECT id, titulo_seccion, productos_ids, orden, visible FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' ORDER BY orden ASC";
+$sqlMenu = "SELECT id, titulo_seccion, productos_ids, orden, visible, color_tema, modo_oscuro, logo_menu FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' ORDER BY orden ASC";
 $resultMenu = $conexion->query($sqlMenu);
 $bloques = [];
 $logoMenu = '';
