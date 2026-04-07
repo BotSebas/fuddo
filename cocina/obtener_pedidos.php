@@ -85,7 +85,7 @@ if (count($servicios_agrupados) > 0) {
                                 </span>
                                 <?php if ($producto['llevado_mesa'] == 1): ?>
                                     <span class="badge bg-success rounded-pill" style="font-size: 0.85em; margin-left: 5px;">
-                                        <i class="fas fa-check"></i> Preparado
+                                        <i class="fas fa-check"></i> Entregado
                                     </span>
                                 <?php endif; ?>
                             </li>
