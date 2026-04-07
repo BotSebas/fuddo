@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
         $resCount = $conexion->query($sqlCount);
         $rowCount = $resCount->fetch_assoc();
         $siguiente_numero = $rowCount['total'] + 1;
-        $id_receta = "REC-" . str_pad($siguiente_numero, 5, '0', STR_PAD_LEFT);
+        $id_receta = "REC-" . $siguiente_numero;
         
         // Calcular costo total e insertar receta
         $costo_total_receta = 0;

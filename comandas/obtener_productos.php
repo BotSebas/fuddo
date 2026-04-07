@@ -6,7 +6,7 @@ if (isset($_GET['mesa_id'])) {
     $id_comanda = $conexion->real_escape_string($_GET['mesa_id']);
     
     // Obtener productos de la comanda usando tabla comandas
-    $sql = "SELECT c.id, p.nombre_producto, c.cantidad, c.valor_unitario, c.valor_total 
+    $sql = "SELECT c.id, p.nombre_producto, c.cantidad, c.valor_unitario, c.valor_total, c.llevado_mesa 
             FROM " . TBL_COMANDAS . " c
             INNER JOIN " . TBL_PRODUCTOS . " p ON c.id_producto = p.id_producto
             WHERE c.id_comanda = '$id_comanda' 
@@ -21,7 +21,8 @@ if (isset($_GET['mesa_id'])) {
             $productos[] = [
                 'id' => $row['id'],
                 'nombre' => $row['nombre_producto'] . ' (x' . $row['cantidad'] . ')',
-                'valor' => $row['valor_total']
+                'valor' => $row['valor_total'],
+                'llevado_mesa' => $row['llevado_mesa'] ?? 0
             ];
         }
     }

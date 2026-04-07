@@ -40,9 +40,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}servicios` (
     `fecha_servicio` date NOT NULL,
     `hora_servicio` time NOT NULL,
     `estado` enum('activo','finalizado','cancelado') DEFAULT 'activo',
+    `llevado_mesa` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Indica si el producto fue entregado a la mesa',
     PRIMARY KEY (`id`),
     KEY `idx_servicio` (`id_servicio`),
-    KEY `idx_fecha` (`fecha_servicio`)
+    KEY `idx_fecha` (`fecha_servicio`),
+    KEY `idx_llevado_mesa` (`llevado_mesa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla de servicios totales
@@ -70,9 +72,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}comandas` (
     `fecha_servicio` date NOT NULL,
     `hora_servicio` time NOT NULL,
     `estado` enum('activo','finalizado','cancelado') DEFAULT 'activo',
+    `llevado_mesa` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Indica si el producto fue entregado a la mesa',
     PRIMARY KEY (`id`),
     KEY `idx_comanda` (`id_comanda`),
-    KEY `idx_fecha` (`fecha_servicio`)
+    KEY `idx_fecha` (`fecha_servicio`),
+    KEY `idx_llevado_mesa` (`llevado_mesa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla de comandas_total (totales de comandas cerradas)
@@ -104,9 +108,11 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}menu_digital` (
     `youtube` VARCHAR(255) DEFAULT NULL,
     `whatsapp` VARCHAR(20) DEFAULT NULL,
     `estado` enum('activo','inactivo') DEFAULT 'activo',
+    `visible` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Indica si la sección es visible en el menú público',
     `fecha_creacion` timestamp DEFAULT CURRENT_TIMESTAMP,
     `fecha_actualizacion` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `idx_visible` (`visible`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla de Materias Primas

@@ -23,6 +23,7 @@
             <tr>
               <th>Producto</th>
               <th>Valor</th>
+              <th>Llevado a Mesa</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -345,9 +346,17 @@ function cargarProductosNuevaComanda(comandaId) {
       if (data.productos && data.productos.length > 0) {
         data.productos.forEach(producto => {
           const fila = document.createElement('tr');
+          const isLlevado = producto.llevado_mesa === 1 || producto.llevado_mesa === '1';
+          const checkId = 'llevado_comanda_' + producto.id;
           fila.innerHTML = `
             <td>${producto.nombre}</td>
             <td>$${formatCurrency(parseFloat(producto.valor))}</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input producto-llevado-comanda" id="${checkId}" data-producto-id="${producto.id}" data-comanda-id="${comandaId}" ${isLlevado ? 'checked' : ''} onchange="marcarProductoLlevadoComanda(this)">
+                <label class="custom-control-label" for="${checkId}"></label>
+              </div>
+            </td>
             <td>
               <button type="button" class="btn btn-sm btn-danger" onclick="eliminarProductoNuevaComanda(${producto.id}, ${comandaId})">
                 <i class="fas fa-trash"></i>
@@ -359,7 +368,7 @@ function cargarProductosNuevaComanda(comandaId) {
         });
       } else {
         const fila = document.createElement('tr');
-        fila.innerHTML = '<td colspan="3" class="text-center text-muted">Sin productos agregados</td>';
+        fila.innerHTML = '<td colspan="4" class="text-center text-muted">Sin productos agregados</td>';
         tablaProductos.appendChild(fila);
       }
 
@@ -713,4 +722,55 @@ $('#modalAgregarProductoComanda').on('hidden.bs.modal', function () {
     $('#productoComanda').select2('destroy');
   }
 });
+
+function marcarProductoLlevadoComanda(checkbox) {
+  const productoId = checkbox.getAttribute('data-producto-id');
+  const comandaId = checkbox.getAttribute('data-comanda-id');
+  const llevado = checkbox.checked ? 1 : 0;
+  
+  const formData = new FormData();
+  formData.append('producto_id', productoId);
+  formData.append('comanda_id', comandaId);
+  formData.append('llevado', llevado);
+  
+  fetch('marcar_llevado_mesa.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Mostrar notificación tipo toast
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true
+      });
+      Toast.fire({
+        icon: 'success',
+        title: data.message
+      });
+    } else {
+      // Revertir el checkbox si hay error
+      checkbox.checked = !checkbox.checked;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: data.message
+      });
+    }
+  })
+  .catch(error => {
+    // Revertir el checkbox si hay error
+    checkbox.checked = !checkbox.checked;
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al procesar la solicitud'
+    });
+  });
+}
 </script>

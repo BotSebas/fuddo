@@ -14,7 +14,7 @@ if (isset($_GET['mesa_id'])) {
         $id_mesa_ref = $mesa['id_mesa'];
         
         // Obtener productos/servicios de la mesa con JOIN
-        $sql = "SELECT s.id, p.nombre_producto, s.cantidad, s.valor_unitario, s.valor_total 
+        $sql = "SELECT s.id, p.nombre_producto, s.cantidad, s.valor_unitario, s.valor_total, s.llevado_mesa 
                 FROM " . TBL_SERVICIOS . " s
                 INNER JOIN " . TBL_PRODUCTOS . " p ON s.id_producto = p.id_producto
                 WHERE s.id_mesa = '" . $conexion->real_escape_string($id_mesa_ref) . "' 
@@ -29,7 +29,8 @@ if (isset($_GET['mesa_id'])) {
                 $productos[] = [
                     'id' => $row['id'],
                     'nombre' => $row['nombre_producto'] . ' (x' . $row['cantidad'] . ')',
-                    'valor' => $row['valor_total']
+                    'valor' => $row['valor_total'],
+                    'llevado_mesa' => $row['llevado_mesa'] ?? 0
                 ];
             }
         }

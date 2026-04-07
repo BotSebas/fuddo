@@ -65,7 +65,7 @@ if (!empty($unidad_filtro)) {
     $sql .= " AND unidad_medida = '$unidad_filtro'";
 }
 
-$sql .= " ORDER BY fecha_ultima_actualizacion DESC";
+$sql .= " ORDER BY nombre ASC";
 
 $resultado = $conexion->query($sql);
 $materias_primas = [];
@@ -194,7 +194,6 @@ $unidades = obtenerUnidadesDisponibles();
               <table class="table table-hover table-sm">
                 <thead class="bg-light">
                   <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Unidad</th>
                     <th>Cantidad Comprada</th>
@@ -207,7 +206,6 @@ $unidades = obtenerUnidadesDisponibles();
                 <tbody>
                   <?php foreach ($materias_paginadas as $mp): ?>
                     <tr>
-                      <td><span class="badge" style="background-color: #27ae60;"><?php echo htmlspecialchars($mp['id_materia_prima']); ?></span></td>
                       <td><strong><?php echo htmlspecialchars($mp['nombre']); ?></strong></td>
                       <td>
                         <span class="badge badge-primary"><?php echo strtoupper($mp['unidad_medida']); ?></span>

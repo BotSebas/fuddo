@@ -23,6 +23,7 @@
             <tr>
               <th><?php echo $mesas_producto; ?></th>
               <th><?php echo $mesas_valor; ?></th>
+              <th>Llevado a Mesa</th>
               <th><?php echo $mesas_acciones; ?></th>
             </tr>
           </thead>
@@ -332,9 +333,17 @@ function cargarProductosMesa(mesaId, nombreMesa) {
       if (data.productos && data.productos.length > 0) {
         data.productos.forEach(producto => {
           const fila = document.createElement('tr');
+          const isLlevado = producto.llevado_mesa === 1 || producto.llevado_mesa === '1';
+          const checkId = 'llevado_' + producto.id;
           fila.innerHTML = `
             <td>${producto.nombre}</td>
             <td>$${formatCurrency(parseFloat(producto.valor))}</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input producto-llevado" id="${checkId}" data-producto-id="${producto.id}" data-mesa-id="${mesaId}" ${isLlevado ? 'checked' : ''} onchange="marcarProductoLlevado(this)">
+                <label class="custom-control-label" for="${checkId}"></label>
+              </div>
+            </td>
             <td>
               <button type="button" class="btn btn-sm btn-danger" onclick="eliminarProductoMesa(${producto.id}, ${mesaId})">
                 <i class="fas fa-trash"></i>
@@ -346,7 +355,7 @@ function cargarProductosMesa(mesaId, nombreMesa) {
         });
       } else {
         const fila = document.createElement('tr');
-        fila.innerHTML = '<td colspan="3" class="text-center text-muted">Sin productos agregados</td>';
+        fila.innerHTML = '<td colspan="4" class="text-center text-muted">Sin productos agregados</td>';
         tablaProductos.appendChild(fila);
       }
 
@@ -678,5 +687,56 @@ function toggleCorreoFacturaMesas() {
   } else {
     correoRow.style.display = 'none';
   }
+}
+
+function marcarProductoLlevado(checkbox) {
+  const productoId = checkbox.getAttribute('data-producto-id');
+  const mesaId = checkbox.getAttribute('data-mesa-id');
+  const llevado = checkbox.checked ? 1 : 0;
+  
+  const formData = new FormData();
+  formData.append('producto_id', productoId);
+  formData.append('mesa_id', mesaId);
+  formData.append('llevado', llevado);
+  
+  fetch('marcar_llevado_mesa.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Mostrar notificación tipo toast
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true
+      });
+      Toast.fire({
+        icon: 'success',
+        title: data.message
+      });
+    } else {
+      // Revertir el checkbox si hay error
+      checkbox.checked = !checkbox.checked;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: data.message
+      });
+    }
+  })
+  .catch(error => {
+    // Revertir el checkbox si hay error
+    checkbox.checked = !checkbox.checked;
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al procesar la solicitud'
+    });
+  });
 }
 </script>

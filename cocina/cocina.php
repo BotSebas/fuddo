@@ -81,7 +81,8 @@ $sql = "SELECT
             s.valor_total,
             s.fecha_servicio,
             s.hora_servicio,
-            s.estado
+            s.estado,
+            s.llevado_mesa
         FROM " . TBL_SERVICIOS . " s
         INNER JOIN " . TBL_MESAS . " m ON s.id_mesa = m.id_mesa
         LEFT JOIN " . TBL_PRODUCTOS . " p ON s.id_producto = p.id_producto
@@ -111,7 +112,8 @@ if ($resultado && $resultado->num_rows > 0) {
             'nombre' => $row['nombre_producto'],
             'cantidad' => $row['cantidad'],
             'valor_unitario' => $row['valor_unitario'],
-            'valor_total' => $row['valor_total']
+            'valor_total' => $row['valor_total'],
+            'llevado_mesa' => $row['llevado_mesa']
         ];
         
         $servicios_agrupados[$id_servicio]['total'] += $row['valor_total'];
@@ -173,6 +175,11 @@ if ($resultado && $resultado->num_rows > 0) {
                                                 <span class="badge bg-primary rounded-pill" style="font-size: 1.1em;">
                                                     x<?php echo $producto['cantidad']; ?>
                                                 </span>
+                                                <?php if ($producto['llevado_mesa'] == 1): ?>
+                                                    <span class="badge bg-success rounded-pill" style="font-size: 0.85em; margin-left: 5px;">
+                                                        <i class="fas fa-check"></i> Preparado
+                                                    </span>
+                                                <?php endif; ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

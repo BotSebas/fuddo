@@ -2,6 +2,45 @@
 session_start();
 require_once '../includes/conexion.php';
 
+// Manejador AJAX para toggle de visibilidad
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'toggle_visible') {
+    header('Content-Type: application/json');
+    
+    try {
+        // Verificar sesión
+        if (!isset($_SESSION['id_restaurante'])) {
+            throw new Exception('Sesión no válida');
+        }
+        
+        $id = intval($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            throw new Exception('ID inválido');
+        }
+        
+        $visible = intval($_POST['visible'] ?? 0);
+        $visible = ($visible === 1) ? 1 : 0;
+        
+        // Actualizar visibilidad
+        $sql = "UPDATE " . TBL_MENU_DIGITAL . " SET visible = $visible WHERE id = $id";
+        if (!$conexion->query($sql)) {
+            throw new Exception('Error al actualizar: ' . $conexion->error);
+        }
+        
+        echo json_encode([
+            'exito' => true,
+            'mensaje' => $visible ? 'Sección mostrada' : 'Sección ocultada'
+        ]);
+        exit();
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode([
+            'exito' => false,
+            'error' => $e->getMessage()
+        ]);
+        exit();
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         // Verificar sesión
@@ -94,29 +133,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $youtubeEscapado = !empty($youtube) ? "'" . $conexion->real_escape_string($youtube) . "'" : "NULL";
         $whatsappEscapado = !empty($whatsapp) ? "'" . $conexion->real_escape_string($whatsapp) . "'" : "NULL";
         
+        // Obtener estados de visibilidad de bloques existentes antes de actualizar
+        $estadosVisibilidad = [];
+        $sqlEstados = "SELECT id, visible FROM " . TBL_MENU_DIGITAL;
+        $resultEstados = $conexion->query($sqlEstados);
+        if ($resultEstados && $resultEstados->num_rows > 0) {
+            while ($row = $resultEstados->fetch_assoc()) {
+                $estadosVisibilidad[$row['id']] = $row['visible'];
+            }
+        }
+        
         // Eliminar bloques existentes
         $sqlDelete = "DELETE FROM " . TBL_MENU_DIGITAL;
         $conexion->query($sqlDelete);
         
-        // Insertar nuevos bloques
+        // Insertar nuevos bloques preservando visibilidad
         $primerBloque = true;
         foreach ($bloques as $bloque) {
             $titulo = $conexion->real_escape_string($bloque['titulo']);
             $productosIds = isset($bloque['productos']) ? implode(',', $bloque['productos']) : '';
             $orden = intval($bloque['orden']);
+            $bloqueId = intval($bloque['id'] ?? 0);
+            
+            // Recuperar visibilidad anterior si existe
+            $visible = isset($estadosVisibilidad[$bloqueId]) ? $estadosVisibilidad[$bloqueId] : 1;
             
             if (empty($titulo)) continue;
             
             // Solo agregar redes sociales en el primer bloque
             if ($primerBloque) {
                 $sqlInsert = "INSERT INTO " . TBL_MENU_DIGITAL . " 
-                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado, facebook, instagram, tiktok, youtube, whatsapp) 
-                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo', $facebookEscapado, $instagramEscapado, $tiktokEscapado, $youtubeEscapado, $whatsappEscapado)";
+                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado, visible, facebook, instagram, tiktok, youtube, whatsapp) 
+                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo', $visible, $facebookEscapado, $instagramEscapado, $tiktokEscapado, $youtubeEscapado, $whatsappEscapado)";
                 $primerBloque = false;
             } else {
                 $sqlInsert = "INSERT INTO " . TBL_MENU_DIGITAL . " 
-                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado) 
-                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo')";
+                             (titulo_seccion, productos_ids, orden, color_tema, modo_oscuro, logo_menu, estado, visible) 
+                             VALUES ('$titulo', '$productosIds', $orden, '$colorTema', $modoOscuro, $logoMenuEscapado, 'activo', $visible)";
             }
             
             $conexion->query($sqlInsert);

@@ -670,6 +670,15 @@ $BASE_URL = rtrim($BASE_URL, "/") . "/";
       </li>
     </ul>
   </li>
+
+  <!-- Homologación BD (solo para super-admin) -->
+  <li class="nav-item">
+    <a href="<?php echo $BASE_URL; ?>homologacion_bd.php" class="nav-link">
+      <i class="nav-icon fas fa-sync"></i>
+      <p>Homologación BD</p>
+    </a>
+  </li>
+
   <?php endif; ?>
 
 </ul>

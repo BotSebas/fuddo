@@ -50,7 +50,7 @@ if ($resultProductos && $resultProductos->num_rows > 0) {
 }
 
 // Obtener bloques del menú digital
-$sqlMenu = "SELECT * FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' ORDER BY orden ASC";
+$sqlMenu = "SELECT id, titulo_seccion, productos_ids, orden, visible FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' ORDER BY orden ASC";
 $resultMenu = $conexion->query($sqlMenu);
 $bloques = [];
 $logoMenu = '';
@@ -281,12 +281,22 @@ $urlMenuPublico = $urlBase . dirname($_SERVER['PHP_SELF']) . "/ver.php?r=" . $sl
             <div id="bloques-container">
               <?php if (count($bloques) > 0): ?>
                 <?php foreach ($bloques as $index => $bloque): ?>
-                  <div class="bloque-menu mb-4 p-3 border rounded" data-orden="<?php echo $index; ?>">
+                  <div class="bloque-menu mb-4 p-3 border rounded" data-orden="<?php echo $index; ?>" data-id="<?php echo $bloque['id']; ?>">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h5 class="mb-0"><i class="fas fa-grip-vertical text-muted"></i> Sección <?php echo ($index + 1); ?></h5>
-                      <button type="button" class="btn btn-danger btn-sm" onclick="eliminarBloque(this)">
-                        <i class="fas fa-trash"></i> Eliminar
-                      </button>
+                      <div class="btn-group" role="group">
+                        <div class="custom-control custom-switch" style="margin-right: 15px;">
+                          <input type="checkbox" class="custom-control-input toggle-visible" id="visible_<?php echo $bloque['id']; ?>" 
+                                 data-id="<?php echo $bloque['id']; ?>" 
+                                 <?php echo ($bloque['visible'] == 1) ? 'checked' : ''; ?>>
+                          <label class="custom-control-label" for="visible_<?php echo $bloque['id']; ?>" title="Mostrar/Ocultar sección">
+                            <i class="fas <?php echo ($bloque['visible'] == 1) ? 'fa-eye' : 'fa-eye-slash'; ?>"></i>
+                          </label>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarBloque(this)">
+                          <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                      </div>
                     </div>
                     
                     <div class="form-group">
@@ -932,6 +942,48 @@ function eliminarBloque(btn) {
   });
 }
 
+// Toggle visibilidad de sección
+function toggleVisibilidad(checkbox) {
+  const bloqueId = checkbox.getAttribute('data-id');
+  const isVisible = checkbox.checked ? 1 : 0;
+  
+  const formData = new FormData();
+  formData.append('accion', 'toggle_visible');
+  formData.append('id', bloqueId);
+  formData.append('visible', isVisible);
+  
+  fetch('procesar.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.exito) {
+      // Actualizar icono
+      const icon = checkbox.nextElementSibling.querySelector('i');
+      if (icon) {
+        icon.className = isVisible ? 'fas fa-eye' : 'fas fa-eye-slash';
+      }
+    } else {
+      checkbox.checked = !checkbox.checked;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: data.error
+      });
+    }
+  })
+  .catch(error => {
+    checkbox.checked = !checkbox.checked;
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al procesar la solicitud'
+    });
+  });
+}
+
 // Renumerar bloques después de agregar/eliminar
 function renumerarBloques() {
   const bloques = document.querySelectorAll('.bloque-menu');
@@ -971,5 +1023,15 @@ function descargarQR() {
     link.click();
   }
 }
+
+// Event listeners para toggle de visibilidad
+document.addEventListener('DOMContentLoaded', function() {
+  const toggles = document.querySelectorAll('.toggle-visible');
+  toggles.forEach(toggle => {
+    toggle.addEventListener('change', function() {
+      toggleVisibilidad(this);
+    });
+  });
+});
 </script>
 

@@ -49,7 +49,7 @@ define('TBL_MENU_DIGITAL', $TABLE_PREFIX . 'menu_digital');
 define('TBL_PRODUCTOS', $TABLE_PREFIX . 'productos');
 
 // Obtener bloques del menú
-$sqlMenu = "SELECT * FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' ORDER BY orden ASC";
+$sqlMenu = "SELECT * FROM " . TBL_MENU_DIGITAL . " WHERE estado = 'activo' AND visible = 1 ORDER BY orden ASC";
 $resultMenu = $conexion->query($sqlMenu);
 $bloques = [];
 $colorTema = 'verde'; // Color por defecto
