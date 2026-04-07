@@ -4,8 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Tiempo de inactividad permitido (en segundos): 30 minutos
-define('SESSION_TIMEOUT', 30 * 60);
+// Tiempo de inactividad permitido (en segundos): 10 horas
+define('SESSION_TIMEOUT', 10 * 60 * 60);
 
 // Validar si existe sesión activa de usuario
 if (!isset($_SESSION['user_id'])) {
