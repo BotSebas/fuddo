@@ -105,3 +105,32 @@
 [16-Mar-2026 19:09:13 Europe/Berlin] [CORREO ENVIADO] A: aryastian22@gmail.com | Asunto: Bienvenido a FUDDO
 [16-Mar-2026 19:09:13 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian22@gmail.com
 [16-Mar-2026 19:09:13 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian22@gmail.com | Prefijo: fuddo_demo_elbuensazon_ | Identificador: demo_elbuensazon | Token enviado
+[09-Jun-2026 17:28:02 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:29:45 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:30:01 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Prefijo de tablas: fuddo_demo_parrillasantanderiana_
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] SQL limpio generado para ejecutar
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Se crearon 0 tablas, 0 errores en mgacgdnjkg con prefijo: fuddo_demo_parrillasantanderiana_
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_mesas
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_productos
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_servicios
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_servicios_total
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_comandas
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_comandas_total
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO OK] Tabla verificada: fuddo_demo_parrillasantanderiana_menu_digital
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Usuario creado: aryastian2222@gmail.com (ID: 31)
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Restaurante creado: parrilla santanderiana (ID: 34, Identificador: demo_parrillasantanderiana, Prefijo: fuddo_demo_parrillasantanderiana_, Expira: 2026-06-16)
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: mesas (ID: 1) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: productos (ID: 2) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: cocina (ID: 3) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: reportes (ID: 4) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: menu_digital (ID: 7) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Aplicación asignada: usuarios (ID: 8) al restaurante ID: 34
+[09-Jun-2026 17:30:13 Europe/Berlin] [DEMO REGISTRO] Total de aplicaciones asignadas: 6 para tipo: restaurante
+[09-Jun-2026 17:30:17 Europe/Berlin] [CORREO ENVIADO] A: aryastian2222@gmail.com | Asunto: Bienvenido a FUDDO
+[09-Jun-2026 17:30:17 Europe/Berlin] [DEMO CORREO BIENVENIDA ENVIADO] A: aryastian2222@gmail.com
+[09-Jun-2026 17:30:17 Europe/Berlin] [DEMO REGISTRO EXITOSO] Email: aryastian2222@gmail.com | Prefijo: fuddo_demo_parrillasantanderiana_ | Identificador: demo_parrillasantanderiana | Token enviado
+[09-Jun-2026 17:30:52 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:31:01 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:32:53 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado
+[09-Jun-2026 17:35:54 Europe/Berlin] [DEMO REGISTRO ERROR] El correo electrónico ya está registrado

@@ -327,7 +327,76 @@
         .success-message.show {
             display: block;
         }
+        /* Floating Error Alert */
+        #errorMessage {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 400px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
 
+        @keyframes slideIn {
+            from {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .error-message-content {
+            background: #fff;
+            border-left: 4px solid #e74c3c;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .error-message-icon {
+            color: #e74c3c;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .error-message-text {
+            flex: 1;
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .error-message-close {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            margin-left: 0.5rem;
+            transition: color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .error-message-close:hover {
+            color: #e74c3c;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            #errorMessage {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
         /* Loading State */
         .loading-spinner {
             display: none;
@@ -413,6 +482,21 @@
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
                 <i class="fas fa-check-circle"></i> ¡Cuenta creada exitosamente! Redirigiendo...
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <div class="error-message-content">
+                    <div class="error-message-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="error-message-text">
+                        <span id="errorMessageText"></span>
+                    </div>
+                    <button type="button" class="error-message-close" onclick="document.getElementById('errorMessage').style.display = 'none';">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Registration Form -->
@@ -684,20 +768,32 @@
                 body: formDataObj
             })
             .then(response => {
-                // Verificar si la respuesta es OK
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text(); // Primero obtener como texto
+                // Leer la respuesta como texto primero, sin verificar OK
+                return response.text().then(text => {
+                    return {
+                        ok: response.ok,
+                        status: response.status,
+                        text: text
+                    };
+                });
             })
-            .then(text => {
+            .then(result => {
                 // Intentar parsear como JSON
                 try {
-                    const data = JSON.parse(text);
+                    const data = JSON.parse(result.text);
+                    // Si no fue OK pero tenemos JSON con mensaje, propagar el error con el mensaje
+                    if (!result.ok && !data.success) {
+                        const errorMsg = data.message || `HTTP error! status: ${result.status}`;
+                        throw new Error(errorMsg);
+                    }
                     return data;
                 } catch (e) {
-                    console.error('Respuesta no es JSON válido:', text);
-                    throw new Error('Respuesta inválida del servidor: ' + text.substring(0, 100));
+                    // Si el error es nuestro con mensaje, relanzarlo
+                    if (e instanceof Error && e.message !== result.text) {
+                        throw e;
+                    }
+                    console.error('Respuesta no es JSON válido:', result.text);
+                    throw new Error('Respuesta inválida del servidor: ' + result.text.substring(0, 100));
                 }
             })
             .then(data => {
@@ -727,14 +823,31 @@
                         return;
                     }
                     
-                    alert('Error: ' + errorMsg);
+                    // For other errors, show in floating error message
+                    const errorMessageDiv = document.getElementById('errorMessage');
+                    document.getElementById('errorMessageText').textContent = errorMsg;
+                    errorMessageDiv.style.display = 'block';
+                    
+                    // Auto-close after 6 seconds
+                    setTimeout(() => {
+                        errorMessageDiv.style.display = 'none';
+                    }, 6000);
                 }
             })
             .catch(error => {
                 btnSubmit.classList.remove('loading');
                 btnSubmit.disabled = false;
                 console.error('Error completo:', error);
-                alert('Error al conectar con el servidor: ' + error.message);
+                
+                // Show error in floating error message
+                const errorMessageDiv = document.getElementById('errorMessage');
+                document.getElementById('errorMessageText').textContent = error.message || 'Error al conectar con el servidor';
+                errorMessageDiv.style.display = 'block';
+                
+                // Auto-close after 6 seconds
+                setTimeout(() => {
+                    errorMessageDiv.style.display = 'none';
+                }, 6000);
             });
         });
 
@@ -746,6 +859,8 @@
                     field.classList.remove('error');
                     validations[fieldName].errorElement.classList.remove('show');
                 }
+                // Also hide general error message when user starts typing
+                document.getElementById('errorMessage').style.display = 'none';
             });
         });
     </script>
