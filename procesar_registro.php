@@ -321,9 +321,10 @@ try {
     // ============================================
     require_once __DIR__ . '/includes/enviar_correo.php';
     
-    // Generar link de activación
+    // Generar link de activación - Usar ruta dinámica según el ambiente
     $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
-    $linkActivacion = $baseUrl . "/fuddo/confirmar_registro.php?token=" . urlencode($token_activacion) . "&email=" . urlencode($email);
+    $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+    $linkActivacion = $baseUrl . $scriptDir . "/confirmar_registro.php?token=" . urlencode($token_activacion) . "&email=" . urlencode($email);
     
     // Generar HTML del correo de bienvenida
     $asuntoCorreo = "Bienvenido a FUDDO";
